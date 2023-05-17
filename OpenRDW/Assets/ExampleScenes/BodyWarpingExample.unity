@@ -323,6 +323,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 279246954427836180, guid: 13e09beb6ff11f04b863cfb0c4099342,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
     - target: {fileID: 1461322208760475011, guid: 13e09beb6ff11f04b863cfb0c4099342,
         type: 3}
       propertyPath: m_RootOrder
@@ -378,6 +383,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2382768616055809670, guid: 13e09beb6ff11f04b863cfb0c4099342,
+        type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 28727
+      objectReference: {fileID: 0}
+    - target: {fileID: 2382768617354110550, guid: 13e09beb6ff11f04b863cfb0c4099342,
+        type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 27447
+      objectReference: {fileID: 0}
     - target: {fileID: 2382768617835386548, guid: 13e09beb6ff11f04b863cfb0c4099342,
         type: 3}
       propertyPath: virtualWorld
@@ -417,6 +432,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: HaRT_core
+      objectReference: {fileID: 0}
+    - target: {fileID: 9034901717851937752, guid: 13e09beb6ff11f04b863cfb0c4099342,
+        type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 8264708921063624289, guid: 13e09beb6ff11f04b863cfb0c4099342, type: 3}
@@ -770,6 +790,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: VirtualToRealConnection
+      objectReference: {fileID: 0}
+    - target: {fileID: 7669597337343346159, guid: 71e57dad47c3ac34a8a151bf83be34d5,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 8468153220424936684, guid: 71e57dad47c3ac34a8a151bf83be34d5,
         type: 3}
@@ -1394,6 +1419,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: VirtualToRealConnection
       objectReference: {fileID: 0}
+    - target: {fileID: 7669597337343346159, guid: 71e57dad47c3ac34a8a151bf83be34d5,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
     - target: {fileID: 8468153220424936684, guid: 71e57dad47c3ac34a8a151bf83be34d5,
         type: 3}
       propertyPath: m_Positions.Array.data[0].x
@@ -1627,6 +1657,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: VirtualToRealConnection
+      objectReference: {fileID: 0}
+    - target: {fileID: 7669597337343346159, guid: 71e57dad47c3ac34a8a151bf83be34d5,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 8468153220424936684, guid: 71e57dad47c3ac34a8a151bf83be34d5,
         type: 3}
