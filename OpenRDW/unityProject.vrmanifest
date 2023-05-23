@@ -5,7 +5,7 @@
       "app_key": "application.generated.unity.openrdw.exe",
       "launch_type": "url",
       "url": "steam://launch/",
-      "action_manifest_path": "C:\\Users\\ru79xej\\Projects\\Redirection\\OpenRDW\\Assets\\StreamingAssets\\SteamVR\\actions.json",
+      "action_manifest_path": "D:\\Unity\\OpenRDW+HART\\OpenRDW\\OpenRDW\\Assets\\StreamingAssets\\SteamVR\\actions.json",
       "strings": {
         "en_us": {
           "name": "OpenRDW [Testing]"

@@ -6,40 +6,64 @@ using Photon.Realtime;
 
 public class MultiplayerManager : MonoBehaviourPunCallbacks
 {
-    public string roomNamePrefix = "MyRoom";
-    public int maxPlayersPerRoom = 2;
+    public GameObject vrPlayerPrefab; // Reference to the VR player prefab
 
-    void Start()
+    private void Start()
     {
-        PhotonNetwork.AutomaticallySyncScene = true;
-        PhotonNetwork.ConnectUsingSettings();
+        ConnectToPhoton();
+    }
+
+    private void ConnectToPhoton()
+    {
+        if (!PhotonNetwork.IsConnected)
+        {
+            PhotonNetwork.ConnectUsingSettings();
+        }
     }
 
     public override void OnConnectedToMaster()
     {
-        Debug.Log("Connected to master server.");
-
-        PhotonNetwork.JoinRandomRoom();
-    }
-
-    public override void OnJoinRandomFailed(short returnCode, string message)
-    {
-        Debug.Log("No random rooms available. Creating a new one...");
-        CreateRoom();
+        Debug.Log("Connected to Photon Master Server");
+        JoinRandomRoom();
     }
 
     public override void OnJoinedRoom()
     {
-        Debug.Log("Joined room " + PhotonNetwork.CurrentRoom.Name);
+        Debug.Log("Joined a room");
+
+        // Instantiate VR player prefab for local player
+        Vector3 spawnPosition = new Vector3(0f, 0f, 0f); // Define the spawn position
+        PhotonNetwork.Instantiate(vrPlayerPrefab.name, spawnPosition, Quaternion.identity);
     }
 
-    void CreateRoom()
+    public override void OnJoinRandomFailed(short returnCode, string message)
     {
-        string roomName = roomNamePrefix + Random.Range(1000, 10000);
+        Debug.Log("Failed to join a room. Creating a new room...");
 
+        // Create a new room if no rooms are available
         RoomOptions roomOptions = new RoomOptions();
-        roomOptions.MaxPlayers = (byte)maxPlayersPerRoom;
+        roomOptions.MaxPlayers = 2; // Adjust the maximum number of players as desired
+        PhotonNetwork.CreateRoom(null, roomOptions);
+    }
 
-        PhotonNetwork.CreateRoom(roomName, roomOptions);
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        Debug.Log("A new player entered the room");
+
+        // Instantiate VR player prefab for the newly joined player
+        Vector3 spawnPosition = new Vector3(0f, 0f, 0f); // Define the spawn position
+        PhotonNetwork.Instantiate(vrPlayerPrefab.name, spawnPosition, Quaternion.identity);
+    }
+
+    private void JoinRandomRoom()
+    {
+        if (PhotonNetwork.IsConnected)
+        {
+            PhotonNetwork.JoinRandomRoom();
+        }
+        else
+        {
+            Debug.LogWarning("Cannot join a random room. Not connected to Photon.");
+        }
     }
 }
