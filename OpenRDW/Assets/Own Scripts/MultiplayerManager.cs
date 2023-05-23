@@ -6,7 +6,7 @@ using Photon.Realtime;
 
 public class MultiplayerManager : MonoBehaviourPunCallbacks
 {
-    public GameObject vrPlayerPrefab; // Reference to the VR player prefab
+    private GameObject vrPlayerPrefab; // Reference to the VR player prefab
 
     private void Start()
     {
@@ -33,7 +33,7 @@ public class MultiplayerManager : MonoBehaviourPunCallbacks
 
         // Instantiate VR player prefab for local player
         Vector3 spawnPosition = new Vector3(0f, 0f, 0f); // Define the spawn position
-        PhotonNetwork.Instantiate(vrPlayerPrefab.name, spawnPosition, Quaternion.identity);
+        vrPlayerPrefab = PhotonNetwork.Instantiate("Multiplayer Player", spawnPosition, Quaternion.identity);
     }
 
     public override void OnJoinRandomFailed(short returnCode, string message)
@@ -52,7 +52,7 @@ public class MultiplayerManager : MonoBehaviourPunCallbacks
 
         // Instantiate VR player prefab for the newly joined player
         Vector3 spawnPosition = new Vector3(0f, 0f, 0f); // Define the spawn position
-        PhotonNetwork.Instantiate(vrPlayerPrefab.name, spawnPosition, Quaternion.identity);
+        PhotonNetwork.Instantiate("Multiplayer Player", spawnPosition, Quaternion.identity);
     }
 
     private void JoinRandomRoom()
