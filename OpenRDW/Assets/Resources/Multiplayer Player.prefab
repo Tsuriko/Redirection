@@ -219,12 +219,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbf9065375eabe0499b594e076df6142, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  poseAction:
-    actionPath: /actions/default/in/Pose
-    needsReinit: 0
   head: {fileID: 1978074943626528419}
   leftHand: {fileID: 1978074944221564169}
   rightHand: {fileID: 1978074944342483639}
+  additionalPositionOffset: {x: 0, y: 0, z: 0}
 --- !u!1 &1978074944221564175
 GameObject:
   m_ObjectHideFlags: 0

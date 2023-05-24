@@ -4,19 +4,26 @@ using UnityEngine;
 using Valve.VR;
 using Photon.Pun;
 
-
 public class PlayerTracking : MonoBehaviour
 {
-    public SteamVR_Action_Pose poseAction;
     public Transform head;
     public Transform leftHand;
     public Transform rightHand;
+    public Vector3 additionalPositionOffset;
 
     private PhotonView photonView;
+    private Transform trackedHead;
+    private Transform trackedLeftHand;
+    private Transform trackedRightHand;
 
     private void Start()
     {
         photonView = GetComponent<PhotonView>();
+
+        // Find the Camera, Controller (left), and Controller (right) objects in the scene
+        trackedHead = GameObject.Find("Camera").transform;
+        trackedLeftHand = GameObject.Find("Controller (left)").transform;
+        trackedRightHand = GameObject.Find("VirtualHand").transform;
     }
 
     private void Update()
@@ -26,18 +33,17 @@ public class PlayerTracking : MonoBehaviour
             head.gameObject.SetActive(false);
             leftHand.gameObject.SetActive(false);
             rightHand.gameObject.SetActive(false);
-            MapPosition(head, SteamVR_Input_Sources.Head);
-            MapPosition(leftHand, SteamVR_Input_Sources.LeftHand);
-            MapPosition(rightHand, SteamVR_Input_Sources.RightHand);
-        
+            MapPosition(head, trackedHead);
+            MapPosition(leftHand, trackedLeftHand);
+            MapPosition(rightHand, trackedRightHand);
         }
 
         //Debug.Log("Right Hand Position: " + rightHand.localPosition);
     }
-    void MapPosition(Transform target, SteamVR_Input_Sources source)
+
+    void MapPosition(Transform target, Transform source)
     {
-        target.localPosition = poseAction.GetLocalPosition(source);
-        target.localRotation = poseAction.GetLocalRotation(source);
+        target.position = source.position + additionalPositionOffset;
+        target.rotation = source.rotation;
     }
-    
 }

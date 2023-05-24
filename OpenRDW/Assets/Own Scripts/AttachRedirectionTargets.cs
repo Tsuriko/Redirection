@@ -5,14 +5,14 @@ using UnityEngine;
 public class AttachRedirectionTargets : MonoBehaviour
 {
     public Transform midpoint;
-    public Transform virtualHandofOtherPlayer;
+    public Transform virtualHandOfOtherPlayer;
     private GameObject redirectionTarget;
     private GameObject redirectedTarget;
     // Start is called before the first frame update
     void Start()
     {
-        redirectedTarget = GameObject.Find("Redirected Target");
-        redirectionTarget = GameObject.Find("Redirection Target");
+        redirectedTarget = GameObject.Find("Redirected Virtual Object");
+        redirectionTarget = GameObject.Find("Redirected Real Target");
     }
 
     // Update is called once per frame
