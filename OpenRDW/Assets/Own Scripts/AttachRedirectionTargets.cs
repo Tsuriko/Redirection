@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class AttachRedirectionTargets : MonoBehaviour
 {
-    public Transform midpoint;
-    public Transform virtualHandOfOtherPlayer;
+    private Transform realHandOfOtherPlayer;
+    private Transform virtualHandOfOtherPlayer;
+    private bool attachObects = false;
     private GameObject redirectionTarget;
     private GameObject redirectedTarget;
     // Start is called before the first frame update
@@ -18,7 +19,17 @@ public class AttachRedirectionTargets : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        redirectedTarget.transform.position = virtualHandofOtherPlayer.position;
-        redirectionTarget.transform.position = midpoint.position;
+        if (Input.GetKeyDown(KeyCode.X))
+            {
+                GameObject vrPlayerGuest = GameObject.Find("VR Player (Host)");
+                realHandOfOtherPlayer = vrPlayerGuest.transform.Find("Real/Right Hand");
+                virtualHandOfOtherPlayer = vrPlayerGuest.transform.Find("Virtual/Right Hand");
+                attachObects = true;
+            }
+        if (attachObects)
+        {
+            redirectedTarget.transform.position = virtualHandOfOtherPlayer.position;
+            redirectionTarget.transform.position = realHandOfOtherPlayer.position;
+        }
     }
 }

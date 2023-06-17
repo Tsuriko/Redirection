@@ -34,6 +34,7 @@ public class MultiplayerManager : MonoBehaviourPunCallbacks
         // Instantiate VR player prefab for local player
         Vector3 spawnPosition = new Vector3(0f, 0f, 0f); // Define the spawn position
         vrPlayerPrefab = PhotonNetwork.Instantiate("Multiplayer Player", spawnPosition, Quaternion.identity);
+        vrPlayerPrefab.name = "VR Player (Host)";
     }
 
     public override void OnJoinRandomFailed(short returnCode, string message)
@@ -52,7 +53,8 @@ public class MultiplayerManager : MonoBehaviourPunCallbacks
 
         // Instantiate VR player prefab for the newly joined player
         Vector3 spawnPosition = new Vector3(0f, 0f, 0f); // Define the spawn position
-        PhotonNetwork.Instantiate("Multiplayer Player", spawnPosition, Quaternion.identity);
+        GameObject newPlayerPrefab = PhotonNetwork.Instantiate("Multiplayer Player", spawnPosition, Quaternion.identity);
+        newPlayerPrefab.name = "VR Player (Guest)";
     }
 
     private void JoinRandomRoom()
