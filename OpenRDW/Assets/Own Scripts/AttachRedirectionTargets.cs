@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class AttachRedirectionTargets : MonoBehaviour
 {
+    public string otherPlayerName = "foo";
     private Transform realHandOfOtherPlayer;
     private Transform virtualHandOfOtherPlayer;
     private bool attachObects = false;
@@ -20,12 +21,13 @@ public class AttachRedirectionTargets : MonoBehaviour
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.X))
-            {
-                GameObject vrPlayerGuest = GameObject.Find("VR Player (Host)");
-                realHandOfOtherPlayer = vrPlayerGuest.transform.Find("Real/Right Hand");
-                virtualHandOfOtherPlayer = vrPlayerGuest.transform.Find("Virtual/Right Hand");
-                attachObects = true;
-            }
+        {
+            Debug.Log("X pressed");
+            GameObject vrPlayerGuest = GameObject.Find(otherPlayerName);
+            realHandOfOtherPlayer = vrPlayerGuest.transform.Find("Real/Right Hand");
+            virtualHandOfOtherPlayer = vrPlayerGuest.transform.Find("Virtual/Right Hand");
+            attachObects = true;
+        }
         if (attachObects)
         {
             redirectedTarget.transform.position = virtualHandOfOtherPlayer.position;

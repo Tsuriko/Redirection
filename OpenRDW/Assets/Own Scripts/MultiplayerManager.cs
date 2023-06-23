@@ -22,6 +22,26 @@ public class MultiplayerManager : MonoBehaviourPunCallbacks
             PhotonNetwork.ConnectUsingSettings();
         }
     }
+    private void Update()
+    {
+        // Check for VR player prefabs and rename them
+        GameObject[] vrPlayerPrefabs = GameObject.FindGameObjectsWithTag("Player");
+
+        foreach (GameObject vrPlayerPrefab in vrPlayerPrefabs)
+        {
+            if (vrPlayerPrefab.name == "Multiplayer Player(Clone)")
+            {
+                // Get the PhotonView component attached to the prefab
+                PhotonView photonView = vrPlayerPrefab.GetComponent<PhotonView>();
+
+                if (photonView != null && photonView.Owner != null)
+                {
+                    string playerName = photonView.Owner.NickName;
+                    vrPlayerPrefab.name = playerName;
+                }
+            }
+        }
+    }
 
     public override void OnConnectedToMaster()
     {
@@ -36,7 +56,7 @@ public override void OnJoinedRoom()
 
     // Instantiate VR player prefab for local player
     vrPlayerPrefab = PhotonNetwork.Instantiate("Multiplayer Player", Vector3.zero, Quaternion.identity);
-    vrPlayerPrefab.name = playerName; // Set the name of the local player's VR player prefab
+    vrPlayerPrefab.name = "VR Player (Host)"; // Set the name of the local player's VR player prefab
     PhotonNetwork.LocalPlayer.NickName = playerName; // Set the nickname of the local player
 
     // Log all players in the room
