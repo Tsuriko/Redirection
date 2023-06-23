@@ -25,20 +25,26 @@ public class MultiplayerManager : MonoBehaviourPunCallbacks
 
     public override void OnConnectedToMaster()
     {
+        base.OnConnectedToMaster();
         Debug.Log("Connected to Photon Master Server");
         JoinRandomRoom();
     }
 
-    public override void OnJoinedRoom()
-    {
-        Debug.Log("Joined a room");
+public override void OnJoinedRoom()
+{
+    Debug.Log("Joined a room");
 
-        // Instantiate VR player prefab for local player
-        Vector3 spawnPosition = new Vector3(0f, 0f, 0f); // Define the spawn position
-        vrPlayerPrefab = PhotonNetwork.Instantiate("Multiplayer Player", spawnPosition, Quaternion.identity);
-        vrPlayerPrefab.name = playerName; // Set the name of the local player's VR player prefab
-        PhotonNetwork.LocalPlayer.NickName = playerName; // Set the nickname of the local player
+    // Instantiate VR player prefab for local player
+    vrPlayerPrefab = PhotonNetwork.Instantiate("Multiplayer Player", Vector3.zero, Quaternion.identity);
+    vrPlayerPrefab.name = playerName; // Set the name of the local player's VR player prefab
+    PhotonNetwork.LocalPlayer.NickName = playerName; // Set the nickname of the local player
+
+    // Log all players in the room
+    foreach (Player player in PhotonNetwork.PlayerList)
+    {
+        Debug.Log("Player in the room: " + player.NickName);
     }
+}
 
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
@@ -50,16 +56,17 @@ public class MultiplayerManager : MonoBehaviourPunCallbacks
         PhotonNetwork.CreateRoom(null, roomOptions);
     }
 
+    
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
         Debug.Log("A new player entered the room");
 
         // Instantiate VR player prefab for the newly joined player
-        Vector3 spawnPosition = new Vector3(0f, 0f, 0f); // Define the spawn position
-        GameObject newPlayerPrefab = PhotonNetwork.Instantiate("Multiplayer Player", spawnPosition, Quaternion.identity);
-        newPlayerPrefab.name = newPlayer.NickName; // Set the name of the newly joined player's VR player prefab
+        base.OnPlayerEnteredRoom(newPlayer);
+        //ameObject newPlayerPrefab = PhotonNetwork.Instantiate("Multiplayer Player", Vector3.zero, Quaternion.identity);
+        //newPlayerPrefab.name = newPlayer.NickName; // Set the name of the newly joined player's VR player prefab
     }
-
+    
     private void JoinRandomRoom()
     {
         if (PhotonNetwork.IsConnected)
@@ -70,5 +77,22 @@ public class MultiplayerManager : MonoBehaviourPunCallbacks
         {
             Debug.LogWarning("Cannot join a random room. Not connected to Photon.");
         }
+    }
+        public override void OnDisconnected(DisconnectCause cause)
+    {
+        Debug.LogWarningFormat("PUN Basics Tutorial/Launcher: OnDisconnected() was called by PUN with reason {0}", cause);
+        base.OnDisconnected(cause);
+    }
+        public void LeaveRoom()
+    {
+        Debug.Log("Leave Room");
+        PhotonNetwork.LeaveRoom();
+    }
+    //onleftroom
+    public override void OnLeftRoom()
+    {
+        PhotonNetwork.Destroy(vrPlayerPrefab);
+        Debug.Log("OnLeftRoom");
+        base.OnLeftRoom();
     }
 }
