@@ -6,6 +6,8 @@ using Photon.Realtime;
 
 public class MultiplayerManager : MonoBehaviourPunCallbacks
 {
+    public string playerName = "foo"; // Name of the player
+
     private GameObject vrPlayerPrefab; // Reference to the VR player prefab
 
     private void Start()
@@ -34,7 +36,8 @@ public class MultiplayerManager : MonoBehaviourPunCallbacks
         // Instantiate VR player prefab for local player
         Vector3 spawnPosition = new Vector3(0f, 0f, 0f); // Define the spawn position
         vrPlayerPrefab = PhotonNetwork.Instantiate("Multiplayer Player", spawnPosition, Quaternion.identity);
-        vrPlayerPrefab.name = "VR Player (Host)";
+        vrPlayerPrefab.name = playerName; // Set the name of the local player's VR player prefab
+        PhotonNetwork.LocalPlayer.NickName = playerName; // Set the nickname of the local player
     }
 
     public override void OnJoinRandomFailed(short returnCode, string message)
@@ -54,7 +57,7 @@ public class MultiplayerManager : MonoBehaviourPunCallbacks
         // Instantiate VR player prefab for the newly joined player
         Vector3 spawnPosition = new Vector3(0f, 0f, 0f); // Define the spawn position
         GameObject newPlayerPrefab = PhotonNetwork.Instantiate("Multiplayer Player", spawnPosition, Quaternion.identity);
-        newPlayerPrefab.name = "VR Player (Guest)";
+        newPlayerPrefab.name = newPlayer.NickName; // Set the name of the newly joined player's VR player prefab
     }
 
     private void JoinRandomRoom()
