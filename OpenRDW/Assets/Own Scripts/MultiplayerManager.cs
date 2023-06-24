@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
+using Valve.VR;
 
 public class MultiplayerManager : MonoBehaviourPunCallbacks
 {
@@ -49,6 +50,8 @@ public class MultiplayerManager : MonoBehaviourPunCallbacks
 
         // Instantiate VR player prefab for local player
         vrPlayerPrefab = PhotonNetwork.Instantiate("Multiplayer Player", Vector3.zero, Quaternion.identity);
+        vrPlayerPrefab.transform.Find("Real/Right Hand").GetComponent<SteamVR_Behaviour_Pose>().enabled = true;
+        vrPlayerPrefab.transform.Find("Real/Head").GetComponent<SteamVR_CameraHelper>().enabled = true;
         vrPlayerPrefab.name = "VR Player (Host)"; // Set the name of the local player's VR player prefab
     }
 
