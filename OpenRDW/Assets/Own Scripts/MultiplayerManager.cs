@@ -6,7 +6,6 @@ using Photon.Realtime;
 
 public class MultiplayerManager : MonoBehaviourPunCallbacks
 {
-    public string playerName = "foo"; // Name of the player
 
     private GameObject vrPlayerPrefab; // Reference to the VR player prefab
 
@@ -22,6 +21,7 @@ public class MultiplayerManager : MonoBehaviourPunCallbacks
             PhotonNetwork.ConnectUsingSettings();
         }
     }
+
     private void Update()
     {
         // Check for VR player prefabs and rename them
@@ -31,14 +31,7 @@ public class MultiplayerManager : MonoBehaviourPunCallbacks
         {
             if (vrPlayerPrefab.name == "Multiplayer Player(Clone)")
             {
-                // Get the PhotonView component attached to the prefab
-                PhotonView photonView = vrPlayerPrefab.GetComponent<PhotonView>();
-
-                if (photonView != null && photonView.Owner != null)
-                {
-                    string playerName = photonView.Owner.NickName;
-                    vrPlayerPrefab.name = playerName;
-                }
+                vrPlayerPrefab.name = "VR Player (Guest)";
             }
         }
     }
@@ -50,21 +43,14 @@ public class MultiplayerManager : MonoBehaviourPunCallbacks
         JoinRandomRoom();
     }
 
-public override void OnJoinedRoom()
-{
-    Debug.Log("Joined a room");
-
-    // Instantiate VR player prefab for local player
-    vrPlayerPrefab = PhotonNetwork.Instantiate("Multiplayer Player", Vector3.zero, Quaternion.identity);
-    vrPlayerPrefab.name = "VR Player (Host)"; // Set the name of the local player's VR player prefab
-    PhotonNetwork.LocalPlayer.NickName = playerName; // Set the nickname of the local player
-
-    // Log all players in the room
-    foreach (Player player in PhotonNetwork.PlayerList)
+    public override void OnJoinedRoom()
     {
-        Debug.Log("Player in the room: " + player.NickName);
+        Debug.Log("Joined a room");
+
+        // Instantiate VR player prefab for local player
+        vrPlayerPrefab = PhotonNetwork.Instantiate("Multiplayer Player", Vector3.zero, Quaternion.identity);
+        vrPlayerPrefab.name = "VR Player (Host)"; // Set the name of the local player's VR player prefab
     }
-}
 
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
@@ -76,7 +62,6 @@ public override void OnJoinedRoom()
         PhotonNetwork.CreateRoom(null, roomOptions);
     }
 
-    
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
         Debug.Log("A new player entered the room");
@@ -86,7 +71,7 @@ public override void OnJoinedRoom()
         //ameObject newPlayerPrefab = PhotonNetwork.Instantiate("Multiplayer Player", Vector3.zero, Quaternion.identity);
         //newPlayerPrefab.name = newPlayer.NickName; // Set the name of the newly joined player's VR player prefab
     }
-    
+
     private void JoinRandomRoom()
     {
         if (PhotonNetwork.IsConnected)
@@ -98,16 +83,13 @@ public override void OnJoinedRoom()
             Debug.LogWarning("Cannot join a random room. Not connected to Photon.");
         }
     }
-        public override void OnDisconnected(DisconnectCause cause)
-    {
-        Debug.LogWarningFormat("PUN Basics Tutorial/Launcher: OnDisconnected() was called by PUN with reason {0}", cause);
-        base.OnDisconnected(cause);
-    }
-        public void LeaveRoom()
+
+    public void LeaveRoom()
     {
         Debug.Log("Leave Room");
         PhotonNetwork.LeaveRoom();
     }
+
     //onleftroom
     public override void OnLeftRoom()
     {

@@ -11,7 +11,7 @@ public class SynchronizeReal : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Y))
         {
-            Debug.Log("Y pressed");
+            Debug.Log("HMD position now synchronized");
             // Set the target rotation
             targetRotation = Quaternion.Euler(0f, 0f, 0f);
             // Start moving the object to (0, 0, 0)

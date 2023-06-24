@@ -15,18 +15,20 @@ public class RealObectToVirtual : MonoBehaviour
 
     void Start()
     {
-        // Spawn the clone at the same position as the object to clone
-        clone = Instantiate(objectToClone, objectToClone.transform.position, objectToClone.transform.rotation);
-        initialOffset = realAvatar.position - objectToClone.transform.position;
+
     }
 
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.C))
+        if (Input.GetKeyDown(KeyCode.X))
         {
-            Debug.Log("C pressed");
+            Debug.Log("Real Object now attached to virtual avatar");
+                    // Spawn the clone at the same position as the object to clone
+            clone = Instantiate(objectToClone, objectToClone.transform.position, objectToClone.transform.rotation);
+            clone.name = "Real hand of Other Player";
             realAvatar = GameObject.Find("VR Player (Host)").transform.Find("Real").transform.Find("Head");
+            initialOffset = realAvatar.position - objectToClone.transform.position;
             scriptEnabled = true;
         }
         if (scriptEnabled)
