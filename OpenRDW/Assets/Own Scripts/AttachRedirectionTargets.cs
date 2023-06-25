@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using HR_Toolkit.Redirection;
 
 public class AttachRedirectionTargets : MonoBehaviour
 {
@@ -25,6 +26,8 @@ public class AttachRedirectionTargets : MonoBehaviour
             GameObject vrPlayerGuest = GameObject.Find("VR Player (Guest)");
             realHandOfOtherPlayer = vrPlayerGuest.transform.Find("Real/Right Hand");;
             virtualHandOfOtherPlayer = vrPlayerGuest.transform.Find("Virtual/Right Hand");
+            redirectedTarget.transform.Find("VirtualToRealConnection").GetComponent<VirtualToRealConnection>().enabled = true;
+            redirectedTarget.transform.Find("VirtualToRealConnection").GetComponent<VirtualToRealConnection>().realPosition = GameObject.Find("Real hand of Other Player").transform;
             attachObects = true;
         }
         if (attachObects)
