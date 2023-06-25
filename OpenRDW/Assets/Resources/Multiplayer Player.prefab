@@ -1304,6 +1304,7 @@ GameObject:
   m_Component:
   - component: {fileID: 667089802175301388}
   - component: {fileID: 3158110157784860302}
+  - component: {fileID: 9064036338904989798}
   m_Layer: 13
   m_Name: Virtual
   m_TagString: Untagged
@@ -1344,6 +1345,22 @@ MonoBehaviour:
   head: {fileID: 8905186161355215117}
   leftHand: {fileID: 250360244749197204}
   rightHand: {fileID: 6379464930341084793}
+--- !u!114 &9064036338904989798
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3951401174739283996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
 --- !u!1 &3969737283258719758
 GameObject:
   m_ObjectHideFlags: 0
