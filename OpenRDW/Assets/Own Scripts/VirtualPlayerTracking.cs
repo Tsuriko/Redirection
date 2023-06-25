@@ -9,7 +9,7 @@ public class VirtualPlayerTracking : MonoBehaviour
     public Transform head;
     public Transform leftHand;
     public Transform rightHand;
-    public Transform cameraRig;
+    public Transform parentOfHead;
 
     private PhotonView photonView;
     private Transform trackedHead;
@@ -25,7 +25,7 @@ public class VirtualPlayerTracking : MonoBehaviour
         trackedHead = GameObject.Find("Camera").transform;
         trackedLeftHand = GameObject.Find("Controller (left)").transform;
         trackedRightHand = GameObject.Find("Controller (right)").transform;
-        trackedCameraRig = GameObject.Find("CameraRig").transform;
+        trackedCameraRig = GameObject.Find("[CameraRig]").transform;
     }
 
     private void Update()
@@ -38,7 +38,7 @@ public class VirtualPlayerTracking : MonoBehaviour
             MapPosition(head, trackedHead);
             MapPosition(leftHand, trackedLeftHand);
             MapPosition(rightHand, trackedRightHand);
-            MapPosition(cameraRig, trackedCameraRig);
+            MapPosition(parentOfHead, trackedCameraRig);
         }
 
         //Debug.Log("Right Hand Position: " + rightHand.localPosition);

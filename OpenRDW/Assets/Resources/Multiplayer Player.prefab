@@ -642,6 +642,7 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
+  - {fileID: 9064036338904989798}
   - {fileID: 8613983996754734805}
   - {fileID: 2632659484849461459}
   - {fileID: 4859243971714864168}
@@ -1345,6 +1346,7 @@ MonoBehaviour:
   head: {fileID: 8905186161355215117}
   leftHand: {fileID: 250360244749197204}
   rightHand: {fileID: 6379464930341084793}
+  parentOfHead: {fileID: 667089802175301388}
 --- !u!114 &9064036338904989798
 MonoBehaviour:
   m_ObjectHideFlags: 0
