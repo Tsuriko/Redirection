@@ -5,7 +5,7 @@ public class PlayerSyncronization : MonoBehaviour
 {
     public Transform targetLocation; // The target location where you want the player to be
 
-    public Transform playerHead; // Reference to the player's head object (e.g., the camera)
+    private Transform playerHead; // Reference to the player's head object (e.g., the camera)
 
     private bool movePlayer = false;
 
@@ -19,6 +19,7 @@ public class PlayerSyncronization : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Y))
         {
             Debug.Log("Player Moved");
+            playerHead = GameObject.Find("VR Player (Host)/Real/Head").transform;
             movePlayer = true;
         }
         if (movePlayer)
