@@ -23,7 +23,7 @@ public class AttachRedirectionTargets : MonoBehaviour
         {
             Debug.Log("Redirection Targets Attached");
             GameObject vrPlayerGuest = GameObject.Find("VR Player (Guest)");
-            realHandOfOtherPlayer = GameObject.Find("Real hand of Other Player").transform;
+            realHandOfOtherPlayer = vrPlayerGuest.transform.Find("Real/Right Hand");;
             virtualHandOfOtherPlayer = vrPlayerGuest.transform.Find("Virtual/Right Hand");
             attachObects = true;
         }
