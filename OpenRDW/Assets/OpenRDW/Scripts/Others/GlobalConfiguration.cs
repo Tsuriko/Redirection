@@ -396,7 +396,6 @@ public class GlobalConfiguration : MonoBehaviour
         //Load from command txt file
         if (loadFromTxt)
         {
-            userInterfaceManager.GetCommandFilePaths();
             //generate experimentSetups according to command txt
             GenerateExperimentSetupsByCommandFiles();
         }

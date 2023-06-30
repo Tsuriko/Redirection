@@ -23,26 +23,6 @@ public class UserInterfaceManager : MonoBehaviour
 
     }
     
-    public void GetCommandFilePaths() {        
-        commandFiles = new List<string>();
-
-        if (!globalConfiguration.multiCmdFiles)
-        {
-            if (Utilities.GetCommandFilePath(out string path))
-            {
-                //load single command file
-                commandFiles.Add(path);
-            }
-        }
-        else
-        {
-            if (Utilities.GetCommandDirPath(out string path))
-            {
-                //load multiple command files from this directory
-                commandFiles = Utilities.GetCommandFilesRecursively(path);
-            }
-        }
-    }
     public void SetActivePanelExperimentComplete(bool active) {
         panelExperimentComplete.SetActive(active);
     }

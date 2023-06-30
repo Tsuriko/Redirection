@@ -25,7 +25,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     [Tooltip("Prefab used for networking synchronization")]
     public GameObject avatarNetworkingTransformPrefab;
     private GameObject thisAvatarNetworkingTransform;//represent the local avatar, used for networking synchronization
-    private Transform realTransform;//the physical transform of the avatar
+    private Transform   realTransform;//the physical transform of the avatar
     private Transform virtualTransform;//the virtual transform of the avatar
     private void Awake()
     {

@@ -6,6 +6,14 @@ TagManager:
   tags:
   - Camera45
   - AvatarNetworkingTransform
+  - physicalTarget
+  - projectile
+  - virtualTarget
+  - virtualHand
+  - realHand
+  - FxTemporaire
+  - Bullet
+  - NetworkingTransform
   layers:
   - Default
   - TransparentFX
@@ -17,11 +25,11 @@ TagManager:
   - 
   - Avatar
   - Waypoint
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Physical/Hand
+  - Physical/Object
+  - Virtual/Hand
+  - Virtual/Object
+  - Visualization
   - 
   - 
   - 

@@ -217,6 +217,11 @@ namespace HR_Toolkit
                 throw new Exception("There are no redirected prefabs that could be targeted");
             }
 
+            if (target != null){
+                Debug.Log("Target gets deleted");
+                return null;
+            }
+
             // there was no previous target selected, we need to set it on first call
             if (target == null && lastTarget == null)
             {
