@@ -19,16 +19,18 @@ public class PlayerSynchronization : MonoBehaviour
 
         if (movePlayer)
         {
+            Transform realParent = GameObject.Find("VR Player (Host)/Real").transform;
+            // Set the player's rotation to match the target rotation
+            Quaternion headRotationDifference = Quaternion.Inverse(playerHead.rotation) * targetLocation.rotation;
+            realParent.transform.rotation *= headRotationDifference;
             // Calculate the offset between the current position and the target position
             Vector3 offset = targetLocation.position - playerHead.position;
 
             // Apply the offset to the player's position
-            Transform realParent = GameObject.Find("VR Player (Host)/Real").transform;
+
             realParent.transform.position += offset;
 
-            // Set the player's rotation to match the target rotation
-            Quaternion headRotationDifference = Quaternion.Inverse(playerHead.rotation) * targetLocation.rotation;
-            realParent.transform.rotation *= headRotationDifference;
+
 
             movePlayer = false;
         }
