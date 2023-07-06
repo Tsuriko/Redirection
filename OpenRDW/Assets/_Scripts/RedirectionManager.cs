@@ -232,7 +232,7 @@ namespace HR_Toolkit
             if (allRedirectedPrefabs.Count == 1)
             {
                 Debug.Log("There is only one target, can't choose another target");
-                return allRedirectedPrefabs[0];
+                return null;
             }
 
             var index = allRedirectedPrefabs.IndexOf(lastTarget);
