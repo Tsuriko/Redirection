@@ -32,9 +32,9 @@ public class VirtualPlayerTracking : MonoBehaviour
     {
         if (photonView.IsMine)
         {
-            //head.gameObject.SetActive(false);
-            //leftHand.gameObject.SetActive(false);
-            //rightHand.gameObject.SetActive(false);
+            head.gameObject.SetActive(false);
+            leftHand.gameObject.SetActive(false);
+            rightHand.gameObject.SetActive(false);
             MapPosition(head, trackedHead);
             MapPosition(leftHand, trackedLeftHand);
             MapPosition(rightHand, trackedRightHand);
