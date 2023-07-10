@@ -4,8 +4,8 @@ using Valve.VR;
 public class PlayerSynchronization : MonoBehaviour
 {
     public Transform targetLocation; // The target location where you want the player to be
-    public Transform playerHead; // Reference to the player's head object (e.g., the camera)
 
+    private Transform playerHead; // Reference to the player's head object (e.g., the camera)
     private bool movePlayer = false;
 
     private void Update()

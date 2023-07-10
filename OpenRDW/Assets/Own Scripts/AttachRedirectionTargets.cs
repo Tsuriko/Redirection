@@ -4,10 +4,19 @@ using UnityEngine;
 using HR_Toolkit.Redirection;
 
 public class AttachRedirectionTargets : MonoBehaviour
-{
+{ 
+
+    public enum AttachMethod
+    {
+        midpoint, otherHand
+    }
+
+    public AttachMethod attachMethod;
+
     private Transform realHandOfOtherPlayer;
     private Transform virtualHandOfOtherPlayer;
-    private bool attachObects = false;
+    private Transform ownRealHand;
+    private bool attachObjects = false;
     private GameObject redirectionTarget;
     private GameObject redirectedTarget;
     // Start is called before the first frame update
@@ -24,16 +33,28 @@ public class AttachRedirectionTargets : MonoBehaviour
         {
             Debug.Log("Redirection Targets Attached");
             GameObject vrPlayerGuest = GameObject.Find("VR Player (Guest)");
-            realHandOfOtherPlayer = vrPlayerGuest.transform.Find("Real/Right Hand");;
+            realHandOfOtherPlayer = vrPlayerGuest.transform.Find("Real/Right Hand"); ;
             virtualHandOfOtherPlayer = vrPlayerGuest.transform.Find("Virtual/Right Hand");
+            ownRealHand = GameObject.Find("VR Player (Host)/Real/Right Hand").transform;
             redirectedTarget.transform.Find("VirtualToRealConnection").GetComponent<VirtualToRealConnection>().enabled = true;
             redirectedTarget.transform.Find("VirtualToRealConnection").GetComponent<VirtualToRealConnection>().realPosition = GameObject.Find("Real hand of Other Player").transform;
-            attachObects = true;
+            attachObjects = true;
+            if(attachMethod == AttachMethod.midpoint)
+            {
+                Vector3 midpoint = (realHandOfOtherPlayer.position + ownRealHand.position) * 0.5f;
+
+                // Set the position of the objectToMove to the calculated midpoint position
+                redirectionTarget.transform.position = midpoint;
+            }
         }
-        if (attachObects)
+        if (attachObjects)
         {
             redirectedTarget.transform.position = virtualHandOfOtherPlayer.position;
-            redirectionTarget.transform.position = realHandOfOtherPlayer.position;
+            if(attachMethod == AttachMethod.otherHand)
+            {
+                redirectionTarget.transform.position = realHandOfOtherPlayer.position;
+            }
         }
     }
+
 }
