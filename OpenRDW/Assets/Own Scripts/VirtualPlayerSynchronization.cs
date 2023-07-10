@@ -20,7 +20,7 @@ public class VirtualPlayerSynchronization : MonoBehaviour
 
 
 
-            cameraRig.position = realParent.position - new Vector3(0f, 5.0f, 0f);
+            cameraRig.position = realParent.position - new Vector3(0f, 4.0f, 0f);
             cameraRig.rotation = realParent.rotation;
 
             movePlayer = false;
