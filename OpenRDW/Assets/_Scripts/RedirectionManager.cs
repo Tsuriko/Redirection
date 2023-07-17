@@ -178,6 +178,7 @@ namespace HR_Toolkit
         private void CheckForNewTarget()
         {
             if (!Input.GetKeyDown("space")) return;
+
             if (target != null)
             {
                 if (!target.thisIsAResetPosition)
@@ -187,16 +188,28 @@ namespace HR_Toolkit
                     lastTarget = target;
                 }
                 // end current redirection
+                Debug.Log("--- redirection ended for target: " + target.gameObject.name + " ---");
                 target.EndRedirection();
+                target = null; // Set target to null to end redirection
             }
-            
-            target = GetNextTarget();
-            Debug.Log("--- new target: " + target.gameObject.name + " ---");
-
-            UpdateWarpOrigin();
-            if (target != null)
+            else
             {
-                target.StartRedirection();
+                target = GetNextTarget();
+                if (target != null) // Check if target is not null before accessing its properties
+                {
+                    Debug.Log("--- new target: " + target.gameObject.name + " ---");
+                    UpdateWarpOrigin();
+                    target.StartRedirection();
+                }
+                else
+                {
+                    target = lastTarget; // If no new target is available, set the target to the last target
+                    if (target != null)
+                    {
+                        Debug.Log("--- re-targeting last target: " + target.gameObject.name + " ---");
+                        target.StartRedirection();
+                    }
+                }
             }
         }
 
