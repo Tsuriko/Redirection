@@ -4,7 +4,7 @@ using UnityEngine;
 using HR_Toolkit.Redirection;
 
 public class AttachRedirectionTargets : MonoBehaviour
-{ 
+{
     public enum AttachMethod
     {
         midpoint,
@@ -21,42 +21,39 @@ public class AttachRedirectionTargets : MonoBehaviour
     private bool attachObjects = false;
     private bool isMidPointSet = false;
 
-
     private GameObject otherPlayerHandObject;
     private GameObject redirectionTarget;
     private GameObject redirectedTarget;
 
     private Vector3 initialMidpoint;
-    
+
     void Start()
     {
         FindObjects();
+        // Subscribe to the C key press event from ConfigurationScript
+        ConfigurationScript.Instance.OnCKeyPressed += HandleKeyPress;
     }
 
-    void Update()
+    void OnDestroy() // Unsubscribe when the object is destroyed
     {
-        HandleKeyPress();
-        HandleObjectAttachments();
+        ConfigurationScript.Instance.OnCKeyPressed -= HandleKeyPress;
     }
 
     void FindObjects()
     {
-        redirectedTarget = GameObject.Find("Redirected Virtual Object");
-        redirectionTarget = GameObject.Find("Redirected Real Target");
-        otherPlayerHandObject = GameObject.Find("OtherPlayerHandObject");
-        
+        redirectedTarget = ConfigurationScript.Instance.redirectedVirtualObject;
+        redirectionTarget = ConfigurationScript.Instance.redirectedRealTarget;
+        otherPlayerHandObject = ConfigurationScript.Instance.otherPlayerHandObject;
     }
 
     void HandleKeyPress()
     {
-        if (!Input.GetKeyDown(KeyCode.C)) return;
-        
         Debug.Log("Redirection Targets Attached");
         realHandOfOtherPlayerVirtual = GameObject.Find("Real hand of Other Player").transform;
-        GameObject vrPlayerGuest = GameObject.Find("VR Player (Guest)");
-        realHandOfOtherPlayer = vrPlayerGuest.transform.Find("Real/Right Hand"); ;
+        GameObject vrPlayerGuest = ConfigurationScript.Instance.vrPlayerGuest;
+        realHandOfOtherPlayer = vrPlayerGuest.transform.Find("Real/Right Hand");
         virtualHandOfOtherPlayer = vrPlayerGuest.transform.Find("Virtual/Right Hand");
-        ownRealHand = GameObject.Find("Controller (right)").transform;
+        ownRealHand = ConfigurationScript.Instance.controllerRight.transform;
 
         EnableVirtualToRealConnection();
 
@@ -98,10 +95,15 @@ public class AttachRedirectionTargets : MonoBehaviour
         isMidPointSet = false;
     }
 
+    void Update()
+    {
+        HandleObjectAttachments();
+    }
+
     void HandleObjectAttachments()
     {
         if (!attachObjects) return;
-        
+
         redirectedTarget.transform.position = virtualHandOfOtherPlayer.position;
         otherPlayerHandObject.transform.position = realHandOfOtherPlayer.position;
 
