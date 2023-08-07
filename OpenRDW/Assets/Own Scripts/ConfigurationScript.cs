@@ -13,6 +13,8 @@ public class ConfigurationScript : MonoBehaviour
 
     // Public Parameters
     public AttachMethod attachMethod;
+    public Camera mainCamera;
+    public bool isVisualizationModeActive = false;
     [HideInInspector] public GameObject redirectedVirtualObject;
     [HideInInspector] public GameObject redirectedRealTarget;
     [HideInInspector] public GameObject otherPlayerHandObject;
@@ -20,6 +22,7 @@ public class ConfigurationScript : MonoBehaviour
     [HideInInspector] public GameObject vrPlayerHost;
     [HideInInspector] public GameObject controllerRight;
     [HideInInspector] public GameObject cameraRig;
+    
 
 
 
@@ -42,12 +45,20 @@ public class ConfigurationScript : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-
         AssignVariables();
+    }
+
+    private void OnValidate()
+    {
+        if (Application.isPlaying) // Ensure this only runs during play mode
+        {
+            ToggleVisualizationMode();
+        }
     }
 
     private void Update()
     {
+        AssignVariables();
         if (Input.GetKeyDown(KeyCode.C))
         {
             OnCKeyPressed?.Invoke();
@@ -76,5 +87,18 @@ public class ConfigurationScript : MonoBehaviour
         vrPlayerHost = GameObject.Find("VR Player (Host)");
         controllerRight = GameObject.Find("Controller (right)");
         cameraRig = GameObject.Find("[CameraRig]");
+    }
+    void ToggleVisualizationMode()
+    {
+        if (isVisualizationModeActive)
+        {
+            // Show objects in the "Visualization" layer
+            mainCamera.cullingMask |= (1 << LayerMask.NameToLayer("Visualization"));
+        }
+        else
+        {
+            // Hide objects in the "Visualization" layer
+            mainCamera.cullingMask &= ~(1 << LayerMask.NameToLayer("Visualization"));
+        }
     }
 }
