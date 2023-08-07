@@ -5,18 +5,12 @@ using HR_Toolkit.Redirection;
 
 public class AttachRedirectionTargets : MonoBehaviour
 {
-    public enum AttachMethod
-    {
-        midpoint,
-        otherHand
-    }
-
-    public AttachMethod attachMethod;
-
+    private ConfigurationScript.AttachMethod attachMethod => ConfigurationScript.Instance.attachMethod;
     private Transform realHandOfOtherPlayer;
     private Transform virtualHandOfOtherPlayer;
     private Transform ownRealHand;
     private Transform realHandOfOtherPlayerVirtual;
+    private Transform hostVirtualHand;  // Host's virtual hand
 
     private bool attachObjects = false;
     private bool isMidPointSet = false;
@@ -25,7 +19,8 @@ public class AttachRedirectionTargets : MonoBehaviour
     private GameObject redirectionTarget;
     private GameObject redirectedTarget;
 
-    private Vector3 initialMidpoint;
+    private Vector3 initialRealMidpoint;
+    private Vector3 initialVirtualMidpoint;
 
     void Start()
     {
@@ -53,21 +48,23 @@ public class AttachRedirectionTargets : MonoBehaviour
         GameObject vrPlayerGuest = ConfigurationScript.Instance.vrPlayerGuest;
         realHandOfOtherPlayer = vrPlayerGuest.transform.Find("Real/Right Hand");
         virtualHandOfOtherPlayer = vrPlayerGuest.transform.Find("Virtual/Right Hand");
+        hostVirtualHand = ConfigurationScript.Instance.vrPlayerHost.transform.Find("Virtual/Right Hand");
         ownRealHand = ConfigurationScript.Instance.controllerRight.transform;
 
         EnableVirtualToRealConnection();
 
         attachObjects = true;
 
-        if (attachMethod != AttachMethod.midpoint) return;
-
-        if (!isMidPointSet)
+        if (attachMethod == ConfigurationScript.AttachMethod.midpoint)
         {
-            SetMidpoint();
-        }
-        else
-        {
-            ResetMidpoint();
+            if (!isMidPointSet)
+            {
+                SetCombinedMidpoints();
+            }
+            else
+            {
+                ResetCombinedMidpoints();
+            }
         }
     }
 
@@ -80,18 +77,23 @@ public class AttachRedirectionTargets : MonoBehaviour
         virtualToRealConnection.realPosition = redirectionTarget.transform;
     }
 
-    void SetMidpoint()
+    void SetCombinedMidpoints()
     {
-        Vector3 midpoint = (realHandOfOtherPlayerVirtual.position + ownRealHand.position) * 0.5f;
-        redirectionTarget.transform.position = midpoint;
+        Vector3 realMidpoint = (realHandOfOtherPlayerVirtual.position + ownRealHand.position) * 0.5f;
+        Vector3 virtualMidpoint = (hostVirtualHand.position + virtualHandOfOtherPlayer.position) * 0.5f;
 
-        initialMidpoint = midpoint;
+        redirectionTarget.transform.position = realMidpoint;
+        redirectedTarget.transform.position = virtualMidpoint;
+
+        initialRealMidpoint = realMidpoint;
+        initialVirtualMidpoint = virtualMidpoint;
         isMidPointSet = true;
     }
 
-    void ResetMidpoint()
+    void ResetCombinedMidpoints()
     {
-        redirectionTarget.transform.position = initialMidpoint;
+        redirectionTarget.transform.position = initialRealMidpoint;
+        redirectedTarget.transform.position = initialVirtualMidpoint;
         isMidPointSet = false;
     }
 
@@ -107,7 +109,7 @@ public class AttachRedirectionTargets : MonoBehaviour
         redirectedTarget.transform.position = virtualHandOfOtherPlayer.position;
         otherPlayerHandObject.transform.position = realHandOfOtherPlayer.position;
 
-        if (attachMethod == AttachMethod.otherHand)
+        if (attachMethod == ConfigurationScript.AttachMethod.otherHand)
         {
             redirectionTarget.transform.position = realHandOfOtherPlayerVirtual.transform.position;
         }
