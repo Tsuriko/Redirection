@@ -106,12 +106,13 @@ public class AttachRedirectionTargets : MonoBehaviour
     {
         if (!attachObjects) return;
 
-        redirectedTarget.transform.position = virtualHandOfOtherPlayer.position;
+        
         otherPlayerHandObject.transform.position = realHandOfOtherPlayer.position;
 
         if (attachMethod == ConfigurationScript.AttachMethod.otherHand)
         {
             redirectionTarget.transform.position = realHandOfOtherPlayerVirtual.transform.position;
+            redirectedTarget.transform.position = virtualHandOfOtherPlayer.position;
         }
     }
 }
