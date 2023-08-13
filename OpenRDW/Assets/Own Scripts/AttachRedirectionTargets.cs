@@ -27,9 +27,17 @@ public class AttachRedirectionTargets : MonoBehaviour
         FindObjects();
         // Subscribe to the C key press event from ConfigurationScript
         ConfigurationScript.Instance.OnCKeyPressed += HandleKeyPress;
+            if (ConfigurationScript.Instance.redirectedVirtualObject == null)
+    {
+        Debug.LogError("ownPlayer is null in ConfigurationScript's Start method.");
+    }
+    else
+    {
+        Debug.Log("ownPlayer is assigned in ConfigurationScript's Start method.");
+    }
     }
 
-    void OnDestroy() // Unsubscribe when the object is destroyed
+    void OnDestroy()
     {
         ConfigurationScript.Instance.OnCKeyPressed -= HandleKeyPress;
     }
@@ -106,7 +114,7 @@ public class AttachRedirectionTargets : MonoBehaviour
     {
         if (!attachObjects) return;
 
-        
+
         otherPlayerHandObject.transform.position = realHandOfOtherPlayer.position;
 
         if (attachMethod == ConfigurationScript.AttachMethod.otherHand)

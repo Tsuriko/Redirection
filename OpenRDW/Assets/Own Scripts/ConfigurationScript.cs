@@ -2,14 +2,14 @@ using UnityEngine;
 
 public class ConfigurationScript : MonoBehaviour
 {
-    // Singleton instance
-    public static ConfigurationScript Instance;
-
     public enum AttachMethod
     {
         midpoint,
         otherHand
     }
+
+    // Singleton instance
+    public static ConfigurationScript Instance;
 
     // Public Parameters
     public AttachMethod attachMethod;
@@ -22,16 +22,19 @@ public class ConfigurationScript : MonoBehaviour
     [HideInInspector] public GameObject vrPlayerHost;
     [HideInInspector] public GameObject controllerRight;
     [HideInInspector] public GameObject cameraRig;
-    
-
-
-
+    public GameObject ownPlayer;
 
     public delegate void KeyPressedAction();
     public event KeyPressedAction OnCKeyPressed;
     public event KeyPressedAction OnXKeyPressed;
     public event KeyPressedAction OnYKeyPressed;
     public event KeyPressedAction OnVKeyPressed;
+    public event KeyPressedAction OnWKeyPressed;
+    public event KeyPressedAction OnAKeyPressed;
+    public event KeyPressedAction OnSKeyPressed;
+    public event KeyPressedAction OnDKeyPressed;
+    public event KeyPressedAction OnLeftArrowPressed;
+    public event KeyPressedAction OnRightArrowPressed;
 
     private void Awake()
     {
@@ -45,36 +48,17 @@ public class ConfigurationScript : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-        AssignVariables();
     }
 
     private void OnValidate()
     {
-        if (Application.isPlaying) // Ensure this only runs during play mode
-        {
-            ToggleVisualizationMode();
-        }
+        ToggleVisualizationMode();
     }
 
     private void Update()
     {
         AssignVariables();
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            OnCKeyPressed?.Invoke();
-        }
-        else if (Input.GetKeyDown(KeyCode.X))
-        {
-            OnXKeyPressed?.Invoke();
-        }
-        else if (Input.GetKeyDown(KeyCode.Y))
-        {
-            OnYKeyPressed?.Invoke();
-        }
-        else if (Input.GetKeyDown(KeyCode.V))
-        {
-            OnVKeyPressed?.Invoke();
-        }
+        HandleKeyPresses();
     }
 
     void AssignVariables()
@@ -87,7 +71,36 @@ public class ConfigurationScript : MonoBehaviour
         vrPlayerHost = GameObject.Find("VR Player (Host)");
         controllerRight = GameObject.Find("Controller (right)");
         cameraRig = GameObject.Find("[CameraRig]");
+        ownPlayer = GameObject.Find("OwnPlayer");
     }
+
+    void HandleKeyPresses()
+    {
+        AssignVariables();
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            OnCKeyPressed?.Invoke();
+        }
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            OnXKeyPressed?.Invoke();
+        }
+        if (Input.GetKeyDown(KeyCode.Y))
+        {
+            OnYKeyPressed?.Invoke();
+        }
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            OnVKeyPressed?.Invoke();
+        }
+        if (Input.GetKeyDown(KeyCode.W)) OnWKeyPressed?.Invoke();
+        if (Input.GetKeyDown(KeyCode.A)) OnAKeyPressed?.Invoke();
+        if (Input.GetKeyDown(KeyCode.S)) OnSKeyPressed?.Invoke();
+        if (Input.GetKeyDown(KeyCode.D)) OnDKeyPressed?.Invoke();
+        if (Input.GetKeyDown(KeyCode.LeftArrow)) OnLeftArrowPressed?.Invoke();
+        if (Input.GetKeyDown(KeyCode.RightArrow)) OnRightArrowPressed?.Invoke();
+    }
+
     void ToggleVisualizationMode()
     {
         if (isVisualizationModeActive)
