@@ -5,11 +5,11 @@ public class MidpointSynchronization : MonoBehaviourPunCallbacks
     private Vector3 realMidpoint;
     private Vector3 virtualMidpoint;
 
-    private AttachRedirectionTargets attachRedirectionTargets;
+    public AttachRedirectionTargets attachRedirectionTargets;
 
     private void Start()
     {
-        attachRedirectionTargets = GetComponent<AttachRedirectionTargets>();
+        attachRedirectionTargets = GameObject.Find("Scripts").GetComponent<AttachRedirectionTargets>();
     }
 
     public void UpdateMidpoints(Vector3 real, Vector3 virtualPoint)
