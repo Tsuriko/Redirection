@@ -5,13 +5,13 @@ using HR_Toolkit.Redirection;
 
 public class AttachRedirectionTargets : MonoBehaviour
 {
-    private ConfigurationScript.AttachMethod attachMethod => ConfigurationScript.Instance.attachMethod;
+    public ConfigurationScript.AttachMethod attachMethod => ConfigurationScript.Instance.attachMethod;
     private Transform realHandOfOtherPlayer;
     private Transform virtualHandOfOtherPlayer;
     private Transform ownRealHand;
     private Transform realHandOfOtherPlayerVirtual;
     private Transform hostVirtualHand;  // Host's virtual hand
-    private MidpointSynchronization midpointSync;
+    public MidpointSynchronization midpointSync;
 
     private bool attachObjects = false;
     private bool isMidPointSet = false;
@@ -40,11 +40,11 @@ public class AttachRedirectionTargets : MonoBehaviour
         redirectedTarget = ConfigurationScript.Instance.redirectedVirtualObject;
         redirectionTarget = ConfigurationScript.Instance.redirectedRealTarget;
         otherPlayerHandObject = ConfigurationScript.Instance.otherPlayerHandObject;
-        midpointSync = GetComponent<MidpointSynchronization>();
     }
 
     void HandleKeyPress()
     {
+        FindObjects();
         Debug.Log("Redirection Targets Attached");
         realHandOfOtherPlayerVirtual = GameObject.Find("Real hand of Other Player").transform;
         GameObject vrPlayerGuest = ConfigurationScript.Instance.vrPlayerGuest;
@@ -52,6 +52,7 @@ public class AttachRedirectionTargets : MonoBehaviour
         virtualHandOfOtherPlayer = vrPlayerGuest.transform.Find("Virtual/Right Hand");
         hostVirtualHand = ConfigurationScript.Instance.vrPlayerHost.transform.Find("Virtual/Right Hand");
         ownRealHand = ConfigurationScript.Instance.controllerRight.transform;
+        midpointSync = ConfigurationScript.Instance.vrPlayerHost.GetComponent<MidpointSynchronization>();
 
         EnableVirtualToRealConnection();
 
