@@ -17,7 +17,7 @@ public class AttachRedirectionTargets : MonoBehaviour
     private bool isMidPointSet = false;
 
     private GameObject otherPlayerHandObject;
-    private GameObject redirectionTarget;
+    public GameObject redirectionTarget;
     private GameObject redirectedTarget;
 
     private Vector3 initialRealMidpoint;

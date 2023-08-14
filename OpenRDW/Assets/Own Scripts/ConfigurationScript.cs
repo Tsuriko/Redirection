@@ -15,7 +15,7 @@ public class ConfigurationScript : MonoBehaviour
     public AttachMethod attachMethod;
     public Camera mainCamera;
     public bool isVisualizationModeActive = false;
-    [HideInInspector] public GameObject redirectedVirtualObject;
+    public GameObject redirectedVirtualObject;
     [HideInInspector] public GameObject redirectedRealTarget;
     [HideInInspector] public GameObject otherPlayerHandObject;
     [HideInInspector] public GameObject vrPlayerGuest;
