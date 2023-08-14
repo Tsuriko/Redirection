@@ -11,6 +11,7 @@ public class AttachRedirectionTargets : MonoBehaviour
     private Transform ownRealHand;
     private Transform realHandOfOtherPlayerVirtual;
     private Transform hostVirtualHand;  // Host's virtual hand
+    private MidpointSynchronization midpointSync;
 
     private bool attachObjects = false;
     private bool isMidPointSet = false;
@@ -27,14 +28,6 @@ public class AttachRedirectionTargets : MonoBehaviour
         FindObjects();
         // Subscribe to the C key press event from ConfigurationScript
         ConfigurationScript.Instance.OnCKeyPressed += HandleKeyPress;
-            if (ConfigurationScript.Instance.redirectedVirtualObject == null)
-    {
-        Debug.LogError("ownPlayer is null in ConfigurationScript's Start method.");
-    }
-    else
-    {
-        Debug.Log("ownPlayer is assigned in ConfigurationScript's Start method.");
-    }
     }
 
     void OnDestroy()
@@ -47,6 +40,7 @@ public class AttachRedirectionTargets : MonoBehaviour
         redirectedTarget = ConfigurationScript.Instance.redirectedVirtualObject;
         redirectionTarget = ConfigurationScript.Instance.redirectedRealTarget;
         otherPlayerHandObject = ConfigurationScript.Instance.otherPlayerHandObject;
+        midpointSync = GetComponent<MidpointSynchronization>();
     }
 
     void HandleKeyPress()
@@ -68,6 +62,7 @@ public class AttachRedirectionTargets : MonoBehaviour
             if (!isMidPointSet)
             {
                 SetCombinedMidpoints();
+                midpointSync.UpdateMidpoints(initialRealMidpoint, initialVirtualMidpoint);
             }
             else
             {
@@ -114,7 +109,6 @@ public class AttachRedirectionTargets : MonoBehaviour
     {
         if (!attachObjects) return;
 
-
         otherPlayerHandObject.transform.position = realHandOfOtherPlayer.position;
 
         if (attachMethod == ConfigurationScript.AttachMethod.otherHand)
@@ -122,5 +116,14 @@ public class AttachRedirectionTargets : MonoBehaviour
             redirectionTarget.transform.position = realHandOfOtherPlayerVirtual.transform.position;
             redirectedTarget.transform.position = virtualHandOfOtherPlayer.position;
         }
+    }
+
+    public void SetMidpoints(Vector3 real, Vector3 virtualPoint)
+    {
+        initialRealMidpoint = real;
+        initialVirtualMidpoint = virtualPoint;
+        redirectionTarget.transform.position = initialRealMidpoint;
+        redirectedTarget.transform.position = initialVirtualMidpoint;
+        isMidPointSet = true;
     }
 }
