@@ -63,7 +63,7 @@ public class AttachRedirectionTargets : MonoBehaviour
             if (!isMidPointSet)
             {
                 SetCombinedMidpoints();
-                midpointSync.UpdateMidpoints(initialRealMidpoint, initialVirtualMidpoint);
+                //midpointSync.UpdateMidpoints(initialRealMidpoint, initialVirtualMidpoint);
             }
             else
             {
