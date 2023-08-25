@@ -43,7 +43,7 @@ public class AttachRedirectionTargets : MonoBehaviour
         redirectedTarget = ConfigurationScript.Instance.redirectedVirtualObject;
         redirectionTarget = ConfigurationScript.Instance.redirectedRealTarget;
         otherPlayerHandObject = ConfigurationScript.Instance.otherPlayerHandObject;
-        midpointObject = GameObject.Find("midpointObject");
+        midpointObject = GameObject.Find("MidpointObject");
         midpointObjectStreamed = GameObject.Find("MidpointStreamed");
     }
 
