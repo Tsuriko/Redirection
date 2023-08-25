@@ -6,6 +6,7 @@ public class RealObectToVirtual : MonoBehaviour
 {
     public Transform virtualAvatar;
     public GameObject objectToClone;
+    public string cloneName;
     private Transform realAvatar;
     private GameObject clone;
     private Vector3 initialOffset;
@@ -28,7 +29,7 @@ public class RealObectToVirtual : MonoBehaviour
         Debug.Log("Real Object now attached to virtual avatar");
         // Spawn the clone at the same position as the object to clone
         clone = Instantiate(objectToClone, objectToClone.transform.position, objectToClone.transform.rotation);
-        clone.name = "Real hand of Other Player";
+        clone.name = cloneName;
         realAvatar = ConfigurationScript.Instance.vrPlayerHost.transform.Find("Real/Head");
         initialOffset = realAvatar.position - objectToClone.transform.position;
         scriptEnabled = true;
