@@ -2,16 +2,17 @@ using UnityEngine;
 
 public class TargetedRedirection : MonoBehaviour
 {
-    public float movementThreshold = 0.1f;  
+    public float movementThreshold = 0.1f;
     public Transform realWorldPlayerTransform;
-    public Transform virtualWorldPlayerTransform;
+    public Transform virtualWorldCameraTransform; // Variable for the camera
+    public Transform virtualWorldManipulationTransform; // Variable for manipulation
     public Transform realWorldGoalTransform;
     public Transform virtualWorldGoalTransform;
     public float rotationGainFactor = 0.1f;
     public float distanceToTriggerGoal = 1.0f;
 
     private Vector3 previousRealWorldPosition;
-    private bool enableRedirection = false;
+    public bool enableRedirection = false;
 
     void Start()
     {
@@ -23,7 +24,7 @@ public class TargetedRedirection : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Return))
         {
             enableRedirection = !enableRedirection;
-            Debug.Log("Redirection toggled: " + enableRedirection);
+            Debug.Log("Targeted Redirection toggled: " + enableRedirection);
         }
 
         if (!enableRedirection)
@@ -32,7 +33,7 @@ public class TargetedRedirection : MonoBehaviour
         }
 
         Vector3 realWorldPosition = new Vector3(realWorldPlayerTransform.position.x, 0, realWorldPlayerTransform.position.z);
-        Vector3 virtualWorldPosition = new Vector3(virtualWorldPlayerTransform.position.x, 0, virtualWorldPlayerTransform.position.z);
+        Vector3 virtualWorldPosition = new Vector3(virtualWorldCameraTransform.position.x, 0, virtualWorldCameraTransform.position.z); // Use the camera position for calculations
 
         if (Vector3.Distance(realWorldPosition, previousRealWorldPosition) > movementThreshold)
         {
@@ -45,24 +46,23 @@ public class TargetedRedirection : MonoBehaviour
             }
 
             Vector3 realWorldDesiredDirection = (realWorldGoalTransform.position - realWorldPosition).normalized;
-            Vector3 virtualWorldDirection = virtualWorldPlayerTransform.forward;
+            Vector3 virtualWorldDirection = virtualWorldCameraTransform.forward; // Use the camera's forward direction
 
             float redirectionAngle = Vector3.SignedAngle(virtualWorldDirection, realWorldDesiredDirection, Vector3.up);
             float adjustedRedirectionAngle = redirectionAngle * rotationGainFactor;
-            
+
             Quaternion rotation = Quaternion.Euler(0, adjustedRedirectionAngle, 0);
-            virtualWorldPlayerTransform.rotation *= rotation;
+            virtualWorldManipulationTransform.rotation *= rotation; // Manipulate the manipulation transform
 
             Vector3 realWorldMovement = realWorldPosition - previousRealWorldPosition;
             float distanceGain = CalculateDistanceGain(realWorldPosition, realWorldGoalTransform.position, virtualWorldPosition, virtualWorldGoalTransform.position);
-            
+
             Vector3 adjustedVirtualWorldMovement = realWorldMovement * distanceGain;
-            virtualWorldPlayerTransform.position += adjustedVirtualWorldMovement;
+            virtualWorldManipulationTransform.position += adjustedVirtualWorldMovement; // Manipulate the manipulation transform
         }
 
         previousRealWorldPosition = realWorldPosition;
     }
-
     Vector3 CalculatePath(Vector3 currentPos, Vector3 goalPos)
     {
         return new Vector3(goalPos.x - currentPos.x, 0, goalPos.z - currentPos.z);
