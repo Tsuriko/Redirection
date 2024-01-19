@@ -36,7 +36,7 @@ public class ConfigurationScript : MonoBehaviour
     public event KeyPressedAction OnLeftArrowPressed;
     public event KeyPressedAction OnRightArrowPressed;
 
-    /*
+    
     private void Awake()
     {
         if (Instance == null)
@@ -49,7 +49,7 @@ public class ConfigurationScript : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-    }*/
+    }
 
     private void OnValidate()
     {
