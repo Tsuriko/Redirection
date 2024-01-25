@@ -53,6 +53,7 @@ public class MultiplayerManager : MonoBehaviourPunCallbacks
         vrPlayerPrefab.transform.Find("Real/Right Hand").GetComponent<SteamVR_Behaviour_Pose>().enabled = true;
         vrPlayerPrefab.transform.Find("Real/Head").GetComponent<SteamVR_CameraHelper>().enabled = true;
         vrPlayerPrefab.name = "VR Player (Host)"; // Set the name of the local player's VR player prefab
+        PhotonNetwork.LocalPlayer.TagObject = vrPlayerPrefab;
     }
 
     public override void OnJoinRandomFailed(short returnCode, string message)

@@ -29,6 +29,7 @@ public class PlayerPositionController : MonoBehaviourPun
                 if (player.IsMasterClient)
                 {
                     masterPlayer = playerGameObject;
+
                 }
                 else
                 {
