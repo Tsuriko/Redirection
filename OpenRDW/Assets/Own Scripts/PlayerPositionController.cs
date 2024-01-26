@@ -41,9 +41,9 @@ public class PlayerPositionController : MonoBehaviourPun
                 Quaternion rotationMaster = CalculateRotation(true);
                 Quaternion rotationOther = CalculateRotation(false);
 
-                // Calculate the new positions for both heads using the rotations
-                Vector3 newPositionMaster = CalculateNewPosition(headMaster.transform.position, rotationMaster, true);
-                Vector3 newPositionOther = CalculateNewPosition(headOther.transform.position, rotationOther, false);
+                // Calculate the new positions for both heads
+                Vector3 newPositionMaster = CalculateNewPosition(true);
+                Vector3 newPositionOther = CalculateNewPosition(false);
 
                 Debug.Log($"New position for master: {newPositionMaster}, New rotation for master: {rotationMaster}");
                 Debug.Log($"New position for other player: {newPositionOther}, New rotation for other player: {rotationOther}");
@@ -77,11 +77,15 @@ public class PlayerPositionController : MonoBehaviourPun
         return finalRotation;
     }
 
-    private Vector3 CalculateNewPosition(Vector3 headPosition, Quaternion rotation, bool isMaster)
+    private Vector3 CalculateNewPosition(bool isMaster)
     {
-        // Calculate the new position based on the desired distance and the position of the other head
-        Vector3 direction = rotation * (isMaster ? Vector3.left : Vector3.right);
-        Vector3 newPosition = midpoint + direction * targetDistanceBetweenPlayers / 2;
+        // Determine the direction vector based on whether the player is master or not.
+        // This example uses the X-axis for positioning. Change this to Vector3.forward if you want to use the Z-axis.
+        Vector3 direction = isMaster ? Vector3.right : Vector3.left;
+
+        // Calculate the new position by moving from the midpoint in the determined direction,
+        // scaled by half the target distance to place each player at opposite ends.
+        Vector3 newPosition = midpoint + direction * (targetDistanceBetweenPlayers / 2);
 
         Debug.Log($"Calculated new position for {(isMaster ? "master" : "other")} player: {newPosition}");
 
@@ -107,7 +111,7 @@ public class PlayerPositionController : MonoBehaviourPun
     [PunRPC]
     private void MoveOtherPlayer(Vector3 newPosition, Quaternion newRotation)
     {
-        GameObject otherPlayer = GameObject.Find("OtherPlayer"); // Replace with the name of the other client's "OwnPlayer" object
+        GameObject otherPlayer = GameObject.Find("OwnPlayer"); // Replace with the name of the other client's "OwnPlayer" object
 
         if (otherPlayer != null)
         {
