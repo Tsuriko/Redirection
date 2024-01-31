@@ -79,17 +79,23 @@ public class PlayerPositionController : MonoBehaviourPun
 
     private Vector3 CalculateNewPosition(bool isMaster)
     {
-        // Determine the direction vector based on whether the player is master or not.
-        // This example uses the X-axis for positioning. Change this to Vector3.forward if you want to use the Z-axis.
-        Vector3 direction = isMaster ? Vector3.right : Vector3.left;
+        Vector3 positionMaster = headMaster.transform.position;
+        Vector3 positionOther = headOther.transform.position;
 
-        // Calculate the new position by moving from the midpoint in the determined direction,
-        // scaled by half the target distance to place each player at opposite ends.
-        Vector3 newPosition = midpoint + direction * (targetDistanceBetweenPlayers / 2);
+        // Calculate the vector between the head positions
+        Vector3 headVector = positionOther - positionMaster;
+        headVector.y = 0; // Ignore the y-axis to keep positioning on the same level.
 
-        Debug.Log($"Calculated new position for {(isMaster ? "master" : "other")} player: {newPosition}");
+        // Calculate the midpoint between the head positions
+        Vector3 newMidpoint = (positionMaster + positionOther) / 2;
 
-        return newPosition;
+        // Calculate the new positions for both players based on the midpoint and desired distance between heads
+        Vector3 newPositionMaster = newMidpoint - headVector.normalized * (targetDistanceBetweenPlayers / 2);
+        Vector3 newPositionOther = newMidpoint + headVector.normalized * (targetDistanceBetweenPlayers / 2);
+
+        Debug.Log($"Calculated new position for {(isMaster ? "master" : "other")} player: {newPositionMaster}");
+
+        return isMaster ? newPositionMaster : newPositionOther;
     }
 
     private void MoveOwnPlayerLocally(Vector3 newPosition, Quaternion newRotation)
