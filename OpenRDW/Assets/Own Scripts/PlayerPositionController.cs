@@ -79,23 +79,29 @@ public class PlayerPositionController : MonoBehaviourPun
 
     private Vector3 CalculateNewPosition(bool isMaster)
     {
-        Vector3 positionMaster = headMaster.transform.position;
-        Vector3 positionOther = headOther.transform.position;
+        GameObject head = isMaster ? headMaster : headOther;
+        GameObject ownPlayer = isMaster ? GameObject.Find("OwnPlayer") : GameObject.Find("OtherPlayer"); // Replace with the actual name
 
-        // Calculate the vector between the head positions
-        Vector3 headVector = positionOther - positionMaster;
-        headVector.y = 0; // Ignore the y-axis to keep positioning on the same level.
+        Vector3 directionToHead;
+        if (headMaster.transform.position == headOther.transform.position)
+        {
+            // Use a default direction if both heads are at the same position
+            directionToHead = isMaster ? Vector3.right : Vector3.left;
+        }
+        else
+        {
+            // Calculate the direction from the midpoint to the head
+            directionToHead = (head.transform.position - midpoint).normalized;
+        }
 
-        // Calculate the midpoint between the head positions
-        Vector3 newMidpoint = (positionMaster + positionOther) / 2;
+        // Calculate the new position for the head
+        Vector3 newHeadPosition = midpoint + directionToHead * (targetDistanceBetweenPlayers / 2);
 
-        // Calculate the new positions for both players based on the midpoint and desired distance between heads
-        Vector3 newPositionMaster = newMidpoint - headVector.normalized * (targetDistanceBetweenPlayers / 2);
-        Vector3 newPositionOther = newMidpoint + headVector.normalized * (targetDistanceBetweenPlayers / 2);
+        // Calculate the offset from the OwnPlayer to the head
+        Vector3 offsetToHead = head.transform.position - ownPlayer.transform.position;
 
-        Debug.Log($"Calculated new position for {(isMaster ? "master" : "other")} player: {newPositionMaster}");
-
-        return isMaster ? newPositionMaster : newPositionOther;
+        // Calculate and return the new position for the OwnPlayer, adjusting for the offset
+        return newHeadPosition - offsetToHead;
     }
 
     private void MoveOwnPlayerLocally(Vector3 newPosition, Quaternion newRotation)
