@@ -80,7 +80,7 @@ public class PlayerPositionController : MonoBehaviourPun
     private Vector3 CalculateNewPosition(bool isMaster)
     {
         GameObject head = isMaster ? headMaster : headOther;
-        GameObject ownPlayer = isMaster ? GameObject.Find("OwnPlayer") : GameObject.Find("OtherPlayer"); // Replace with the actual name
+        GameObject ownPlayer = isMaster ? GameObject.Find("VR Player (Host)/Virtual") : GameObject.Find("VR Player (Guest)/Virtual");
 
         Vector3 directionToHead;
         if (headMaster.transform.position == headOther.transform.position)
