@@ -55,7 +55,7 @@ public class PlayerPositionController : MonoBehaviourPun
         otherPlayer.transform.position = positionOther;
 
         // Calculate and apply rotations
-        masterPlayer.transform.rotation = Quaternion.Euler(0, rotationOffset, 0);
-        otherPlayer.transform.rotation = Quaternion.Euler(0, -rotationOffset, 0);
+        masterPlayer.transform.rotation = Quaternion.Euler(0, rotationOffset / 2.0f, 0);
+        otherPlayer.transform.rotation = Quaternion.Euler(0, -rotationOffset / 2.0f, 0);
     }
 }
