@@ -12,9 +12,7 @@ public class PlayerSynchronization : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Y))
         {
-            Debug.Log("Player Moved");
-            playerHead = GameObject.Find("VR Player (Host)/Real/Head").transform;
-            movePlayer = true;
+            //MovePlayer();
         }
 
         if (movePlayer)
@@ -35,5 +33,11 @@ public class PlayerSynchronization : MonoBehaviour
 
             movePlayer = false;
         }
+    }
+        public void MovePlayer()
+    {
+        Debug.Log("Player Moved");
+        playerHead = GameObject.Find("VR Player (Host)/Real/Head").transform;
+        movePlayer = true;
     }
 }
