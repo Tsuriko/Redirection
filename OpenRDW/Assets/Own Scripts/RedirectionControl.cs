@@ -1,9 +1,9 @@
 using UnityEngine;
-using Photon.Pun; // Include the Photon PUN namespace
+using Photon.Pun;
 
 namespace HR_Toolkit
 {
-    public class RedirectionControl : MonoBehaviourPun // Inherit from MonoBehaviourPun
+    public class RedirectionControl : MonoBehaviourPun 
     {
         public Transform user;
         public Transform target;
@@ -23,6 +23,7 @@ namespace HR_Toolkit
         {
             // Automatically find the RDW and Hand Redirection scripts in the scene
             rdwManager = FindObjectOfType<CustomRDWTake3>();
+
             handRedirectionManager = FindObjectOfType<RedirectionManager>();
 
             if (rdwManager == null || handRedirectionManager == null)
@@ -36,7 +37,8 @@ namespace HR_Toolkit
             /*
             if (Input.GetKeyDown(triggerKey) && PhotonNetwork.IsMasterClient) // Only allow master client to trigger
             {
-                photonView.RPC("EnableRedirection", RpcTarget.AllBuffered); // Use an RPC to enable redirection across all clients
+                        float currentSliderValue = sliderValue;
+                        photonView.RPC("EnableRedirection", RpcTarget.AllBuffered, currentSliderValue); 
             }*/
 
             if (isRedirectionEnabled)
@@ -44,8 +46,10 @@ namespace HR_Toolkit
                 float currentDistanceToTarget = CalculateHorizontalDistance(user.position, target.position);
                 float switchDistance = initialDistanceToTarget * sliderValue;
 
+
                 if (!hasSwitchedToHandRedirection && currentDistanceToTarget <= switchDistance)
                 {
+                    Debug.Log("Switch to Hand");
                     ActivateHandRedirection();
                     hasSwitchedToHandRedirection = true;
                 }
@@ -53,10 +57,13 @@ namespace HR_Toolkit
         }
 
         [PunRPC] // Mark as an RPC method
-        void EnableRedirection()
+        void EnableRedirection(float sharedSliderValue)
         {
+            sliderValue = sharedSliderValue; // Update the local slider value based on the RPC call
+
             if (!isRedirectionEnabled)
             {
+                rdwManager.realObject = target;
                 initialDistanceToTarget = CalculateHorizontalDistance(user.position, target.position);
                 ActivateRDW();
                 isRedirectionEnabled = true;
@@ -73,12 +80,12 @@ namespace HR_Toolkit
         void ActivateRDW()
         {
             if (rdwManager != null) rdwManager.enabled = true;
-            if (handRedirectionManager != null) handRedirectionManager.enabled = false;
+           
         }
 
         void ActivateHandRedirection()
         {
-            if (rdwManager != null) rdwManager.enabled = false;
+            if (rdwManager != null) rdwManager.alignmentAchieved = true;
             if (handRedirectionManager != null)
             {
                 handRedirectionManager.enabled = true;
@@ -90,7 +97,8 @@ namespace HR_Toolkit
         {
             if (!isRedirectionEnabled)
             {
-                photonView.RPC("EnableRedirection", RpcTarget.AllBuffered);
+                float currentSliderValue = sliderValue; 
+                photonView.RPC("EnableRedirection", RpcTarget.AllBuffered, currentSliderValue); 
             }
         }
     }

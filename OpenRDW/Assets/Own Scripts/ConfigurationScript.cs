@@ -108,11 +108,15 @@ public class ConfigurationScript : MonoBehaviour
         {
             // Show objects in the "Visualization" layer
             mainCamera.cullingMask |= (1 << LayerMask.NameToLayer("Visualization"));
+            mainCamera.cullingMask |= (1 << LayerMask.NameToLayer("Physical/Hand"));
+            mainCamera.cullingMask |= (1 << LayerMask.NameToLayer("Physical/Object"));
         }
         else
         {
             // Hide objects in the "Visualization" layer
             mainCamera.cullingMask &= ~(1 << LayerMask.NameToLayer("Visualization"));
+            mainCamera.cullingMask &= ~(1 << LayerMask.NameToLayer("Physical/Hand"));
+            mainCamera.cullingMask &= ~(1 << LayerMask.NameToLayer("Physical/Object"));
         }
     }
 }

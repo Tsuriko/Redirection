@@ -25,23 +25,17 @@ public class GlobalScript : MonoBehaviour
     public List<GameObject> objectsToClone;
 
     [Header("Redirection Settings")]
-    [Tooltip("User transform for redirection.")]
-    public Transform redirectionUser;
     [Tooltip("Target transform for redirection.")]
     public Transform redirectionTarget;
     [Range(0f, 1f)]
     [Tooltip("Slider value to adjust redirection intensity.")]
     public float redirectionSliderValue = 0.5f;
 
-    // Reference to the AttachRedirectionTargets script
-    [Header("Attach Redirection Targets")]
-    [Tooltip("Attach Redirection Targets script component.")]
-    public AttachRedirectionTargets attachRedirectionTargetsScriptComponent;
-
     // References to the script components (not exposed in the Inspector)
     private PlayerSynchronization playerSyncScriptComponent;
     private RealObjectToVirtual realObjectToVirtualScriptComponent;
     private RedirectionControl redirectionControlScriptComponent;
+    private AttachRedirectionTargets attachRedirectionTargetsScriptComponent;
 
     // Private boolean to track coroutine activation and key press activation
     private bool hasActivatedScriptsAfterDelay = false;
@@ -67,7 +61,7 @@ public class GlobalScript : MonoBehaviour
         if (Input.GetKeyDown(playerSyncActivationKey) && !hasActivatedScriptsAfterDelay)
         {
             ActivatePlayerSynchronization();
-            StartCoroutine(ActivateScriptsAfterDelay(3)); // Delayed activation and configuration
+            StartCoroutine(ActivateScriptsAfterDelay(1)); // Delayed activation and configuration
             hasActivatedScriptsAfterDelay = true;
         }
 
@@ -93,8 +87,9 @@ public class GlobalScript : MonoBehaviour
         if (playerSyncScriptComponent != null)
         {
             playerSyncScriptComponent.enabled = true;
+            ConfigurePlayerSynchronization();
             playerSyncScriptComponent.MovePlayer();
-            ConfigurePlayerSynchronization(); // Centralized configuration of component variables
+
         }
     }
 
@@ -139,7 +134,11 @@ public class GlobalScript : MonoBehaviour
     {
         if (redirectionControlScriptComponent != null)
         {
-            redirectionControlScriptComponent.user = redirectionUser;
+            redirectionControlScriptComponent.user = virtualAvatar;
+            if (!redirectionTarget)
+            {
+                redirectionTarget = GameObject.Find("Redirected Real Target").transform;
+            }
             redirectionControlScriptComponent.target = redirectionTarget;
             redirectionControlScriptComponent.sliderValue = redirectionSliderValue;
         }
@@ -149,6 +148,7 @@ public class GlobalScript : MonoBehaviour
     {
         if (redirectionControlScriptComponent != null && redirectionControlScriptComponent.enabled && PhotonNetwork.IsMasterClient)
         {
+            ConfigureRedirectionControl();
             redirectionControlScriptComponent.StartRedirectionExternally();
         }
     }

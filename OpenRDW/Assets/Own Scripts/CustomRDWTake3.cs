@@ -7,18 +7,15 @@ public class CustomRDWTake3 : MonoBehaviour
     public Transform virtualObject;
     public Transform realObject;
 
-    public float alignmentThresholdAngle = 5.0f;
-
-    public float movementThreshold = 0.01f; // in meters
-    public float rotationThreshold = 0.5f; // in degrees
+    public float alignmentThresholdDistance = 0.2f;
+    public bool redirectTurnsOffAfterAlignment = true;
 
     private Quaternion previousCameraRotation;
-    private bool isAligned = false;
-
     private Vector3 previousPosition;
     private float initialDistanceToVirtualObject;
     private float initialAngleDifference;
     private Quaternion initialParentRotation;
+    public bool alignmentAchieved = false;
 
     private void Start()
     {
@@ -47,14 +44,11 @@ public class CustomRDWTake3 : MonoBehaviour
 
     private void Update()
     {
-        if (!isAligned)
+        if (!alignmentAchieved || redirectTurnsOffAfterAlignment)
         {
             AlignVirtualAndRealObjects();
         }
-        else if (isAligned)
-        {
-            AdjustPlayerMovement();
-        }
+        AdjustPlayerMovement();
 
         previousCameraRotation = vrCamera.rotation;
         previousPosition = vrCamera.position;
@@ -69,21 +63,21 @@ public class CustomRDWTake3 : MonoBehaviour
 
     private void AlignVirtualAndRealObjects()
     {
+        if (alignmentAchieved && redirectTurnsOffAfterAlignment) return; // Skip alignment if already achieved and redirection is off
+
         float currentDistanceToVirtualObject = HorizontalDistance(vrCamera.position, virtualObject.position);
         float distanceRatio = currentDistanceToVirtualObject / initialDistanceToVirtualObject;
         float adjustedAngleDifference = initialAngleDifference * (1 - distanceRatio);
 
-        if (Mathf.Abs(adjustedAngleDifference) > alignmentThresholdAngle)
+        if (currentDistanceToVirtualObject > alignmentThresholdDistance)
         {
             Quaternion targetRotation = Quaternion.Euler(0, adjustedAngleDifference, 0);
             vrCameraParent.rotation = initialParentRotation * targetRotation;
-
-            Debug.Log("Setting VR Camera Parent rotation. Target rotation: " + targetRotation);
         }
         else
         {
-            //isAligned = true;
             Debug.Log("Alignment achieved");
+            alignmentAchieved = true; // Mark alignment as achieved
         }
     }
 
@@ -97,7 +91,5 @@ public class CustomRDWTake3 : MonoBehaviour
         Vector3 scaledMovement = realWorldMovement * scalingFactor;
 
         vrCameraParent.position += scaledMovement;
-
-        Debug.Log("Adjusting player movement. Scaled movement: " + scaledMovement);
     }
 }
