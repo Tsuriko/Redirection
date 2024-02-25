@@ -108,6 +108,11 @@ namespace HR_Toolkit
         public override void EndRedirection()
         {
             base.EndRedirection();
+            // Reset the vectors and flags to their initial state
+            _t = Vector3.zero;
+            _t0 = Vector3.zero; 
+            w = Vector3.zero;
+            _isInZeroWarpZone = false;
         }
 
 

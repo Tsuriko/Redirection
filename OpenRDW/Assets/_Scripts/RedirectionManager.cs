@@ -12,7 +12,7 @@ namespace HR_Toolkit
         ///  With a static instance of this object, all other objects can get the data
         /// </summary>
         public static RedirectionManager instance;
-        
+
         /// <summary>
         /// The virtual world parent game object. Needs to be set to the object that will be rotated
         /// with the World Warping Redirection Techniques
@@ -31,7 +31,7 @@ namespace HR_Toolkit
         /// be set to the hand's real position on the start of each redirection
         /// </summary>
         public GameObject warpOrigin;
-        
+
 
         /// <summary>
         /// The disance threshold to align the real and virtual hand
@@ -45,7 +45,7 @@ namespace HR_Toolkit
         /// The physically tracked head position
         /// </summary>
         public GameObject body;
-        
+
         /// <summary>
         /// Reset Position is set in each RedirectionTechnique.
         /// The ResetPosition is used between two redirections. Instead of redirecting from one target to another target,
@@ -53,7 +53,7 @@ namespace HR_Toolkit
         /// </summary>
         [Tooltip("Note: This RedirectionObject needs an unmodified VirtualToRealConnection (realPos=virtualPos)")]
         public RedirectionObject resetPosition;
-        
+
         [Space(20)]
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace HR_Toolkit
         /// The last redirected target
         /// </summary>
         public RedirectionObject lastTarget;
-       
+
 
         /// <summary>
         /// The speed of the hand movement when the hand is controlled by the mouse
@@ -128,8 +128,8 @@ namespace HR_Toolkit
             movementController.Init(realHand);
             //SetLayerRecursively(realHand, "Physical/Hand");
             //SetLayerRecursively(virtualHand, "Virtual/Hand");
-            
-            if (lineRenderer!= null)
+
+            if (lineRenderer != null)
             {
                 lineRenderer = GetComponentInChildren<LineRenderer>();
                 lineRenderer.startWidth = 0.05f;
@@ -152,9 +152,13 @@ namespace HR_Toolkit
         {
             movementController.MoveHand();
             movementController.MoveBody();
-            
+
             // check for space input -> Check for new target
-            CheckForNewTarget();
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                Debug.Log("Space key pressed - manually triggering redirection.");
+                TriggerHandRedirection();
+            }
 
 
             if (target == null)     // 1-to-1 hand mapping
@@ -172,44 +176,57 @@ namespace HR_Toolkit
                 virtualHand.transform.rotation = realHand.transform.rotation;
             }
         }
-
+        public void TriggerHandRedirection()
+        {
+            CheckForNewTarget();
+        }
 
         #region Called in Update
-        private void CheckForNewTarget()
+        public void CheckForNewTarget()
         {
-            if (!Input.GetKeyDown("space")) return;
-
             if (target != null)
             {
-                if (!target.thisIsAResetPosition)
-                {
-                    // current no resetPosition: update lastTarget 
-                    // curret is resetPosition: keep the index of the lastTarget and dont override it
-                    lastTarget = target;
-                }
-                // end current redirection
-                Debug.Log("--- redirection ended for target: " + target.gameObject.name + " ---");
-                target.EndRedirection();
-                target = null; // Set target to null to end redirection
+                EndCurrentRedirection();
             }
             else
             {
-                target = GetNextTarget();
-                if (target != null) // Check if target is not null before accessing its properties
-                {
-                    Debug.Log("--- new target: " + target.gameObject.name + " ---");
-                    UpdateWarpOrigin();
-                    target.StartRedirection();
-                }
-                else
-                {
-                    target = lastTarget; // If no new target is available, set the target to the last target
-                    if (target != null)
-                    {
-                        Debug.Log("--- re-targeting last target: " + target.gameObject.name + " ---");
-                        target.StartRedirection();
-                    }
-                }
+                StartNewRedirection();
+            }
+        }
+
+        private void EndCurrentRedirection()
+        {
+            if (!target.thisIsAResetPosition)
+            {
+                lastTarget = target;
+            }
+            Debug.Log("--- redirection ended for target: " + target.gameObject.name + " ---");
+            target.EndRedirection();
+            target = null; // Prepare for the next target
+        }
+
+        private void StartNewRedirection()
+        {
+            target = GetNextTarget();
+            if (target != null)
+            {
+                Debug.Log("--- new target: " + target.gameObject.name + " ---");
+                UpdateWarpOrigin();
+                target.StartRedirection();
+            }
+            else
+            {
+                ReTargetLastTarget();
+            }
+        }
+
+        private void ReTargetLastTarget()
+        {
+            target = lastTarget;
+            if (target != null)
+            {
+                Debug.Log("--- re-targeting last target: " + target.gameObject.name + " ---");
+                target.StartRedirection();
             }
         }
 
@@ -230,7 +247,8 @@ namespace HR_Toolkit
                 throw new Exception("There are no redirected prefabs that could be targeted");
             }
 
-            if (target != null){
+            if (target != null)
+            {
                 Debug.Log("Target gets deleted");
                 return null;
             }
@@ -253,7 +271,7 @@ namespace HR_Toolkit
             var newIndex = (index + 1) % allRedirectedPrefabs.Count;
 
             reachedTarget = false;
-            return allRedirectedPrefabs[newIndex];        
+            return allRedirectedPrefabs[newIndex];
         }
 
         public void ReturnToResetPosition()
@@ -281,7 +299,7 @@ namespace HR_Toolkit
             virtualHand.transform.rotation = realHand.transform.rotation;
             virtualHand.transform.localScale = realHand.transform.localScale;
         }
-        
+
 
         #region Render Hands on Layer
         /// <summary>
@@ -296,9 +314,9 @@ namespace HR_Toolkit
             {
                 return;
             }
-           
+
             obj.layer = LayerMask.NameToLayer(newLayer);
-           
+
             foreach (Transform child in obj.transform)
             {
                 if (null == child)
@@ -308,11 +326,11 @@ namespace HR_Toolkit
                 SetLayerRecursively(child.gameObject, newLayer);
             }
         }
-        
+
         private static void SetHandWithChildsToLayer_(GameObject obj, string name)
         {
             obj.layer = LayerMask.NameToLayer(name);
-            foreach (var child in obj.GetComponentsInChildren<Transform>(true))  
+            foreach (var child in obj.GetComponentsInChildren<Transform>(true))
             {
                 //child.gameObject.layer = LayerMask.NameToLayer (name); 
                 SetHandWithChildsToLayer_(child.gameObject, name);
@@ -327,7 +345,7 @@ namespace HR_Toolkit
         {
             return lineRenderer;
         }
-        
+
         /// <summary>
         /// Returns the redirection technique which was set in the inspector on the
         /// Redirection Manager object in the inspector
@@ -342,25 +360,25 @@ namespace HR_Toolkit
         {
             return warpOrigin;
         }
-        
+
         /// <summary>
         /// Checks, if the virtual hand and the real hand are aligned. Displays the result on the overview screen
         /// </summary>
         public bool HandsAreAligned()
         {
             var handDistance = Vector3.Distance(virtualHand.transform.position, realHand.transform.position);
-         
+
             if (handDistance < handAlignmentDistance)
             {
                 return true;
             }
-         
+
             return false;
         }
 
         public float GetHandDistance()
         {
-            return Mathf.Abs(Vector3.Distance(virtualHand.transform.position,realHand.transform.position));
+            return Mathf.Abs(Vector3.Distance(virtualHand.transform.position, realHand.transform.position));
         }
 
         public RedirectionObject GetActiveTarget()
@@ -373,8 +391,8 @@ namespace HR_Toolkit
             warpOrigin.transform.position = newOrigin;
         }
 
-      
-        
+
+
         #endregion
     }
 }

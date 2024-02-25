@@ -3,11 +3,13 @@ using Valve.VR;
 
 public class VirtualPlayerSynchronization : MonoBehaviour
 {
+    public KeyCode playerSyncActivationKey = KeyCode.V;
+
     private bool movePlayer = false;
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.V))
+        if (Input.GetKeyDown(playerSyncActivationKey))
         {
             Debug.Log("Player Moved");
             movePlayer = true;
