@@ -6,13 +6,20 @@ using HR_Toolkit;
 
 public class GlobalScript : MonoBehaviour
 {
+    [Header("Key Presses Control")]
+    [Tooltip("Enable or disable all key presses.")]
+    public bool enableKeyPresses = true; //
     [Header("Activation Keys")]
     [Tooltip("Key to activate Player Synchronization.")]
     public KeyCode playerSyncActivationKey = KeyCode.Y;
     [Tooltip("Key to activate Redirection Control.")]
     public KeyCode redirectionControlActivationKey = KeyCode.R;
     [Tooltip("Key to activate Attach Redirection Targets.")]
-    public KeyCode attachRedirectionTargetsActivationKey = KeyCode.C; // Key for activating AttachRedirectionTargets
+    public KeyCode attachRedirectionTargetsActivationKey = KeyCode.C;
+    [Tooltip("Key to activate Player Position Controller.")]
+    public KeyCode playerPositionControllerActivationKey = KeyCode.G;
+    [Tooltip("Key to activate Standing Position functionality.")]
+    public KeyCode standingPositionActivationKey = KeyCode.S; // Add a new KeyCode for Standing Position activation
 
     [Header("Player Synchronization Settings")]
     [Tooltip("Target location for player synchronization.")]
@@ -31,13 +38,35 @@ public class GlobalScript : MonoBehaviour
     [Tooltip("Slider value to adjust redirection intensity.")]
     public float redirectionSliderValue = 0.5f;
 
-    // References to the script components (not exposed in the Inspector)
+    [Tooltip("RDW Redirection intensity value.")]
+    [Range(0f, 1f)]
+    public float redirectIntensity = 1f;
+
+    [Header("Player Position Controller Settings")]
+    [Tooltip("Desired distance between players.")]
+    public float targetDistanceBetweenPlayers = 2f;
+    [Tooltip("Rotation offset for the master player.")]
+    public float rotationOffsetMaster = 30f;
+    [Tooltip("Rotation offset for the other player.")]
+    public float rotationOffsetOther = -30f;
+
+    [Header("StandingPosition Seettings")]
+    [Tooltip("Standing Goal Object")]
+    public GameObject standingGoalObject;
+    [Tooltip("Standing Position Offset")]
+    public float standingPositionOffset = 0;
+
+    public Transform realAvatar;
+
+    // References to the script components
     private PlayerSynchronization playerSyncScriptComponent;
     private RealObjectToVirtual realObjectToVirtualScriptComponent;
     private RedirectionControl redirectionControlScriptComponent;
     private AttachRedirectionTargets attachRedirectionTargetsScriptComponent;
+    private PlayerPositionController playerPositionControllerScriptComponent;
+    private StandingPosition standingPositionScriptComponent;
 
-    // Private boolean to track coroutine activation and key press activation
+
     private bool hasActivatedScriptsAfterDelay = false;
 
     void Start()
@@ -47,22 +76,25 @@ public class GlobalScript : MonoBehaviour
         realObjectToVirtualScriptComponent = FindObjectOfType<RealObjectToVirtual>();
         redirectionControlScriptComponent = FindObjectOfType<RedirectionControl>();
         attachRedirectionTargetsScriptComponent = FindObjectOfType<AttachRedirectionTargets>();
+        playerPositionControllerScriptComponent = FindObjectOfType<PlayerPositionController>();
+        standingPositionScriptComponent = FindObjectOfType<StandingPosition>();
 
         // Initial component state control
         if (playerSyncScriptComponent != null) playerSyncScriptComponent.enabled = false;
         if (realObjectToVirtualScriptComponent != null) realObjectToVirtualScriptComponent.enabled = false;
         if (redirectionControlScriptComponent != null) redirectionControlScriptComponent.enabled = false;
         if (attachRedirectionTargetsScriptComponent != null) attachRedirectionTargetsScriptComponent.enabled = false;
+        if (playerPositionControllerScriptComponent != null) playerPositionControllerScriptComponent.enabled = false;
+        if (standingPositionScriptComponent != null) standingPositionScriptComponent.enabled = false;
     }
 
     void Update()
     {
         // Event-driven component activation
+        if (!enableKeyPresses) return;
         if (Input.GetKeyDown(playerSyncActivationKey) && !hasActivatedScriptsAfterDelay)
         {
-            ActivatePlayerSynchronization();
-            StartCoroutine(ActivateScriptsAfterDelay(1)); // Delayed activation and configuration
-            hasActivatedScriptsAfterDelay = true;
+            syncPlayers();
         }
 
         if (Input.GetKeyDown(redirectionControlActivationKey) && PhotonNetwork.IsMasterClient)
@@ -70,16 +102,34 @@ public class GlobalScript : MonoBehaviour
             ActivateRedirectionLogic();
         }
 
-        // Activation of AttachRedirectionTargets with the 'X' key
         if (Input.GetKeyDown(attachRedirectionTargetsActivationKey))
         {
             if (attachRedirectionTargetsScriptComponent != null)
             {
                 attachRedirectionTargetsScriptComponent.enabled = true;
                 attachRedirectionTargetsScriptComponent.HandleKeyPress();
-
             }
         }
+
+        if (Input.GetKeyDown(playerPositionControllerActivationKey) && PhotonNetwork.IsMasterClient)
+        {
+            if (playerPositionControllerScriptComponent != null)
+            {
+                playerPositionControllerScriptComponent.enabled = true;
+                ActivatePlayerPositionController();
+            }
+        }
+        if (Input.GetKeyDown(standingPositionActivationKey))
+        {
+            ActivateStandingPosition();
+        }
+    }
+
+    public void syncPlayers()
+    {
+        ActivatePlayerSynchronization();
+        StartCoroutine(ActivateScriptsAfterDelay(1)); // Delayed activation and configuration
+        hasActivatedScriptsAfterDelay = true;
     }
 
     private void ActivatePlayerSynchronization()
@@ -89,7 +139,6 @@ public class GlobalScript : MonoBehaviour
             playerSyncScriptComponent.enabled = true;
             ConfigurePlayerSynchronization();
             playerSyncScriptComponent.MovePlayer();
-
         }
     }
 
@@ -100,17 +149,17 @@ public class GlobalScript : MonoBehaviour
         if (realObjectToVirtualScriptComponent != null)
         {
             realObjectToVirtualScriptComponent.enabled = true;
-            ConfigureRealObjectToVirtual(); // Configuration method implementation
+            ConfigureRealObjectToVirtual();
             realObjectToVirtualScriptComponent.EnableScript();
         }
 
-        // No need for additional delay for AttachRedirectionTargets here since it's activated by key press
-
         if (redirectionControlScriptComponent != null)
         {
-            ConfigureRedirectionControl(); // Activation logic customization
+            ConfigureRedirectionControl();
             redirectionControlScriptComponent.enabled = true;
         }
+        realAvatar = ConfigurationScript.Instance.vrPlayerHost.transform.Find("Real/Head");
+
     }
 
     private void ConfigurePlayerSynchronization()
@@ -130,7 +179,7 @@ public class GlobalScript : MonoBehaviour
         }
     }
 
-    private void ConfigureRedirectionControl()
+    public void ConfigureRedirectionControl()
     {
         if (redirectionControlScriptComponent != null)
         {
@@ -141,6 +190,7 @@ public class GlobalScript : MonoBehaviour
             }
             redirectionControlScriptComponent.target = redirectionTarget;
             redirectionControlScriptComponent.sliderValue = redirectionSliderValue;
+            redirectionControlScriptComponent.redirectIntensity = redirectIntensity;
         }
     }
 
@@ -150,6 +200,62 @@ public class GlobalScript : MonoBehaviour
         {
             ConfigureRedirectionControl();
             redirectionControlScriptComponent.StartRedirectionExternally();
+        }
+    }
+
+    public void ActivatePlayerPositionController()
+    {
+        if (playerPositionControllerScriptComponent != null)
+        {
+            playerPositionControllerScriptComponent.ActivatePlayerPositioning();
+        }
+    }
+
+    public void ConfigurePlayerPositionController()
+    {
+        if (playerPositionControllerScriptComponent != null)
+        {
+            playerPositionControllerScriptComponent.targetDistanceBetweenPlayers = targetDistanceBetweenPlayers;
+            playerPositionControllerScriptComponent.rotationOffsetMaster = rotationOffsetMaster;
+            playerPositionControllerScriptComponent.rotationOffsetOther = rotationOffsetOther;
+        }
+    }
+    public void ActivateStandingPosition()
+    {
+        if (standingPositionScriptComponent != null)
+        {
+
+            ConfigureStandingPosition();
+            standingPositionScriptComponent.enabled = true;
+
+        }
+    }
+    public void SavePositionAndRotationaveStandingPosition()
+    {
+        if (standingPositionScriptComponent != null)
+        {
+            standingPositionScriptComponent.SavePositionAndRotation();
+        }
+    }
+    private void spawnStandingGoalObject()
+    {
+        if (standingPositionScriptComponent != null)
+        {
+            standingPositionScriptComponent.SpawnVirtualCloneWithOffset();
+        }
+
+    }
+    public void ConfigureStandingPosition()
+    {
+        if (standingPositionScriptComponent != null)
+        {
+            // Configure the StandingPosition component
+            // For example, set the objectToSpawn, virtualAvatar, and realAvatar
+            standingPositionScriptComponent.objectToSpawn = standingGoalObject;
+            standingPositionScriptComponent.realAvatar = realAvatar;
+            standingPositionScriptComponent.virtualAvatar = virtualAvatar;
+            standingPositionScriptComponent.offset = standingPositionOffset;
+
         }
     }
 }

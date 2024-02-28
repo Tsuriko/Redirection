@@ -4,7 +4,8 @@ using Photon.Pun;
 public class PlayerPositionController : MonoBehaviourPun
 {
     public float targetDistanceBetweenPlayers; // Desired distance between players
-    public float rotationOffset; // Desired rotation offset in degrees
+    public float rotationOffsetMaster;
+    public float rotationOffsetOther;
     public KeyCode triggerKey = KeyCode.G; // Replace with your desired button
     public Vector3 midpoint; // Settable midpoint for player positioning
 
@@ -27,31 +28,21 @@ public class PlayerPositionController : MonoBehaviourPun
         }
     }
 
-    void Update()
+    public void ActivatePlayerPositioning()
     {
-        if (Input.GetKeyDown(triggerKey) && PhotonNetwork.IsMasterClient)
+        if (PhotonNetwork.IsMasterClient)
         {
-            Debug.Log("Trigger key pressed by master client.");
+            Debug.Log("Activating Player Positioning.");
 
             if (headMaster != null && headOther != null)
             {
-                Debug.Log("Calculating new positions and rotations for players.");
-
-                // Calculate the rotation separately
                 Quaternion rotationMaster = CalculateRotation(true);
                 Quaternion rotationOther = CalculateRotation(false);
 
-                // Calculate the new positions for both heads
                 Vector3 newPositionMaster = CalculateNewPosition(true);
                 Vector3 newPositionOther = CalculateNewPosition(false);
 
-                Debug.Log($"New position for master: {newPositionMaster}, New rotation for master: {rotationMaster}");
-                Debug.Log($"New position for other player: {newPositionOther}, New rotation for other player: {rotationOther}");
-
-                // Move the master client's "OwnPlayer" locally
                 MoveOwnPlayerLocally(newPositionMaster, rotationMaster);
-
-                // Send an RPC to instruct the other client to move their "OwnPlayer"
                 photonView.RPC("MoveOtherPlayer", RpcTarget.Others, newPositionOther, rotationOther);
             }
             else
@@ -68,7 +59,8 @@ public class PlayerPositionController : MonoBehaviourPun
 
         Quaternion targetRotation = Quaternion.LookRotation(directionToOther);
 
-        // Apply the same offset to both players
+        // Use the respective offset for master or other player
+        float rotationOffset = isMaster ? rotationOffsetMaster : rotationOffsetOther;
         Quaternion offsetRotation = Quaternion.Euler(0f, rotationOffset, 0f);
 
         Quaternion finalRotation = targetRotation * offsetRotation;

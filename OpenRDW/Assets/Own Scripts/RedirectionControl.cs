@@ -11,6 +11,11 @@ namespace HR_Toolkit
         [Range(0f, 1f)]
         public float sliderValue = 0.5f;
 
+        [Range(0f, 1f)]
+        public float redirectIntensity = 1f;
+
+        public bool liveRedirection = false;
+
         private CustomRDWTake3 rdwManager;
         private RedirectionManager handRedirectionManager;
         public KeyCode triggerKey = KeyCode.R;
@@ -57,9 +62,11 @@ namespace HR_Toolkit
         }
 
         [PunRPC] // Mark as an RPC method
-        void EnableRedirection(float sharedSliderValue)
+        void EnableRedirection(float sharedSliderValue, float sharedRedirectIntensity, bool sharedLiveRedirection)
         {
-            sliderValue = sharedSliderValue; // Update the local slider value based on the RPC call
+            sliderValue = sharedSliderValue;
+            redirectIntensity = sharedRedirectIntensity;
+            liveRedirection = sharedLiveRedirection;
 
             if (!isRedirectionEnabled)
             {
@@ -79,13 +86,17 @@ namespace HR_Toolkit
 
         void ActivateRDW()
         {
-            if (rdwManager != null) rdwManager.enabled = true;
+            if (rdwManager != null) {
+                rdwManager.redirectIntensity = redirectIntensity;
+                rdwManager.enabled = true;
+            }
            
         }
 
         void ActivateHandRedirection()
         {
             if (rdwManager != null) rdwManager.alignmentAchieved = true;
+            ConfigurationScript.Instance.attachMethod = (liveRedirection) ? ConfigurationScript.AttachMethod.otherHand : ConfigurationScript.AttachMethod.midpoint;
             if (handRedirectionManager != null)
             {
                 handRedirectionManager.enabled = true;
@@ -98,7 +109,7 @@ namespace HR_Toolkit
             if (!isRedirectionEnabled)
             {
                 float currentSliderValue = sliderValue; 
-                photonView.RPC("EnableRedirection", RpcTarget.AllBuffered, currentSliderValue); 
+                photonView.RPC("EnableRedirection", RpcTarget.AllBuffered, sliderValue, redirectIntensity, liveRedirection);
             }
         }
     }

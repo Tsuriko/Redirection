@@ -1,5 +1,6 @@
 using UnityEngine;
 
+
 public class CustomRDWTake3 : MonoBehaviour
 {
     public Transform vrCamera;
@@ -9,12 +10,15 @@ public class CustomRDWTake3 : MonoBehaviour
 
     public float alignmentThresholdDistance = 0.2f;
     public bool redirectTurnsOffAfterAlignment = true;
+    public bool adjustPlayerMovement = true;
+    public float redirectIntensity = 1.0f; // Intensity of the redirection, range [0, 1]
 
     private Quaternion previousCameraRotation;
     private Vector3 previousPosition;
     private float initialDistanceToVirtualObject;
     private float initialAngleDifference;
     private Quaternion initialParentRotation;
+    private float scalingFactor;
     public bool alignmentAchieved = false;
 
     private void Start()
@@ -30,6 +34,10 @@ public class CustomRDWTake3 : MonoBehaviour
         initialDistanceToVirtualObject = HorizontalDistance(vrCamera.position, virtualObject.position);
         initialAngleDifference = CalculateInitialAngleDifference();
         initialParentRotation = vrCameraParent.rotation;
+        float distanceToVirtual = HorizontalDistance(vrCamera.position, virtualObject.position);
+        float distanceToReal = HorizontalDistance(vrCamera.position, realObject.position);
+
+        scalingFactor = distanceToVirtual / distanceToReal;
 
         Debug.Log("Initial distance to virtual object: " + initialDistanceToVirtualObject);
         Debug.Log("Initial angle difference: " + initialAngleDifference);
@@ -48,26 +56,24 @@ public class CustomRDWTake3 : MonoBehaviour
         {
             AlignVirtualAndRealObjects();
         }
-        AdjustPlayerMovement();
+        if (adjustPlayerMovement)
+        {
+            AdjustPlayerMovement();
+        }
 
         previousCameraRotation = vrCamera.rotation;
         previousPosition = vrCamera.position;
     }
 
-    private float HorizontalDistance(Vector3 pointA, Vector3 pointB)
-    {
-        Vector3 horizontalPointA = new Vector3(pointA.x, 0, pointA.z);
-        Vector3 horizontalPointB = new Vector3(pointB.x, 0, pointB.z);
-        return Vector3.Distance(horizontalPointA, horizontalPointB);
-    }
+
 
     private void AlignVirtualAndRealObjects()
     {
-        if (alignmentAchieved && redirectTurnsOffAfterAlignment) return; // Skip alignment if already achieved and redirection is off
+        if (alignmentAchieved && redirectTurnsOffAfterAlignment) return;
 
         float currentDistanceToVirtualObject = HorizontalDistance(vrCamera.position, virtualObject.position);
         float distanceRatio = currentDistanceToVirtualObject / initialDistanceToVirtualObject;
-        float adjustedAngleDifference = initialAngleDifference * (1 - distanceRatio);
+        float adjustedAngleDifference = initialAngleDifference * (1 - distanceRatio) * redirectIntensity;
 
         if (currentDistanceToVirtualObject > alignmentThresholdDistance)
         {
@@ -77,17 +83,19 @@ public class CustomRDWTake3 : MonoBehaviour
         else
         {
             Debug.Log("Alignment achieved");
-            alignmentAchieved = true; // Mark alignment as achieved
+            alignmentAchieved = true;
         }
     }
-
+    private float HorizontalDistance(Vector3 pointA, Vector3 pointB)
+    {
+        Vector3 horizontalPointA = new Vector3(pointA.x, 0, pointA.z);
+        Vector3 horizontalPointB = new Vector3(pointB.x, 0, pointB.z);
+        return Vector3.Distance(horizontalPointA, horizontalPointB);
+    }
     private void AdjustPlayerMovement()
     {
         Vector3 realWorldMovement = vrCamera.position - previousPosition;
-        float distanceToVirtual = HorizontalDistance(vrCamera.position, virtualObject.position);
-        float distanceToReal = HorizontalDistance(vrCamera.position, realObject.position);
-
-        float scalingFactor = distanceToVirtual / distanceToReal;
+        
         Vector3 scaledMovement = realWorldMovement * scalingFactor;
 
         vrCameraParent.position += scaledMovement;

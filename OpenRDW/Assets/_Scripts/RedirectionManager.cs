@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using HR_Toolkit.Thresholds;
 using UnityEditor;
@@ -153,13 +153,14 @@ namespace HR_Toolkit
             movementController.MoveHand();
             movementController.MoveBody();
 
+/**
             // check for space input -> Check for new target
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 Debug.Log("Space key pressed - manually triggering redirection.");
                 TriggerHandRedirection();
             }
-
+**/
 
             if (target == null)     // 1-to-1 hand mapping
             {
