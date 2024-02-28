@@ -41,14 +41,16 @@ public class GlobalScript : MonoBehaviour
     [Tooltip("RDW Redirection intensity value.")]
     [Range(0f, 1f)]
     public float redirectIntensity = 1f;
+    [Tooltip("Hand Redirection Live redirection Algorithm")]
+    public bool liveRedirection = false;
 
-    [Header("Player Position Controller Settings")]
+    [Header("Player Position Controller Settings for virtual avatar")]
     [Tooltip("Desired distance between players.")]
-    public float targetDistanceBetweenPlayers = 2f;
+    public float targetDistanceBetweenPlayers = 4f;
     [Tooltip("Rotation offset for the master player.")]
-    public float rotationOffsetMaster = 30f;
+    public float rotationOffsetMaster = 0;
     [Tooltip("Rotation offset for the other player.")]
-    public float rotationOffsetOther = -30f;
+    public float rotationOffsetOther = 0;
 
     [Header("StandingPosition Seettings")]
     [Tooltip("Standing Goal Object")]
@@ -56,7 +58,7 @@ public class GlobalScript : MonoBehaviour
     [Tooltip("Standing Position Offset")]
     public float standingPositionOffset = 0;
 
-    public Transform realAvatar;
+    private Transform realAvatar;
 
     // References to the script components
     private PlayerSynchronization playerSyncScriptComponent;
@@ -65,7 +67,6 @@ public class GlobalScript : MonoBehaviour
     private AttachRedirectionTargets attachRedirectionTargetsScriptComponent;
     private PlayerPositionController playerPositionControllerScriptComponent;
     private StandingPosition standingPositionScriptComponent;
-
 
     private bool hasActivatedScriptsAfterDelay = false;
 
@@ -191,6 +192,7 @@ public class GlobalScript : MonoBehaviour
             redirectionControlScriptComponent.target = redirectionTarget;
             redirectionControlScriptComponent.sliderValue = redirectionSliderValue;
             redirectionControlScriptComponent.redirectIntensity = redirectIntensity;
+            redirectionControlScriptComponent.liveRedirection = liveRedirection;
         }
     }
 
@@ -257,5 +259,13 @@ public class GlobalScript : MonoBehaviour
             standingPositionScriptComponent.offset = standingPositionOffset;
 
         }
+    }
+    public void SetupTrial(float redirectionSliderValue, float redirectIntensity, bool liveRedirection, float targetDistanceBetweenPlayers, float standingPositionOffset)
+    {
+        this.redirectionSliderValue = redirectionSliderValue;
+        this.redirectIntensity = redirectIntensity;
+        this.liveRedirection = liveRedirection;
+        this.targetDistanceBetweenPlayers = targetDistanceBetweenPlayers;
+        this.standingPositionOffset = standingPositionOffset;
     }
 }
