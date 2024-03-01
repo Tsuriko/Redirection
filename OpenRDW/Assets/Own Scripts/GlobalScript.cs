@@ -57,6 +57,8 @@ public class GlobalScript : MonoBehaviour
     public GameObject standingGoalObject;
     [Tooltip("Standing Position Offset")]
     public float standingPositionOffset = 0;
+    [Tooltip("Standing Position Offset Other Player")]
+    public float standingPositionOffsetOther = 0;
 
     private Transform realAvatar;
 
@@ -160,6 +162,7 @@ public class GlobalScript : MonoBehaviour
             redirectionControlScriptComponent.enabled = true;
         }
         realAvatar = ConfigurationScript.Instance.vrPlayerHost.transform.Find("Real/Head");
+        ActivateStandingPosition();
 
     }
 
@@ -196,7 +199,7 @@ public class GlobalScript : MonoBehaviour
         }
     }
 
-    private void ActivateRedirectionLogic()
+    public void ActivateRedirectionLogic()
     {
         if (redirectionControlScriptComponent != null && redirectionControlScriptComponent.enabled && PhotonNetwork.IsMasterClient)
         {
@@ -204,11 +207,26 @@ public class GlobalScript : MonoBehaviour
             redirectionControlScriptComponent.StartRedirectionExternally();
         }
     }
+    public void EndHandRedirection()
+    {
+        if (redirectionControlScriptComponent != null)
+        {
+            redirectionControlScriptComponent.EndHandRedirection();
+        }
+    }
+    public void EndRedirectedWalking()
+    {
+        if (redirectionControlScriptComponent != null)
+        {
+            redirectionControlScriptComponent.EndRedirectedWalking();
+        }
+    }
 
     public void ActivatePlayerPositionController()
     {
         if (playerPositionControllerScriptComponent != null)
         {
+            playerPositionControllerScriptComponent.enabled = true;
             playerPositionControllerScriptComponent.ActivatePlayerPositioning();
         }
     }
@@ -236,16 +254,22 @@ public class GlobalScript : MonoBehaviour
     {
         if (standingPositionScriptComponent != null)
         {
-            standingPositionScriptComponent.SavePositionAndRotation();
+            standingPositionScriptComponent.CallSavePositionAndRotation();
         }
     }
-    private void spawnStandingGoalObject()
+    public void spawnStandingGoalObject()
     {
         if (standingPositionScriptComponent != null)
         {
-            standingPositionScriptComponent.SpawnVirtualCloneWithOffset();
+            standingPositionScriptComponent.CallSpawnVirtualCloneWithOffset();
         }
-
+    }
+    public void deleteStandingGoalObject()
+    {
+        if (standingPositionScriptComponent != null)
+        {
+            standingPositionScriptComponent.CallDeleteAllSpawnedVirtualClones();
+        }
     }
     public void ConfigureStandingPosition()
     {
@@ -257,15 +281,18 @@ public class GlobalScript : MonoBehaviour
             standingPositionScriptComponent.realAvatar = realAvatar;
             standingPositionScriptComponent.virtualAvatar = virtualAvatar;
             standingPositionScriptComponent.offset = standingPositionOffset;
+            standingPositionScriptComponent.offsetOther = standingPositionOffsetOther;
 
         }
     }
-    public void SetupTrial(float redirectionSliderValue, float redirectIntensity, bool liveRedirection, float targetDistanceBetweenPlayers, float standingPositionOffset)
-    {
-        this.redirectionSliderValue = redirectionSliderValue;
-        this.redirectIntensity = redirectIntensity;
+    public void SetupTrial(float offsetMaster, float offsetOther, bool liveRedirection, float redirectedWalkingIntensity)
+    {        
+        this.standingPositionOffset = offsetMaster;
+        this.standingPositionOffsetOther = offsetOther;
         this.liveRedirection = liveRedirection;
-        this.targetDistanceBetweenPlayers = targetDistanceBetweenPlayers;
-        this.standingPositionOffset = standingPositionOffset;
+        this.redirectIntensity = redirectedWalkingIntensity;
+        
+
+
     }
 }

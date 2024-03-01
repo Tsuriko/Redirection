@@ -9,8 +9,8 @@ public class RandomVariablesManager : MonoBehaviour
     {
         public float OffsetMaster;
         public float OffsetOther;
-        public Algorithm SelectedAlgorithm;
-        public float HandToWalkingRedirectionRatio;
+        public bool liveRedirection;
+        public float redirectedWalkingIntensity;
     }
 
     public enum Algorithm
@@ -24,7 +24,7 @@ public class RandomVariablesManager : MonoBehaviour
 
     private readonly float[] offsetMasterValues = {-1,-0,1};
     private readonly float[] offsetOtherValues = { -1,-0,1};
-    private readonly Algorithm[] algorithmValues = { Algorithm.midpointRedrection, Algorithm.otherHandRedirection};
+    private readonly bool[] liveRedirectionValues = { true, false };
     private readonly float[] redirectedWalkingIntensity = { 0.8f, 0.9f, 1f }; // Represented as 20/80, 25/75, 30/70 ratios
 
     public List<VariablesCombination> AllCombinations { get; private set; }
@@ -45,7 +45,7 @@ public class RandomVariablesManager : MonoBehaviour
         {
             foreach (var offsetOther in offsetOtherValues)
             {
-                foreach (var algorithm in algorithmValues)
+                foreach (var liveRedirection in liveRedirectionValues)
                 {
                     foreach (var ratio in redirectedWalkingIntensity)
                     {
@@ -53,8 +53,8 @@ public class RandomVariablesManager : MonoBehaviour
                         {
                             OffsetMaster = offsetMaster,
                             OffsetOther = offsetOther,
-                            SelectedAlgorithm = algorithm,
-                            HandToWalkingRedirectionRatio = ratio
+                            liveRedirection = liveRedirection,
+                            redirectedWalkingIntensity = ratio
                         };
 
                         AllCombinations.Add(combination);

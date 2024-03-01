@@ -1,205 +1,204 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class StudyProgressionController : MonoBehaviour
 {
-    private enum StudyStep { Initialization, InitializeStudy, PlayerSync, SaveMarkerPosition, FirstTask, Break, RandomTask, Break2, Completed }
-    private enum TrialStep { Prepare, Execute, Review, None }
 
-    public RandomVariablesManager randomVariablesManager;
-    public GlobalScript globalScript;
-    private StudyStep currentStep = StudyStep.Initialization;
-    private TrialStep currentTrialStep = TrialStep.None;
-    public RandomVariablesManager.VariablesCombination randomCombination;
-    private int currentCombinationIndex = 0;
-    private int totalRandomTasksCompleted = 0;
+    public static StudyProgressionController instance;
+    private GlobalScript globalScript;
+    private RandomVariablesManager randomVariablesManager;
+    private List<RandomVariablesManager.VariablesCombination> allPossibleCombinations;
+
+    private float currentOffsetMaster;
+    private float currentOffsetOther;
+    private bool currentLiveRedirection;
+    private float currentRedirectedWalkingIntensity;
+    private int currentRandomTask = 0;
+    private bool firstTaskDone = false;
+
+
+
+
+
+    private enum ActionAwaiting
+    {
+        None,
+        InitializeStudy,
+        SyncPlayers,
+        SaveMarkerPosition,
+        TaskPreparation,
+        TaskExecution,
+        TaskReset,
+        TaskReview,
+        DetermineNextTask,
+        FirstTask,
+        RandomTask,
+    }
+
+    private ActionAwaiting nextAction = ActionAwaiting.InitializeStudy;
 
     void Start()
     {
         globalScript = FindObjectOfType<GlobalScript>();
+        randomVariablesManager = FindObjectOfType<RandomVariablesManager>();
+        allPossibleCombinations = new List<RandomVariablesManager.VariablesCombination>(randomVariablesManager.AllCombinations);
     }
 
     void Update()
     {
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            AdvanceToNextStep();
+            TriggerNextAction();
         }
     }
 
-    private void AdvanceToNextStep()
+    private void TriggerNextAction()
     {
-        if (currentStep == StudyStep.FirstTask || (currentStep == StudyStep.RandomTask && currentTrialStep != TrialStep.None))
+        switch (nextAction)
         {
-            AdvanceTrialStep();
-            return;
-        }
-
-        if (currentStep == StudyStep.RandomTask)
-        {
-            totalRandomTasksCompleted++;
-            if (totalRandomTasksCompleted < randomVariablesManager.AllCombinations.Count)
-            {
-                Debug.Log(totalRandomTasksCompleted);
-                PrepareRandomTask(); // Prepare the next random task immediately
-                return;
-            }
-        }
-        if (currentStep == StudyStep.RandomTask && totalRandomTasksCompleted >= randomVariablesManager.AllCombinations.Count)
-        {
-            currentStep = StudyStep.Completed; // Move directly to Completed step
-            CompleteStudy(); // Call the method to complete the study
-            return;
-        }
-
-        currentStep++;
-        Debug.Log(currentStep);
-        switch (currentStep)
-        {
-            case StudyStep.Initialization:
-                break;
-            case StudyStep.InitializeStudy:
+            case ActionAwaiting.InitializeStudy:
                 InitializeStudy();
                 break;
-            case StudyStep.PlayerSync:
+            case ActionAwaiting.SyncPlayers:
                 SyncPlayers();
                 break;
-            case StudyStep.SaveMarkerPosition:
+            case ActionAwaiting.SaveMarkerPosition:
                 SaveMarkerPosition();
                 break;
-            case StudyStep.FirstTask:
-                PrepareFirstTask();
+            case ActionAwaiting.FirstTask:
+                StartFirstTask();
                 break;
-            case StudyStep.Break:
+            case ActionAwaiting.RandomTask:
+                StartRandomTask();
                 break;
-            case StudyStep.RandomTask:
-                totalRandomTasksCompleted = 0;
-                PrepareRandomTask();
+            case ActionAwaiting.TaskPreparation:
+                PrepareTask();
                 break;
-            case StudyStep.Break2:
+            case ActionAwaiting.TaskExecution:
+                ExecuteTask();
                 break;
-            case StudyStep.Completed:
-                CompleteStudy();
+            case ActionAwaiting.TaskReset:
+                ResetTask();
+                break;
+            case ActionAwaiting.TaskReview:
+                ReviewTask();
+                break;
+            case ActionAwaiting.DetermineNextTask:
+                DetermineNextTask();
                 break;
             default:
-                Debug.LogError("Unhandled study step!");
+                Debug.Log("No action or unknown action awaited.");
                 break;
         }
     }
 
-    private void AdvanceTrialStep()
+    public void TriggerNextActionViaEndOfRedirection()
     {
-        Debug.Log(currentTrialStep);
-        switch (currentTrialStep)
+        if (nextAction == ActionAwaiting.TaskReview)
         {
-            case TrialStep.None:
-                currentTrialStep = TrialStep.Prepare;
-                PrepareTrial();
-                break;
-            case TrialStep.Prepare:
-                currentTrialStep = TrialStep.Execute;
-                ExecuteTrial();
-                break;
-            case TrialStep.Execute:
-                currentTrialStep = TrialStep.Review;
-                ReviewTrial();
-                break;
-            case TrialStep.Review:
-                currentTrialStep = TrialStep.None;
-                currentStep++;
-                AdvanceToNextStep();
-                break;
-            default:
-                Debug.LogError("Unhandled trial step!");
-                break;
+            TriggerNextAction();
         }
     }
-
-    private void PrepareTrial()
-    {
-
-        Debug.Log("Preparing trial...");
-    }
-
-    private void ExecuteTrial()
-    {
-
-        Debug.Log("Executing trial...");
-    }
-
-    private void ReviewTrial()
-    {
-
-        Debug.Log("Reviewing trial...");
-    }
-
-    private void PrepareFirstTask()
-    {
-        Debug.Log("Preparing First Task...");
-        StartFirstTask(); // Call StartFirstTask directly if preparation is part of starting the task
-    }
-
-    private void PrepareRandomTask()
-    {
-        Debug.Log("Preparing Random Task...");
-        StartRandomTask(); // Similar to above, call StartRandomTask directly if preparation is part of starting the task
-    }
+ 
     private void InitializeStudy()
     {
         Debug.Log("Initializing Study, Put the HMD on the same space like the other and press Space to continue");
         globalScript.enableKeyPresses = false;
 
+        nextAction = ActionAwaiting.SyncPlayers;
     }
+
     private void SyncPlayers()
     {
         Debug.Log("Syncing Players");
         globalScript.syncPlayers();
         Debug.Log("Let Player go to marker and press Space to continue");
+        nextAction = ActionAwaiting.SaveMarkerPosition;
     }
+
     private void SaveMarkerPosition()
     {
         Debug.Log("Saving Marker Position");
-        globalScript.SavePositionAndRotationaveStandingPosition();
+        //globalScript.SavePositionAndRotationaveStandingPosition();
         Debug.Log("Press Space to continue. Next step is the first task without redirection");
+        nextAction = ActionAwaiting.FirstTask;
     }
+
     private void StartFirstTask()
     {
         Debug.Log("Starting First Task");
-        globalScript.SetupTrial(0, 1, false, 4, 0);
+        SetVariablesCombination(0, 0, false, 1);
 
-        globalScript.ConfigurePlayerPositionController();
-        globalScript.ActivatePlayerPositionController();
+        nextAction = ActionAwaiting.TaskPreparation;
     }
 
+    private void SetVariablesCombination(float offsetMaster, float offsetOther, bool liveRedirection, float redirectedWalkingIntensity)
+    {
+        this.currentOffsetMaster = offsetMaster;
+        this.currentOffsetOther = offsetOther;
+        this.currentLiveRedirection = liveRedirection;
+        this.currentRedirectedWalkingIntensity = redirectedWalkingIntensity;
+    }
     private void StartRandomTask()
     {
-        Debug.Log("Starting Random Task");
-
+        Debug.Log("Starting Random Task Number " + currentRandomTask + " of " + allPossibleCombinations.Count);
+        RandomVariablesManager.VariablesCombination currentCombination = allPossibleCombinations[currentRandomTask];
+        SetVariablesCombination(currentCombination.OffsetMaster, currentCombination.OffsetOther, currentCombination.liveRedirection, currentCombination.redirectedWalkingIntensity);
+        nextAction = ActionAwaiting.TaskPreparation;
     }
 
-    private void CompleteStudy()
+    private void PrepareTask()
     {
-        Debug.Log("Study Completed");
-
+        Debug.Log("Preparing Task");
+        globalScript.SetupTrial(currentOffsetMaster, currentOffsetOther, currentLiveRedirection, currentRedirectedWalkingIntensity);
+        globalScript.ConfigurePlayerPositionController();
+        globalScript.ActivatePlayerPositionController();
+        nextAction = ActionAwaiting.TaskExecution;
     }
 
-    private RandomVariablesManager.VariablesCombination SelectNextCombination()
+    private void ExecuteTask()
     {
-        if (randomVariablesManager == null || randomVariablesManager.AllCombinations.Count == 0)
-        {
-            Debug.LogError("RandomVariablesManager is not set or has no combinations.");
-            return default;
-        }
-
-        // Ensure the index is within the bounds of the list
-        if (currentCombinationIndex >= randomVariablesManager.AllCombinations.Count)
-        {
-            Debug.LogError("No more combinations to select.");
-            return default; // Or loop back to the first combination depending on your requirements
-        }
-
-        randomCombination = randomVariablesManager.AllCombinations[currentCombinationIndex];
-        currentCombinationIndex++; // Move to the next combination for the next call
-        return randomCombination;
+        Debug.Log("Executing Task");
+        //globalScript.ActivateRedirectionLogic();
+        nextAction = ActionAwaiting.TaskReview;
     }
+    private void ReviewTask()
+    {
+        Debug.Log("Reviewing Task");
+        globalScript.EndHandRedirection();
+        globalScript.EndRedirectedWalking();
+        //globalScript.spawnStandingGoalObject();
+        nextAction = ActionAwaiting.TaskReset;
+    }
+
+    private void ResetTask()
+    {
+        Debug.Log("Resetting Task");
+        //globalScript.deleteStandingGoalObject();
+        nextAction = ActionAwaiting.DetermineNextTask;
+    }
+    private void DetermineNextTask()
+    {
+        Debug.Log("Determining Next Task");
+        if (!firstTaskDone)
+        {
+            firstTaskDone = true;
+            nextAction = ActionAwaiting.RandomTask;
+        }
+        else
+        {
+            currentRandomTask++;
+            if (currentRandomTask < allPossibleCombinations.Count)
+            {
+                nextAction = ActionAwaiting.RandomTask;
+            }
+            else
+            {
+                Debug.Log("All tasks done");
+            }
+        }
+    }
+
 
 }

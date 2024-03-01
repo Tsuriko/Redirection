@@ -88,6 +88,11 @@ namespace HR_Toolkit
             {
                 // reached target && useResetPosition --> ReturnToResetPosition
                 RedirectionManager.instance.ReturnToResetPosition();
+                if(StudyProgressionController.instance != null){
+                    StudyProgressionController.instance.TriggerNextActionViaEndOfRedirection();
+                }
+                
+
             }
             else if (useResetPosition && thisIsAResetPosition)
             {

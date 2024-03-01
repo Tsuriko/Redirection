@@ -112,6 +112,20 @@ namespace HR_Toolkit
                 photonView.RPC("EnableRedirection", RpcTarget.AllBuffered, sliderValue, redirectIntensity, liveRedirection);
             }
         }
+        public void EndHandRedirection()
+        {
+            if (handRedirectionManager != null)
+            {
+                handRedirectionManager.TriggerHandRedirection();
+            }
+        }
+        public void EndRedirectedWalking()
+        {
+            if (rdwManager != null)
+            {
+                rdwManager.enabled = false;
+            }
+        }
     }
 
 }
