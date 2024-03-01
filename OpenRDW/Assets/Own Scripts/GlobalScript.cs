@@ -95,7 +95,7 @@ public class GlobalScript : MonoBehaviour
     {
         // Event-driven component activation
         if (!enableKeyPresses) return;
-        if (Input.GetKeyDown(playerSyncActivationKey) && !hasActivatedScriptsAfterDelay)
+        if (Input.GetKeyDown(playerSyncActivationKey))
         {
             syncPlayers();
         }
@@ -131,8 +131,11 @@ public class GlobalScript : MonoBehaviour
     public void syncPlayers()
     {
         ActivatePlayerSynchronization();
-        StartCoroutine(ActivateScriptsAfterDelay(1)); // Delayed activation and configuration
-        hasActivatedScriptsAfterDelay = true;
+        if (!hasActivatedScriptsAfterDelay) {
+            StartCoroutine(ActivateScriptsAfterDelay(1)); // Delayed activation and configuration
+            hasActivatedScriptsAfterDelay = true;
+        }
+        
     }
 
     private void ActivatePlayerSynchronization()
@@ -257,6 +260,16 @@ public class GlobalScript : MonoBehaviour
             standingPositionScriptComponent.CallSavePositionAndRotation();
         }
     }
+    public void SetAndSynchronizeStandingPosition()
+    {
+        if (standingPositionScriptComponent != null)
+        {
+            standingPositionScriptComponent.SavePositionAndRotationRPC();
+            standingPositionScriptComponent.SpawnVirtualCloneWithOffset(0);
+        }
+    }
+
+
     public void spawnStandingGoalObject()
     {
         if (standingPositionScriptComponent != null)

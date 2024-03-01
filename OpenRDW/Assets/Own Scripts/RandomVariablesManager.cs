@@ -25,7 +25,7 @@ public class RandomVariablesManager : MonoBehaviour
     private readonly float[] offsetMasterValues = {-1,-0,1};
     private readonly float[] offsetOtherValues = { -1,-0,1};
     private readonly bool[] liveRedirectionValues = { true, false };
-    private readonly float[] redirectedWalkingIntensity = { 0.8f, 0.9f, 1f }; // Represented as 20/80, 25/75, 30/70 ratios
+    private readonly float[] redirectedWalkingIntensity = { 0.8f, 0.9f, 1f };
 
     public List<VariablesCombination> AllCombinations { get; private set; }
 

@@ -6,14 +6,15 @@ using System.Collections.Generic;
 public class StandingPosition : MonoBehaviourPunCallbacks
 {
     public GameObject objectToSpawn;
-    public Transform virtualAvatar; 
-    public Transform realAvatar; 
+    public Transform virtualAvatar;
+    public Transform realAvatar;
 
-    public float offset = 0f; 
-    public float offsetOther = 0f; 
+    public float offset = 0f;
+    public float offsetOther = 0f;
     public Vector3 savedPosition;
     private float savedYRotation;
-    private List<GameObject> virtualClones = new List<GameObject>();
+    private GameObject virtualClone; // Changed from List to a single GameObject
+
 
     public void CallSavePositionAndRotation()
     {
@@ -21,7 +22,7 @@ public class StandingPosition : MonoBehaviourPunCallbacks
     }
 
     [PunRPC]
-    private void SavePositionAndRotationRPC()
+    public void SavePositionAndRotationRPC()
     {
         savedPosition = new Vector3(realAvatar.position.x, realAvatar.position.y, realAvatar.position.z);
         savedYRotation = realAvatar.eulerAngles.y;
@@ -33,18 +34,22 @@ public class StandingPosition : MonoBehaviourPunCallbacks
         SpawnVirtualCloneWithOffset(usedOffset);
     }
 
-    private void SpawnVirtualCloneWithOffset(float usedOffset)
+    public void SpawnVirtualCloneWithOffset(float usedOffset)
     {
+        if (virtualClone != null) // Check if a clone already exists
+        {
+            Destroy(virtualClone); // Destroy the existing clone
+        }
+
         Vector3 direction = (usedOffset > 0) ? Quaternion.Euler(0, savedYRotation, 0) * Vector3.right : Quaternion.Euler(0, savedYRotation, 0) * Vector3.left;
         Vector3 spawnPosition = savedPosition + direction * Mathf.Abs(usedOffset);
-        
+
         Vector3 relativePosition = Quaternion.Inverse(realAvatar.rotation) * (spawnPosition - realAvatar.position);
         Vector3 virtualClonePosition = virtualAvatar.position + (virtualAvatar.rotation * relativePosition);
         virtualClonePosition.y = 0;
 
-        GameObject virtualClone = Instantiate(objectToSpawn, virtualClonePosition, Quaternion.Euler(0, savedYRotation, 0));
+        virtualClone = Instantiate(objectToSpawn, virtualClonePosition, Quaternion.Euler(0, savedYRotation, 0)); // Instantiate and assign to virtualClone
         virtualClone.name = objectToSpawn.name + "(virtual)";
-        virtualClones.Add(virtualClone);
     }
 
     public void CallSpawnVirtualCloneWithOffset()
@@ -61,10 +66,10 @@ public class StandingPosition : MonoBehaviourPunCallbacks
     [PunRPC]
     private void DeleteAllSpawnedVirtualClonesRPC()
     {
-        foreach (GameObject clone in virtualClones)
+        if (virtualClone != null) // Check if the clone exists
         {
-            Destroy(clone);
+            Destroy(virtualClone); // Destroy the clone
+            virtualClone = null; // Ensure the reference is cleared
         }
-        virtualClones.Clear();
     }
 }

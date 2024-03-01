@@ -51,6 +51,10 @@ public class StudyProgressionController : MonoBehaviour
         {
             TriggerNextAction();
         }
+        if (Input.GetKeyDown(KeyCode.S) && nextAction == ActionAwaiting.FirstTask)
+        {
+            TriggerNextAction();
+        }
     }
 
     private void TriggerNextAction()
@@ -100,7 +104,7 @@ public class StudyProgressionController : MonoBehaviour
             TriggerNextAction();
         }
     }
- 
+
     private void InitializeStudy()
     {
         Debug.Log("Initializing Study, Put the HMD on the same space like the other and press Space to continue");
@@ -120,8 +124,8 @@ public class StudyProgressionController : MonoBehaviour
     private void SaveMarkerPosition()
     {
         Debug.Log("Saving Marker Position");
-        //globalScript.SavePositionAndRotationaveStandingPosition();
-        Debug.Log("Press Space to continue. Next step is the first task without redirection");
+        globalScript.SavePositionAndRotationaveStandingPosition();
+        Debug.Log("Use the S key to position the arrows direction to the other player. Press Space to continue. Next step is the first task without redirection");
         nextAction = ActionAwaiting.FirstTask;
     }
 
@@ -129,7 +133,7 @@ public class StudyProgressionController : MonoBehaviour
     {
         Debug.Log("Starting First Task");
         SetVariablesCombination(0, 0, false, 1);
-
+        Debug.Log("Press Space to Teleport the virtual Players to their Position");
         nextAction = ActionAwaiting.TaskPreparation;
     }
 
@@ -145,6 +149,7 @@ public class StudyProgressionController : MonoBehaviour
         Debug.Log("Starting Random Task Number " + currentRandomTask + " of " + allPossibleCombinations.Count);
         RandomVariablesManager.VariablesCombination currentCombination = allPossibleCombinations[currentRandomTask];
         SetVariablesCombination(currentCombination.OffsetMaster, currentCombination.OffsetOther, currentCombination.liveRedirection, currentCombination.redirectedWalkingIntensity);
+        Debug.Log("Press Space to Teleport the virtual Players to their Position");
         nextAction = ActionAwaiting.TaskPreparation;
     }
 
@@ -154,6 +159,7 @@ public class StudyProgressionController : MonoBehaviour
         globalScript.SetupTrial(currentOffsetMaster, currentOffsetOther, currentLiveRedirection, currentRedirectedWalkingIntensity);
         globalScript.ConfigurePlayerPositionController();
         globalScript.ActivatePlayerPositionController();
+        Debug.Log("Position the Players on their Standing Position and press Space to start Redirection");
         nextAction = ActionAwaiting.TaskExecution;
     }
 
@@ -198,6 +204,10 @@ public class StudyProgressionController : MonoBehaviour
                 Debug.Log("All tasks done");
             }
         }
+    }
+    private void SynchronizeStandingPositionLocal()
+    {
+        globalScript.SetAndSynchronizeStandingPosition();
     }
 
 
