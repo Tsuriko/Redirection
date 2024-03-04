@@ -1,24 +1,28 @@
 using UnityEngine;
 using System.Collections.Generic;
+using Photon.Pun;
 
 public class StudyProgressionController : MonoBehaviour
 {
 
     public static StudyProgressionController instance;
+    public int StudyID = 0;
     private GlobalScript globalScript;
     private RandomVariablesManager randomVariablesManager;
     private List<RandomVariablesManager.VariablesCombination> allPossibleCombinations;
+    private StudyLogger studyLogger;
+    public QuestionnaireScript questionaireScript;
 
-    private float currentOffsetMaster;
-    private float currentOffsetOther;
-    private bool currentLiveRedirection;
-    private float currentRedirectedWalkingIntensity;
-    private int currentRandomTask = 0;
+    [HideInInspector] public float offsetValue;
+    [HideInInspector] public int personRedirected;
+    [HideInInspector] public float currentOffsetMaster;
+    [HideInInspector] public float currentOffsetOther;
+    [HideInInspector] public bool currentLiveRedirection;
+    [HideInInspector] public float currentRedirectedWalkingIntensity;
+
+    public int currentRandomTask = 0;
     private bool firstTaskDone = false;
-
-
-
-
+private PhotonView photonView;
 
     private enum ActionAwaiting
     {
@@ -41,7 +45,13 @@ public class StudyProgressionController : MonoBehaviour
     {
         globalScript = FindObjectOfType<GlobalScript>();
         randomVariablesManager = FindObjectOfType<RandomVariablesManager>();
+        randomVariablesManager.SetSeedWithStudyId(StudyID);
+        randomVariablesManager.GenerateAllPossibleCombinations();
         allPossibleCombinations = new List<RandomVariablesManager.VariablesCombination>(randomVariablesManager.AllCombinations);
+        studyLogger = FindObjectOfType<StudyLogger>();
+        photonView = GetComponent<PhotonView>();
+        questionaireScript = FindObjectOfType<QuestionnaireScript>();
+        questionaireScript.enabled = true;
     }
 
     void Update()
@@ -53,10 +63,11 @@ public class StudyProgressionController : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.S) && nextAction == ActionAwaiting.FirstTask)
         {
-            TriggerNextAction();
+            SynchronizeStandingPositionLocal();
         }
     }
 
+    [PunRPC]
     private void TriggerNextAction()
     {
         switch (nextAction)
@@ -101,7 +112,8 @@ public class StudyProgressionController : MonoBehaviour
     {
         if (nextAction == ActionAwaiting.TaskReview)
         {
-            TriggerNextAction();
+
+            CallTriggerNextAction();
         }
     }
 
@@ -132,23 +144,45 @@ public class StudyProgressionController : MonoBehaviour
     private void StartFirstTask()
     {
         Debug.Log("Starting First Task");
+        questionaireScript.MoveQuestionnaireBehind(GameObject.Find("Standing Position(virtual)").transform);
+        globalScript.deleteStandingGoalObject();
         SetVariablesCombination(0, 0, false, 1);
         Debug.Log("Press Space to Teleport the virtual Players to their Position");
         nextAction = ActionAwaiting.TaskPreparation;
     }
 
-    private void SetVariablesCombination(float offsetMaster, float offsetOther, bool liveRedirection, float redirectedWalkingIntensity)
+    private void SetVariablesCombination(float offset, int personRedirected, bool liveRedirection, float redirectedWalkingIntensity)
     {
-        this.currentOffsetMaster = offsetMaster;
-        this.currentOffsetOther = offsetOther;
         this.currentLiveRedirection = liveRedirection;
         this.currentRedirectedWalkingIntensity = redirectedWalkingIntensity;
+        this.offsetValue = offset;
+        this.personRedirected = personRedirected;
+
+        // Logic to distribute offset based on personRedirected
+        switch (personRedirected)
+        {
+            case 0: // Both master and other share the offset equally
+                this.currentOffsetMaster = offset / 2f;
+                this.currentOffsetOther = offset / 2f;
+                break;
+            case 1: // Master gets all the offset, other gets none
+                this.currentOffsetMaster = offset;
+                this.currentOffsetOther = 0;
+                break;
+            case 2: // Other gets all the offset, master gets none
+                this.currentOffsetMaster = 0;
+                this.currentOffsetOther = offset;
+                break;
+            default:
+                Debug.LogError("Invalid personRedirected value: " + personRedirected);
+                break;
+        }
     }
     private void StartRandomTask()
     {
         Debug.Log("Starting Random Task Number " + currentRandomTask + " of " + allPossibleCombinations.Count);
         RandomVariablesManager.VariablesCombination currentCombination = allPossibleCombinations[currentRandomTask];
-        SetVariablesCombination(currentCombination.OffsetMaster, currentCombination.OffsetOther, currentCombination.liveRedirection, currentCombination.redirectedWalkingIntensity);
+        SetVariablesCombination(currentCombination.offsetValue, currentCombination.personRedirected, currentCombination.liveRedirection, currentCombination.redirectedWalkingIntensity);
         Debug.Log("Press Space to Teleport the virtual Players to their Position");
         nextAction = ActionAwaiting.TaskPreparation;
     }
@@ -159,6 +193,7 @@ public class StudyProgressionController : MonoBehaviour
         globalScript.SetupTrial(currentOffsetMaster, currentOffsetOther, currentLiveRedirection, currentRedirectedWalkingIntensity);
         globalScript.ConfigurePlayerPositionController();
         globalScript.ActivatePlayerPositionController();
+        SaveInitialValues();
         Debug.Log("Position the Players on their Standing Position and press Space to start Redirection");
         nextAction = ActionAwaiting.TaskExecution;
     }
@@ -174,13 +209,15 @@ public class StudyProgressionController : MonoBehaviour
         Debug.Log("Reviewing Task");
         globalScript.EndHandRedirection();
         globalScript.EndRedirectedWalking();
-        //globalScript.spawnStandingGoalObject();
+        globalScript.spawnStandingGoalObject();
+        questionaireScript.EnableQuestionnaire(true);
         nextAction = ActionAwaiting.TaskReset;
     }
 
     private void ResetTask()
     {
         Debug.Log("Resetting Task");
+        SaveFinalValues();
         //globalScript.deleteStandingGoalObject();
         nextAction = ActionAwaiting.DetermineNextTask;
     }
@@ -209,6 +246,21 @@ public class StudyProgressionController : MonoBehaviour
     {
         globalScript.SetAndSynchronizeStandingPosition();
     }
-
+    public void SaveInitialValues()
+    {
+        studyLogger.SaveInitialValues();
+    }
+    public void SaveMidValues()
+    {
+        studyLogger.SaveMidValues();
+    }
+    public void SaveFinalValues()
+    {
+        studyLogger.SaveFinalValues();
+    }
+    public void CallTriggerNextAction()
+    {
+        photonView.RPC("TriggerNextAction", RpcTarget.All);
+    }
 
 }

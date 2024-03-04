@@ -8,15 +8,16 @@ public class QuestionnaireScript : MonoBehaviour
     public Transform specifiedObject; // Assign in the Inspector or dynamically
     public float offsetDistance = 2.0f; // Distance behind the specified object
 
-    private GameObject _vrQuestionnaireToolkit;
+    public GameObject _vrQuestionnaireToolkit;
     private GenerateQuestionnaire _generateQuestionnaire;
     private ExportToCSV _exportToCsvScript; // Assuming this script handles the submit event
 
     void Start()
     {
-        _vrQuestionnaireToolkit = GameObject.FindGameObjectWithTag("VRQuestionnaireToolkit");
+        _vrQuestionnaireToolkit = GameObject.Find("VRQuestionnaireToolkit");
         _generateQuestionnaire = _vrQuestionnaireToolkit.GetComponentInChildren<GenerateQuestionnaire>();
-
+        EnableQuestionnaire(false); // Disable the questionnaire by default
+       
         // Subscribe to the questionnaire finished event
         _exportToCsvScript = _vrQuestionnaireToolkit.GetComponentInChildren<ExportToCSV>();
         if (_exportToCsvScript != null)
@@ -38,6 +39,8 @@ public class QuestionnaireScript : MonoBehaviour
 
     public void MoveQuestionnaireBehind(Transform target)
     {
+        
+
         if (target != null)
         {
             Vector3 direction = -target.forward; // Assumes the forward direction is what you consider 'front' of the object

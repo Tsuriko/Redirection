@@ -18,7 +18,7 @@ public class CustomRDWTake3 : MonoBehaviour
     private float initialDistanceToVirtualObject;
     private float initialAngleDifference;
     private Quaternion initialParentRotation;
-    private float scalingFactor;
+    private float translativeGainFactor;
     public bool alignmentAchieved = false;
 
     private void Start()
@@ -37,7 +37,7 @@ public class CustomRDWTake3 : MonoBehaviour
         float distanceToVirtual = HorizontalDistance(vrCamera.position, virtualObject.position);
         float distanceToReal = HorizontalDistance(vrCamera.position, realObject.position);
 
-        scalingFactor = distanceToVirtual / distanceToReal;
+        translativeGainFactor = distanceToVirtual / distanceToReal;
 
         Debug.Log("Initial distance to virtual object: " + initialDistanceToVirtualObject);
         Debug.Log("Initial angle difference: " + initialAngleDifference);
@@ -96,7 +96,7 @@ public class CustomRDWTake3 : MonoBehaviour
     {
         Vector3 realWorldMovement = vrCamera.position - previousPosition;
         
-        Vector3 scaledMovement = realWorldMovement * scalingFactor;
+        Vector3 scaledMovement = realWorldMovement * translativeGainFactor;
 
         vrCameraParent.position += scaledMovement;
     }

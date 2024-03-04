@@ -18,10 +18,14 @@ public class ConfigurationScript : MonoBehaviour
     public GameObject redirectedVirtualObject;
     [HideInInspector] public GameObject redirectedRealTarget;
     [HideInInspector] public GameObject otherPlayerHandObject;
+    [HideInInspector] public GameObject otherPlayersHandObjectVirtual;
     [HideInInspector] public GameObject vrPlayerGuest;
     [HideInInspector] public GameObject vrPlayerHost;
     [HideInInspector] public GameObject controllerRight;
     [HideInInspector] public GameObject cameraRig;
+    [HideInInspector] public GameObject midpointObject;
+    [HideInInspector] public GameObject midpointObjectStreamed;
+    
     public GameObject ownPlayer;
 
     public delegate void KeyPressedAction();
@@ -68,11 +72,14 @@ public class ConfigurationScript : MonoBehaviour
         redirectedVirtualObject = GameObject.Find("Redirected Virtual Object");
         redirectedRealTarget = GameObject.Find("Redirected Real Target");
         otherPlayerHandObject = GameObject.Find("OtherPlayerHandObject");
+        otherPlayersHandObjectVirtual = GameObject.Find("OtherPlayerHandObject(virtual)");
         vrPlayerGuest = GameObject.Find("VR Player (Guest)");
         vrPlayerHost = GameObject.Find("VR Player (Host)");
         controllerRight = GameObject.Find("Controller (right)");
         cameraRig = GameObject.Find("[CameraRig]");
         ownPlayer = GameObject.Find("OwnPlayer");
+        midpointObject = GameObject.Find("MidpointObject");
+        midpointObjectStreamed = GameObject.Find("MidpointObject(virtual)");
     }
 
     void HandleKeyPresses()

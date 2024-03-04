@@ -18,7 +18,7 @@ public class VirtualPlayerSynchronization : MonoBehaviour
         if (movePlayer)
         {
             Transform realParent = GameObject.Find("VR Player (Host)/Real").transform;
-            Transform cameraRig = GameObject.Find("[CameraRig]").transform;
+            Transform cameraRig = ConfigurationScript.Instance.cameraRig.transform;
 
 
 

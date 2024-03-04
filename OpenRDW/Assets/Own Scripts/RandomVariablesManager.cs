@@ -7,31 +7,30 @@ public class RandomVariablesManager : MonoBehaviour
     [Serializable]
     public struct VariablesCombination
     {
-        public float OffsetMaster;
-        public float OffsetOther;
+        public float offsetValue;
+        public int personRedirected; // Changed from float to int to match the data type
         public bool liveRedirection;
         public float redirectedWalkingIntensity;
-    }
-
-    public enum Algorithm
-    {
-        midpointRedrection,
-        otherHandRedirection
     }
 
     [Header("Seed for Random Generation")]
     [SerializeField] private int seed = 12345; // Default seed, can be set in Inspector
 
-    private readonly float[] offsetMasterValues = {-1,-0,1};
-    private readonly float[] offsetOtherValues = { -1,-0,1};
+    private readonly float[] offsetValues = { -2, -1, 1, 2 };
+    private readonly int[] personRedirected = { 0, 1, 2 }; // 0 = both, 1 = host, 2 = other
     private readonly bool[] liveRedirectionValues = { true, false };
-    private readonly float[] redirectedWalkingIntensity = { 0.8f, 0.9f, 1f };
+    private readonly float[] redirectedWalkingIntensity = { 0.5f, 0.7f, 1f };
 
     public List<VariablesCombination> AllCombinations { get; private set; }
 
     private void Awake()
     {
         GenerateAllPossibleCombinations();
+    }
+
+    public void SetSeedWithStudyId(int studyId)
+    {
+        seed += studyId; // Adds the study ID to the existing seed
     }
 
     public void GenerateAllPossibleCombinations()
@@ -41,20 +40,20 @@ public class RandomVariablesManager : MonoBehaviour
 
         AllCombinations = new List<VariablesCombination>();
 
-        foreach (var offsetMaster in offsetMasterValues)
+        foreach (var offsetValue in offsetValues)
         {
-            foreach (var offsetOther in offsetOtherValues)
+            foreach (var person in personRedirected)
             {
                 foreach (var liveRedirection in liveRedirectionValues)
                 {
-                    foreach (var ratio in redirectedWalkingIntensity)
+                    foreach (var intensity in redirectedWalkingIntensity)
                     {
                         VariablesCombination combination = new VariablesCombination
                         {
-                            OffsetMaster = offsetMaster,
-                            OffsetOther = offsetOther,
-                            liveRedirection = liveRedirection,
-                            redirectedWalkingIntensity = ratio
+                            offsetValue = offsetValue, // Corrected to match struct member name
+                            personRedirected = person, // Corrected to match struct member name
+                            liveRedirection = liveRedirection, // Corrected to match struct member name
+                            redirectedWalkingIntensity = intensity // Corrected to match struct member name
                         };
 
                         AllCombinations.Add(combination);
