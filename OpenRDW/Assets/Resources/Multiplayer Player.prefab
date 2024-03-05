@@ -241,7 +241,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2864170033307538518}
   - component: {fileID: 1497739747640276267}
-  - component: {fileID: 2552288656431600349}
   m_Layer: 12
   m_Name: hands:b_r_pinky_ignore
   m_TagString: Untagged
@@ -277,18 +276,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.007
   m_Center: {x: -0.004, y: 0, z: 0}
---- !u!114 &2552288656431600349
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 752023662702380083}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d8ea0c3912840149a80ce578a7a277a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &863951795247512915
 GameObject:
   m_ObjectHideFlags: 0
@@ -1311,7 +1298,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1253979014608634295}
   - component: {fileID: 6557056096698786714}
-  - component: {fileID: 5872164985088961040}
+  - component: {fileID: 2853687304242923032}
   m_Layer: 10
   m_Name: hands:b_r_thumb_ignore
   m_TagString: Untagged
@@ -1347,7 +1334,7 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.008
   m_Center: {x: -0.005, y: -0.003, z: 0}
---- !u!114 &5872164985088961040
+--- !u!114 &2853687304242923032
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1356,7 +1343,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3039141819663558778}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d8ea0c3912840149a80ce578a7a277a, type: 3}
+  m_Script: {fileID: 11500000, guid: 0e4c78b7209874040aaa6f3f0d1ba22e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &3458162513048525049
@@ -1370,6 +1357,7 @@ GameObject:
   - component: {fileID: 7934849763526654177}
   - component: {fileID: 6329679390965759417}
   - component: {fileID: 2232407492729396418}
+  - component: {fileID: 3773235634369279172}
   m_Layer: 10
   m_Name: Right Hand
   m_TagString: realHand
@@ -1443,6 +1431,19 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   broadcastDeviceChanges: 1
+--- !u!65 &3773235634369279172
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3458162513048525049}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.0705247, y: 0.14853495, z: 0.15778509}
+  m_Center: {x: 0.029043015, y: 0.029997855, z: -0.08765373}
 --- !u!1 &3549908965503562337
 GameObject:
   m_ObjectHideFlags: 0
@@ -1988,7 +1989,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8337903721117127211}
   - component: {fileID: 6180214381875702550}
-  - component: {fileID: 3600863223025079131}
   m_Layer: 12
   m_Name: hands:b_r_ring_ignore
   m_TagString: Untagged
@@ -2024,18 +2024,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.007
   m_Center: {x: -0.004, y: 0, z: 0}
---- !u!114 &3600863223025079131
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4895778418215179583}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d8ea0c3912840149a80ce578a7a277a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &5075347290957011601
 GameObject:
   m_ObjectHideFlags: 0
@@ -2165,7 +2153,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1422596277754184796}
   - component: {fileID: 903008980850487925}
-  - component: {fileID: 6870168713103275929}
+  - component: {fileID: 332826463377907852}
   m_Layer: 10
   m_Name: hands:b_r_pinky_ignore
   m_TagString: Untagged
@@ -2201,7 +2189,7 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.007
   m_Center: {x: -0.004, y: 0, z: 0}
---- !u!114 &6870168713103275929
+--- !u!114 &332826463377907852
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2210,7 +2198,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5415771255751929384}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d8ea0c3912840149a80ce578a7a277a, type: 3}
+  m_Script: {fileID: 11500000, guid: 0e4c78b7209874040aaa6f3f0d1ba22e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &5460196884893869775
@@ -2576,7 +2564,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1690028871550852659}
   - component: {fileID: 4111733206655447835}
-  - component: {fileID: 4584836162478034227}
+  - component: {fileID: 4801704444328556687}
   m_Layer: 10
   m_Name: hands:b_r_middle_ignore
   m_TagString: Untagged
@@ -2612,7 +2600,7 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.008
   m_Center: {x: -0.004, y: 0, z: 0}
---- !u!114 &4584836162478034227
+--- !u!114 &4801704444328556687
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2621,7 +2609,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6076266294196259871}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d8ea0c3912840149a80ce578a7a277a, type: 3}
+  m_Script: {fileID: 11500000, guid: 0e4c78b7209874040aaa6f3f0d1ba22e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &6164070012074290972
@@ -2666,7 +2654,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4959379770319865257}
   - component: {fileID: 1889197771056152432}
-  - component: {fileID: 6395780357004437285}
   m_Layer: 12
   m_Name: hands:b_r_thumb_ignore
   m_TagString: Untagged
@@ -2702,18 +2689,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.008
   m_Center: {x: -0.005, y: -0.003, z: 0}
---- !u!114 &6395780357004437285
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6284833475987802793}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d8ea0c3912840149a80ce578a7a277a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &6340127741768059579
 GameObject:
   m_ObjectHideFlags: 0
@@ -2969,7 +2944,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4063557497241440816}
   - component: {fileID: 8845393808161850859}
-  - component: {fileID: 2617935421101912781}
+  - component: {fileID: 2139902068919956965}
   m_Layer: 10
   m_Name: hands:b_r_index_ignore
   m_TagString: Untagged
@@ -3005,7 +2980,7 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.007
   m_Center: {x: -0.004, y: 0, z: 0}
---- !u!114 &2617935421101912781
+--- !u!114 &2139902068919956965
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3014,7 +2989,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7435667728627690493}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d8ea0c3912840149a80ce578a7a277a, type: 3}
+  m_Script: {fileID: 11500000, guid: 0e4c78b7209874040aaa6f3f0d1ba22e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &7606226491098499739
@@ -3123,7 +3098,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2139567952010133839}
   - component: {fileID: 8446133764362349488}
-  - component: {fileID: 3011603246214587645}
+  - component: {fileID: 6223023662746990495}
   m_Layer: 10
   m_Name: hands:b_r_ring_ignore
   m_TagString: Untagged
@@ -3159,7 +3134,7 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.007
   m_Center: {x: -0.004, y: 0, z: 0}
---- !u!114 &3011603246214587645
+--- !u!114 &6223023662746990495
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3168,7 +3143,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8141840885789196615}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d8ea0c3912840149a80ce578a7a277a, type: 3}
+  m_Script: {fileID: 11500000, guid: 0e4c78b7209874040aaa6f3f0d1ba22e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &8389632403384004242
@@ -3244,7 +3219,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5237095819373254708}
   - component: {fileID: 6184307254264832008}
-  - component: {fileID: 3994409413970160723}
   m_Layer: 12
   m_Name: hands:b_r_index_ignore
   m_TagString: Untagged
@@ -3280,18 +3254,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.007
   m_Center: {x: -0.004, y: 0, z: 0}
---- !u!114 &3994409413970160723
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8603073646747645409}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d8ea0c3912840149a80ce578a7a277a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &9142661606759866951
 GameObject:
   m_ObjectHideFlags: 0
@@ -3334,7 +3296,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6870830364484967162}
   - component: {fileID: 158813066184257799}
-  - component: {fileID: 7237582790417254029}
   m_Layer: 12
   m_Name: hands:b_r_middle_ignore
   m_TagString: Untagged
@@ -3370,18 +3331,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.008
   m_Center: {x: -0.004, y: 0, z: 0}
---- !u!114 &7237582790417254029
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9145102802019201524}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d8ea0c3912840149a80ce578a7a277a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &9200822350713930178
 GameObject:
   m_ObjectHideFlags: 0

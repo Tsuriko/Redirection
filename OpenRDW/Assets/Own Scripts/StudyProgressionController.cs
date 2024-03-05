@@ -163,7 +163,7 @@ public class StudyProgressionController : MonoBehaviour
     {
         Debug.Log("Saving Marker Position");
         SynchronizeStandingPositionLocal();
-        Debug.Log("Use the S key to position the arrows direction to the other player. Press Space to continue. Next step is the first task without redirection");
+        Debug.Log("Use the S key to position the arrows direction to the other player. Press Space to continue. Now only the master client can press Space");
         nextAction = ActionAwaiting.FirstTask;
     }
 
@@ -171,9 +171,8 @@ public class StudyProgressionController : MonoBehaviour
     {
         Debug.Log("Starting First Task");
         questionaireScript.MoveQuestionnaireBehind(GameObject.Find("Standing Position(virtual)").transform);
-        
         SetVariablesCombination(0, 0, false, 1);
-        Debug.Log("Press Space to Teleport the virtual Players to their Position");
+        Debug.Log("Let the player face each other and press Space to Teleport the virtual Players to their Position. The first task will start" );
         globalScript.SetupTrial(currentOffsetMaster, currentOffsetOther, currentLiveRedirection, currentRedirectedWalkingIntensity);
         nextAction = ActionAwaiting.TaskPreparation;
     }
@@ -219,11 +218,10 @@ public class StudyProgressionController : MonoBehaviour
     private void PrepareTask()
     {
         Debug.Log("Preparing Task");
-        globalScript.SetupTrial(currentOffsetMaster, currentOffsetOther, currentLiveRedirection, currentRedirectedWalkingIntensity);
-        //globalScript.ConfigurePlayerPositionController();
-        //globalScript.ActivatePlayerPositionController();
+        globalScript.ConfigurePlayerPositionController();
+        globalScript.ActivatePlayerPositionController();
 
-        Debug.Log("Position the Players on their Standing Position and press Space to start Redirection");
+        Debug.Log("Press Space to start Redirection");
         nextAction = ActionAwaiting.TaskExecution;
     }
 
@@ -232,7 +230,7 @@ public class StudyProgressionController : MonoBehaviour
         SaveInitialValues();
         globalScript.deleteStandingGoalObject();
         Debug.Log("Executing Task");
-        //globalScript.ActivateRedirectionLogic();
+        globalScript.ActivateRedirectionLogic();
         nextAction = ActionAwaiting.TaskReview;
     }
     private void ReviewTask()
@@ -316,6 +314,10 @@ public class StudyProgressionController : MonoBehaviour
     public void UpdateStudyID(int newStudyID)
     {
         StudyID = newStudyID;
+    }
+    public bool isTaskReview()
+    {
+        return nextAction == ActionAwaiting.TaskReview;
     }
 
 }
