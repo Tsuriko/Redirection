@@ -7,6 +7,7 @@ public class PlayerSynchronization : MonoBehaviour
 
     private Transform playerHead; // Reference to the player's head object (e.g., the camera)
     private bool movePlayer = false;
+    private Transform realParent;
 
     private void Update()
     {
@@ -17,7 +18,7 @@ public class PlayerSynchronization : MonoBehaviour
 
         if (movePlayer)
         {
-            Transform realParent = GameObject.Find("VR Player (Host)/Real").transform;
+            realParent = GameObject.Find("VR Player (Host)/Real").transform;
 
             // Calculate the y-axis rotation difference between the player's head and the target
             float yRotationDiff = targetLocation.eulerAngles.y - playerHead.eulerAngles.y;
@@ -30,7 +31,7 @@ public class PlayerSynchronization : MonoBehaviour
 
             // Apply the offset to the player's position
             realParent.transform.position += offset;
-
+            moveVirtualPlayerToReal();
             movePlayer = false;
         }
     }
@@ -39,5 +40,17 @@ public class PlayerSynchronization : MonoBehaviour
         Debug.Log("Player Moved");
         playerHead = GameObject.Find("VR Player (Host)/Real/Head").transform;
         movePlayer = true;
+    }
+    public void moveVirtualPlayerToReal()
+    {
+        realParent = GameObject.Find("VR Player (Host)/Real").transform;
+        Transform cameraRig = ConfigurationScript.Instance.cameraRig.transform;
+
+
+
+        cameraRig.position = realParent.position - new Vector3(0f, 5.0f, 0f);
+        cameraRig.rotation = realParent.rotation;
+
+        movePlayer = false;
     }
 }

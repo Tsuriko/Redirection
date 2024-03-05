@@ -22,7 +22,7 @@ namespace HR_Toolkit
 
         private float initialDistanceToTarget;
         private bool hasSwitchedToHandRedirection = false;
-        private bool isRedirectionEnabled = false; // Flag to control redirection activation
+        public bool isRedirectionEnabled = false; // Flag to control redirection activation
 
         void Awake()
         {
@@ -116,7 +116,7 @@ namespace HR_Toolkit
         {
             if (handRedirectionManager != null)
             {
-                handRedirectionManager.EndCurrentRedirection();
+                handRedirectionManager.TriggerHandRedirection();
             }
         }
         public void EndRedirectedWalking()

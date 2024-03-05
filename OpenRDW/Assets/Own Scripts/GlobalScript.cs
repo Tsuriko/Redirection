@@ -107,11 +107,7 @@ public class GlobalScript : MonoBehaviour
 
         if (Input.GetKeyDown(attachRedirectionTargetsActivationKey))
         {
-            if (attachRedirectionTargetsScriptComponent != null)
-            {
-                attachRedirectionTargetsScriptComponent.enabled = true;
-                attachRedirectionTargetsScriptComponent.HandleKeyPress();
-            }
+            activateAttachRedirectionTargetsScript();
         }
 
         if (Input.GetKeyDown(playerPositionControllerActivationKey) && PhotonNetwork.IsMasterClient)
@@ -125,6 +121,15 @@ public class GlobalScript : MonoBehaviour
         if (Input.GetKeyDown(standingPositionActivationKey))
         {
             ActivateStandingPosition();
+        }
+    }
+
+    public void activateAttachRedirectionTargetsScript()
+    {
+        if (attachRedirectionTargetsScriptComponent != null)
+        {
+            attachRedirectionTargetsScriptComponent.enabled = true;
+            attachRedirectionTargetsScriptComponent.HandleKeyPress();
         }
     }
 
@@ -274,6 +279,7 @@ public class GlobalScript : MonoBehaviour
     {
         if (standingPositionScriptComponent != null)
         {
+            Debug.Log("spawnStandingGoalObject()");
             ConfigureStandingPosition();
             standingPositionScriptComponent.CallSpawnVirtualCloneWithOffset();
         }

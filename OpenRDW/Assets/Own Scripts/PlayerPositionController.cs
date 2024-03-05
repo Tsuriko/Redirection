@@ -30,6 +30,8 @@ public class PlayerPositionController : MonoBehaviourPun
 
     public void ActivatePlayerPositioning()
     {
+        headMaster = GameObject.Find("VR Player (Host)/Virtual/Head");
+        headOther = GameObject.Find("VR Player (Guest)/Virtual/Head");
         if (PhotonNetwork.IsMasterClient)
         {
             Debug.Log("Activating Player Positioning.");
@@ -43,6 +45,7 @@ public class PlayerPositionController : MonoBehaviourPun
                 Vector3 newPositionOther = CalculateNewPosition(false);
 
                 MoveOwnPlayerLocally(newPositionMaster, rotationMaster);
+                Debug.Log("newPositionOther" + newPositionOther);
                 photonView.RPC("MoveOtherPlayer", RpcTarget.Others, newPositionOther, rotationOther);
             }
             else
@@ -103,6 +106,7 @@ public class PlayerPositionController : MonoBehaviourPun
         if (ownPlayer != null)
         {
             Debug.Log("Moving own player locally.");
+            newPosition.y = 0;
             ownPlayer.transform.position = newPosition;
             ownPlayer.transform.rotation = newRotation;
         }
@@ -120,6 +124,7 @@ public class PlayerPositionController : MonoBehaviourPun
         if (otherPlayer != null)
         {
             Debug.Log("Moving other player.");
+            newPosition.y = 0;
             otherPlayer.transform.position = newPosition;
             otherPlayer.transform.rotation = newRotation;
         }

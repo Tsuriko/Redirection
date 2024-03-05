@@ -23,7 +23,7 @@ public class StudyProgressionController : MonoBehaviour
     public int currentRandomTask = 0;
     private bool firstTaskDone = false;
     private PhotonView photonView;
-    private bool IsMasterClient;
+    public bool IsMasterClient;
 
     public enum ActionAwaiting
     {
@@ -109,11 +109,11 @@ public class StudyProgressionController : MonoBehaviour
             case ActionAwaiting.TaskExecution:
                 ExecuteTask();
                 break;
-            case ActionAwaiting.TaskReset:
-                ResetTask();
-                break;
             case ActionAwaiting.TaskReview:
                 ReviewTask();
+                break;
+            case ActionAwaiting.TaskReset:
+                ResetTask();
                 break;
             case ActionAwaiting.DetermineNextTask:
                 DetermineNextTask();
@@ -218,27 +218,34 @@ public class StudyProgressionController : MonoBehaviour
     private void PrepareTask()
     {
         Debug.Log("Preparing Task");
-        globalScript.ConfigurePlayerPositionController();
-        globalScript.ActivatePlayerPositionController();
-
+        if (firstTaskDone) { 
+            globalScript.ConfigurePlayerPositionController();
+            //globalScript.ActivatePlayerPositionController();
+        }
         Debug.Log("Press Space to start Redirection");
         nextAction = ActionAwaiting.TaskExecution;
     }
 
     private void ExecuteTask()
     {
+        globalScript.activateAttachRedirectionTargetsScript();
         SaveInitialValues();
+        if (firstTaskDone) globalScript.ActivateRedirectionLogic();
         globalScript.deleteStandingGoalObject();
+        
         Debug.Log("Executing Task");
-        globalScript.ActivateRedirectionLogic();
+        
         nextAction = ActionAwaiting.TaskReview;
     }
     private void ReviewTask()
     {
         Debug.Log("Reviewing Task");
-        globalScript.EndHandRedirection();
-        globalScript.EndRedirectedWalking();
-        globalScript.spawnStandingGoalObject();
+        if (firstTaskDone)
+        {
+            globalScript.EndHandRedirection();
+            globalScript.EndRedirectedWalking();
+        }
+        if (IsMasterClient) globalScript.spawnStandingGoalObject();
         questionaireScript.EnableQuestionnaire(true);
         Debug.Log("Let the Player fill out the Questionnaire and press Space to continue. Next step is to reset the task");
         nextAction = ActionAwaiting.TaskReset;
@@ -293,6 +300,7 @@ public class StudyProgressionController : MonoBehaviour
     private void SynchronizeStandingPositionLocal()
     {
         globalScript.SetAndSynchronizeStandingPosition();
+        Debug.Log("SynchronizeStandingPositionLocal");
     }
     public void SaveInitialValues()
     {

@@ -1329,7 +1329,7 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3039141819663558778}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.008
@@ -1358,6 +1358,7 @@ GameObject:
   - component: {fileID: 6329679390965759417}
   - component: {fileID: 2232407492729396418}
   - component: {fileID: 3773235634369279172}
+  - component: {fileID: 5560490446240133731}
   m_Layer: 10
   m_Name: Right Hand
   m_TagString: realHand
@@ -1444,6 +1445,22 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.0705247, y: 0.14853495, z: 0.15778509}
   m_Center: {x: 0.029043015, y: 0.029997855, z: -0.08765373}
+--- !u!54 &5560490446240133731
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3458162513048525049}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &3549908965503562337
 GameObject:
   m_ObjectHideFlags: 0
@@ -2142,7 +2159,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &5415771255751929384
 GameObject:
   m_ObjectHideFlags: 0
@@ -2184,7 +2200,7 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5415771255751929384}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.007
@@ -2595,7 +2611,7 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6076266294196259871}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.008
@@ -2806,7 +2822,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &6423280014676966289
 GameObject:
   m_ObjectHideFlags: 0
@@ -2975,7 +2990,7 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7435667728627690493}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.007
@@ -3129,7 +3144,7 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8141840885789196615}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.007

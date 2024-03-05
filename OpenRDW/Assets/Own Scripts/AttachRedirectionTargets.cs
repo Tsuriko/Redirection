@@ -54,10 +54,10 @@ public class AttachRedirectionTargets : MonoBehaviour
         realHandOfOtherPlayerVirtual = GameObject.Find("OtherPlayerHandObject(virtual)").transform;
         GameObject vrPlayerGuest = ConfigurationScript.Instance.vrPlayerGuest;
         //TODO f�r MP das zur�cksetztn
-        //realHandOfOtherPlayer = vrPlayerGuest.transform.Find("Real/Right Hand");
-        //virtualHandOfOtherPlayer = vrPlayerGuest.transform.Find("Virtual/Right Hand");
-        realHandOfOtherPlayer = GameObject.Find("Fake Real hand").transform;
-        virtualHandOfOtherPlayer = GameObject.Find("Fake Virtual hand").transform; ;
+        realHandOfOtherPlayer = vrPlayerGuest.transform.Find("Real/Right Hand");
+        virtualHandOfOtherPlayer = vrPlayerGuest.transform.Find("Virtual/Right Hand");
+        //realHandOfOtherPlayer = GameObject.Find("Fake Real hand").transform;
+        //virtualHandOfOtherPlayer = GameObject.Find("Fake Virtual hand").transform; ;
         hostVirtualHand = ConfigurationScript.Instance.vrPlayerHost.transform.Find("Virtual/Right Hand");
         hostRealHand = ConfigurationScript.Instance.vrPlayerHost.transform.Find("Real/Right Hand");
         ownRealHand = ConfigurationScript.Instance.controllerRight.transform;

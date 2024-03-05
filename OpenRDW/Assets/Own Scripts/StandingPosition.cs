@@ -31,6 +31,7 @@ public class StandingPosition : MonoBehaviourPunCallbacks
     [PunRPC]
     private void SpawnVirtualCloneWithOffsetRPC(float usedOffset)
     {
+        Debug.Log("SpawnVirtualCloneWithOffsetRPC(float usedOffset)");
         SpawnVirtualCloneWithOffset(usedOffset);
     }
 
@@ -50,11 +51,13 @@ public class StandingPosition : MonoBehaviourPunCallbacks
 
         virtualClone = Instantiate(objectToSpawn, virtualClonePosition, Quaternion.Euler(0, savedYRotation, 0)); // Instantiate and assign to virtualClone
         virtualClone.name = objectToSpawn.name + "(virtual)";
+        Debug.Log("Spawn");
     }
 
     public void CallSpawnVirtualCloneWithOffset()
     {
-        photonView.RPC("SpawnVirtualCloneWithOffsetRPC", photonView.Owner, offset);
+        Debug.Log("CallSpawnVirtualCloneWithOffset()");
+        photonView.RPC("SpawnVirtualCloneWithOffsetRPC", RpcTarget.MasterClient, offset);
         photonView.RPC("SpawnVirtualCloneWithOffsetRPC", RpcTarget.Others, offsetOther);
     }
 
