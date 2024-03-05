@@ -56,6 +56,7 @@ namespace HR_Toolkit
                 {
                     Debug.Log("Switch to Hand");
                     ActivateHandRedirection();
+                    if (StudyProgressionController.instance != null) StudyProgressionController.instance.SaveMidValues();
                     hasSwitchedToHandRedirection = true;
                 }
             }
@@ -100,7 +101,6 @@ namespace HR_Toolkit
             if (handRedirectionManager != null)
             {
                 handRedirectionManager.enabled = true;
-                // If additional synchronization is required for hand redirection, consider using RPCs as needed
                 handRedirectionManager.TriggerHandRedirection();
             }
         }
@@ -116,7 +116,7 @@ namespace HR_Toolkit
         {
             if (handRedirectionManager != null)
             {
-                handRedirectionManager.TriggerHandRedirection();
+                handRedirectionManager.EndCurrentRedirection();
             }
         }
         public void EndRedirectedWalking()
@@ -125,6 +125,20 @@ namespace HR_Toolkit
             {
                 rdwManager.enabled = false;
             }
+        }
+        public void resetRedirection()
+        {
+            if (rdwManager != null)
+            {
+                rdwManager.enabled = false;
+                rdwManager.InitializeRedirection();
+            }
+            if (handRedirectionManager != null)
+            {
+                EndHandRedirection();
+            }
+            hasSwitchedToHandRedirection = false;
+            isRedirectionEnabled = false;
         }
     }
 

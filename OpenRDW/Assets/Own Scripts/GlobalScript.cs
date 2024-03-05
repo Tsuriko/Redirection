@@ -33,7 +33,7 @@ public class GlobalScript : MonoBehaviour
 
     [Header("Redirection Settings")]
     [Tooltip("Target transform for redirection.")]
-    public Transform redirectionTarget;
+    public Transform redirectionRealTarget;
     [Range(0f, 1f)]
     [Tooltip("Slider value to adjust redirection intensity.")]
     public float redirectionSliderValue = 0.5f;
@@ -132,7 +132,7 @@ public class GlobalScript : MonoBehaviour
     {
         ActivatePlayerSynchronization();
         if (!hasActivatedScriptsAfterDelay) {
-            StartCoroutine(ActivateScriptsAfterDelay(1)); // Delayed activation and configuration
+            StartCoroutine(ActivateScriptsAfterDelay(0.1f));
             hasActivatedScriptsAfterDelay = true;
         }
         
@@ -191,11 +191,11 @@ public class GlobalScript : MonoBehaviour
         if (redirectionControlScriptComponent != null)
         {
             redirectionControlScriptComponent.user = virtualAvatar;
-            if (!redirectionTarget)
+            if (!redirectionRealTarget)
             {
-                redirectionTarget = GameObject.Find("Redirected Real Target").transform;
+                redirectionRealTarget = GameObject.Find("Redirected Real Target").transform;
             }
-            redirectionControlScriptComponent.target = redirectionTarget;
+            redirectionControlScriptComponent.target = redirectionRealTarget;
             redirectionControlScriptComponent.sliderValue = redirectionSliderValue;
             redirectionControlScriptComponent.redirectIntensity = redirectIntensity;
             redirectionControlScriptComponent.liveRedirection = liveRedirection;
@@ -274,6 +274,7 @@ public class GlobalScript : MonoBehaviour
     {
         if (standingPositionScriptComponent != null)
         {
+            ConfigureStandingPosition();
             standingPositionScriptComponent.CallSpawnVirtualCloneWithOffset();
         }
     }
@@ -304,8 +305,5 @@ public class GlobalScript : MonoBehaviour
         this.standingPositionOffsetOther = offsetOther;
         this.liveRedirection = liveRedirection;
         this.redirectIntensity = redirectedWalkingIntensity;
-        
-
-
     }
 }

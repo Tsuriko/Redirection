@@ -10,7 +10,7 @@ public class CustomRDWTake3 : MonoBehaviour
 
     public float alignmentThresholdDistance = 0.2f;
     public bool redirectTurnsOffAfterAlignment = true;
-    public bool adjustPlayerMovement = true;
+    public bool adjustPlayerMovement;
     public float redirectIntensity = 1.0f; // Intensity of the redirection, range [0, 1]
 
     private Quaternion previousCameraRotation;
@@ -19,7 +19,7 @@ public class CustomRDWTake3 : MonoBehaviour
     private float initialAngleDifference;
     private Quaternion initialParentRotation;
     private float translativeGainFactor;
-    public bool alignmentAchieved = false;
+    public bool alignmentAchieved;
 
     private void Start()
     {
@@ -29,6 +29,11 @@ public class CustomRDWTake3 : MonoBehaviour
             return;
         }
 
+        InitializeRedirection();
+    }
+
+    public void InitializeRedirection()
+    {
         previousCameraRotation = vrCamera.rotation;
         previousPosition = vrCamera.position;
         initialDistanceToVirtualObject = HorizontalDistance(vrCamera.position, virtualObject.position);
@@ -36,11 +41,9 @@ public class CustomRDWTake3 : MonoBehaviour
         initialParentRotation = vrCameraParent.rotation;
         float distanceToVirtual = HorizontalDistance(vrCamera.position, virtualObject.position);
         float distanceToReal = HorizontalDistance(vrCamera.position, realObject.position);
-
         translativeGainFactor = distanceToVirtual / distanceToReal;
-
-        Debug.Log("Initial distance to virtual object: " + initialDistanceToVirtualObject);
-        Debug.Log("Initial angle difference: " + initialAngleDifference);
+        alignmentAchieved = false;
+        adjustPlayerMovement = true;
     }
 
     private float CalculateInitialAngleDifference()

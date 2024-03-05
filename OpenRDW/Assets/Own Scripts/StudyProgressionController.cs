@@ -9,22 +9,23 @@ public class StudyProgressionController : MonoBehaviour
     public int StudyID = 0;
     private GlobalScript globalScript;
     private RandomVariablesManager randomVariablesManager;
-    private List<RandomVariablesManager.VariablesCombination> allPossibleCombinations;
+    public List<RandomVariablesManager.VariablesCombination> allPossibleCombinations;
     private StudyLogger studyLogger;
     public QuestionnaireScript questionaireScript;
 
-    [HideInInspector] public float offsetValue;
-    [HideInInspector] public int personRedirected;
-    [HideInInspector] public float currentOffsetMaster;
-    [HideInInspector] public float currentOffsetOther;
-    [HideInInspector] public bool currentLiveRedirection;
-    [HideInInspector] public float currentRedirectedWalkingIntensity;
+    [HideInInspector] public float offsetValue = 1;
+    [HideInInspector] public int personRedirected = 0;
+    [HideInInspector] public float currentOffsetMaster = 0;
+    [HideInInspector] public float currentOffsetOther = 0;
+    [HideInInspector] public bool currentLiveRedirection = false;
+    [HideInInspector] public float currentRedirectedWalkingIntensity = 0;
 
     public int currentRandomTask = 0;
     private bool firstTaskDone = false;
-private PhotonView photonView;
+    private PhotonView photonView;
+    private bool IsMasterClient;
 
-    private enum ActionAwaiting
+    public enum ActionAwaiting
     {
         None,
         InitializeStudy,
@@ -39,27 +40,42 @@ private PhotonView photonView;
         RandomTask,
     }
 
-    private ActionAwaiting nextAction = ActionAwaiting.InitializeStudy;
+    public ActionAwaiting nextAction = ActionAwaiting.InitializeStudy;
 
     void Start()
     {
         globalScript = FindObjectOfType<GlobalScript>();
         randomVariablesManager = FindObjectOfType<RandomVariablesManager>();
-        randomVariablesManager.SetSeedWithStudyId(StudyID);
-        randomVariablesManager.GenerateAllPossibleCombinations();
-        allPossibleCombinations = new List<RandomVariablesManager.VariablesCombination>(randomVariablesManager.AllCombinations);
+
         studyLogger = FindObjectOfType<StudyLogger>();
         photonView = GetComponent<PhotonView>();
         questionaireScript = FindObjectOfType<QuestionnaireScript>();
         questionaireScript.enabled = true;
     }
-
+    void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else if (instance != this)
+        {
+            Destroy(gameObject);
+        }
+    }
     void Update()
     {
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            TriggerNextAction();
+            if (nextAction == ActionAwaiting.TaskPreparation || nextAction == ActionAwaiting.TaskExecution || nextAction == ActionAwaiting.TaskReset || nextAction == ActionAwaiting.TaskReview || nextAction == ActionAwaiting.FirstTask || nextAction == ActionAwaiting.RandomTask)
+            {
+                CallTriggerNextAction();
+            }
+            if (nextAction == ActionAwaiting.InitializeStudy || nextAction == ActionAwaiting.SyncPlayers || nextAction == ActionAwaiting.SaveMarkerPosition)
+            {
+                TriggerNextAction();
+            }
         }
         if (Input.GetKeyDown(KeyCode.S) && nextAction == ActionAwaiting.FirstTask)
         {
@@ -114,13 +130,23 @@ private PhotonView photonView;
         {
 
             CallTriggerNextAction();
+            Debug.Log("TriggerNextActionViaEndOfRedirection");
         }
     }
 
     private void InitializeStudy()
     {
+        IsMasterClient = PhotonNetwork.IsMasterClient;
+        if (IsMasterClient)
+        {
+            photonView.RPC("UpdateStudyID", RpcTarget.All, StudyID);
+        }
+        randomVariablesManager.SetSeedWithStudyId(StudyID);
+        randomVariablesManager.GenerateAllPossibleCombinationsRandomly();
+        allPossibleCombinations = new List<RandomVariablesManager.VariablesCombination>(randomVariablesManager.AllCombinations);
         Debug.Log("Initializing Study, Put the HMD on the same space like the other and press Space to continue");
         globalScript.enableKeyPresses = false;
+        studyLogger.SetupNewParticipant("RDW Test", StudyID);
 
         nextAction = ActionAwaiting.SyncPlayers;
     }
@@ -129,14 +155,14 @@ private PhotonView photonView;
     {
         Debug.Log("Syncing Players");
         globalScript.syncPlayers();
-        Debug.Log("Let Player go to marker and press Space to continue");
+        Debug.Log("Let Player put the HMD on and let them to the real marker and press Space to continue");
         nextAction = ActionAwaiting.SaveMarkerPosition;
     }
 
     private void SaveMarkerPosition()
     {
         Debug.Log("Saving Marker Position");
-        globalScript.SavePositionAndRotationaveStandingPosition();
+        SynchronizeStandingPositionLocal();
         Debug.Log("Use the S key to position the arrows direction to the other player. Press Space to continue. Next step is the first task without redirection");
         nextAction = ActionAwaiting.FirstTask;
     }
@@ -145,9 +171,10 @@ private PhotonView photonView;
     {
         Debug.Log("Starting First Task");
         questionaireScript.MoveQuestionnaireBehind(GameObject.Find("Standing Position(virtual)").transform);
-        globalScript.deleteStandingGoalObject();
+        
         SetVariablesCombination(0, 0, false, 1);
         Debug.Log("Press Space to Teleport the virtual Players to their Position");
+        globalScript.SetupTrial(currentOffsetMaster, currentOffsetOther, currentLiveRedirection, currentRedirectedWalkingIntensity);
         nextAction = ActionAwaiting.TaskPreparation;
     }
 
@@ -183,7 +210,9 @@ private PhotonView photonView;
         Debug.Log("Starting Random Task Number " + currentRandomTask + " of " + allPossibleCombinations.Count);
         RandomVariablesManager.VariablesCombination currentCombination = allPossibleCombinations[currentRandomTask];
         SetVariablesCombination(currentCombination.offsetValue, currentCombination.personRedirected, currentCombination.liveRedirection, currentCombination.redirectedWalkingIntensity);
-        Debug.Log("Press Space to Teleport the virtual Players to their Position");
+        globalScript.SetupTrial(currentOffsetMaster, currentOffsetOther, currentLiveRedirection, currentRedirectedWalkingIntensity);
+        if(IsMasterClient) globalScript.spawnStandingGoalObject();
+        Debug.Log("Position the Players on their Standing Position. Press Space to Teleport the virtual Players to their Position");
         nextAction = ActionAwaiting.TaskPreparation;
     }
 
@@ -191,15 +220,17 @@ private PhotonView photonView;
     {
         Debug.Log("Preparing Task");
         globalScript.SetupTrial(currentOffsetMaster, currentOffsetOther, currentLiveRedirection, currentRedirectedWalkingIntensity);
-        globalScript.ConfigurePlayerPositionController();
-        globalScript.ActivatePlayerPositionController();
-        SaveInitialValues();
+        //globalScript.ConfigurePlayerPositionController();
+        //globalScript.ActivatePlayerPositionController();
+
         Debug.Log("Position the Players on their Standing Position and press Space to start Redirection");
         nextAction = ActionAwaiting.TaskExecution;
     }
 
     private void ExecuteTask()
     {
+        SaveInitialValues();
+        globalScript.deleteStandingGoalObject();
         Debug.Log("Executing Task");
         //globalScript.ActivateRedirectionLogic();
         nextAction = ActionAwaiting.TaskReview;
@@ -211,6 +242,7 @@ private PhotonView photonView;
         globalScript.EndRedirectedWalking();
         globalScript.spawnStandingGoalObject();
         questionaireScript.EnableQuestionnaire(true);
+        Debug.Log("Let the Player fill out the Questionnaire and press Space to continue. Next step is to reset the task");
         nextAction = ActionAwaiting.TaskReset;
     }
 
@@ -219,7 +251,25 @@ private PhotonView photonView;
         Debug.Log("Resetting Task");
         SaveFinalValues();
         //globalScript.deleteStandingGoalObject();
-        nextAction = ActionAwaiting.DetermineNextTask;
+        studyLogger.WriteAllStudyData(!firstTaskDone ? -1 : currentRandomTask);
+        Debug.Log("Break Time. Press Space to continue");
+        if (!firstTaskDone)
+        {
+            firstTaskDone = true;
+            nextAction = ActionAwaiting.RandomTask;
+        }
+        else
+        {
+            currentRandomTask++;
+            if (currentRandomTask < allPossibleCombinations.Count)
+            {
+                nextAction = ActionAwaiting.RandomTask;
+            }
+            else
+            {
+                Debug.Log("All tasks done");
+            }
+        }
     }
     private void DetermineNextTask()
     {
@@ -260,7 +310,12 @@ private PhotonView photonView;
     }
     public void CallTriggerNextAction()
     {
-        photonView.RPC("TriggerNextAction", RpcTarget.All);
+        if (IsMasterClient) photonView.RPC("TriggerNextAction", RpcTarget.All);
+    }
+    [PunRPC]
+    public void UpdateStudyID(int newStudyID)
+    {
+        StudyID = newStudyID;
     }
 
 }

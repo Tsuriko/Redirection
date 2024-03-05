@@ -20,7 +20,7 @@ public class TargetCollisionManager : MonoBehaviour
         {
             RedirectionManager.instance.reachedTarget = true;           // tell RedirectionManager that we reached the target
             RedirectionManager.instance.target.HandReachedCube();
-            StudyProgressionController.instance.TriggerNextActionViaEndOfRedirection();
+            if (StudyProgressionController.instance != null) StudyProgressionController.instance.TriggerNextActionViaEndOfRedirection();
         }
     }
 }

@@ -195,7 +195,7 @@ namespace HR_Toolkit
             }
         }
 
-        private void EndCurrentRedirection()
+        public void EndCurrentRedirection()
         {
             if (!target.thisIsAResetPosition)
             {
