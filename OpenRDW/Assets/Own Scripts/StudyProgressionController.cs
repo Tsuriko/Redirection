@@ -77,9 +77,13 @@ public class StudyProgressionController : MonoBehaviour
                 TriggerNextAction();
             }
         }
-        if (Input.GetKeyDown(KeyCode.S) && nextAction == ActionAwaiting.FirstTask)
+        if (Input.GetKeyDown(KeyCode.S) && (nextAction == ActionAwaiting.FirstTask || nextAction == ActionAwaiting.RandomTask))
         {
             SynchronizeStandingPositionLocal();
+        }
+        if (Input.GetKeyDown(KeyCode.Y) && (nextAction == ActionAwaiting.FirstTask || nextAction == ActionAwaiting.RandomTask))
+        {
+            SyncPlayers();
         }
     }
 
