@@ -219,8 +219,8 @@ public class StudyProgressionController : MonoBehaviour
     {
         Debug.Log("Preparing Task");
         if (firstTaskDone) { 
-            globalScript.ConfigurePlayerPositionController();
-            //globalScript.ActivatePlayerPositionController();
+            //globalScript.ConfigurePlayerPositionController();
+            globalScript.ActivatePlayerPositionController();
         }
         Debug.Log("Press Space to start Redirection");
         nextAction = ActionAwaiting.TaskExecution;
@@ -228,6 +228,7 @@ public class StudyProgressionController : MonoBehaviour
 
     private void ExecuteTask()
     {
+        globalScript.activateAttachRedirectionTargetsScript();
         globalScript.activateAttachRedirectionTargetsScript();
         SaveInitialValues();
         if (firstTaskDone) globalScript.ActivateRedirectionLogic();
@@ -245,7 +246,7 @@ public class StudyProgressionController : MonoBehaviour
             globalScript.EndHandRedirection();
             globalScript.EndRedirectedWalking();
         }
-        if (IsMasterClient) globalScript.spawnStandingGoalObject();
+        //if (IsMasterClient) globalScript.spawnStandingGoalObject();
         questionaireScript.EnableQuestionnaire(true);
         Debug.Log("Let the Player fill out the Questionnaire and press Space to continue. Next step is to reset the task");
         nextAction = ActionAwaiting.TaskReset;
@@ -256,6 +257,7 @@ public class StudyProgressionController : MonoBehaviour
         Debug.Log("Resetting Task");
         SaveFinalValues();
         //globalScript.deleteStandingGoalObject();
+        globalScript.resetRedirection();
         studyLogger.WriteAllStudyData(!firstTaskDone ? -1 : currentRandomTask);
         Debug.Log("Break Time. Press Space to continue");
         if (!firstTaskDone)

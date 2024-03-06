@@ -116,7 +116,7 @@ namespace HR_Toolkit
         {
             if (handRedirectionManager != null)
             {
-                handRedirectionManager.TriggerHandRedirection();
+                handRedirectionManager.EndCurrentRedirection();
             }
         }
         public void EndRedirectedWalking()

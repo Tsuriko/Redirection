@@ -61,7 +61,7 @@ public class CustomRDWTake3 : MonoBehaviour
         }
         if (adjustPlayerMovement)
         {
-            AdjustPlayerMovement();
+            //AdjustPlayerMovement();
         }
 
         previousCameraRotation = vrCamera.rotation;

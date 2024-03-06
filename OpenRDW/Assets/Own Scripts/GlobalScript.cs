@@ -114,7 +114,6 @@ public class GlobalScript : MonoBehaviour
         {
             if (playerPositionControllerScriptComponent != null)
             {
-                playerPositionControllerScriptComponent.enabled = true;
                 ActivatePlayerPositionController();
             }
         }
@@ -227,6 +226,13 @@ public class GlobalScript : MonoBehaviour
         if (redirectionControlScriptComponent != null)
         {
             redirectionControlScriptComponent.EndRedirectedWalking();
+        }
+    }
+    public void resetRedirection()
+    {
+        if (redirectionControlScriptComponent != null)
+        {
+            redirectionControlScriptComponent.resetRedirection();
         }
     }
 

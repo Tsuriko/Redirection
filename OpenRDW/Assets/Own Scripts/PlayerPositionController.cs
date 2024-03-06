@@ -44,8 +44,8 @@ public class PlayerPositionController : MonoBehaviourPun
                 Vector3 newPositionMaster = CalculateNewPosition(true);
                 Vector3 newPositionOther = CalculateNewPosition(false);
 
+
                 MoveOwnPlayerLocally(newPositionMaster, rotationMaster);
-                Debug.Log("newPositionOther" + newPositionOther);
                 photonView.RPC("MoveOtherPlayer", RpcTarget.Others, newPositionOther, rotationOther);
             }
             else
@@ -67,7 +67,6 @@ public class PlayerPositionController : MonoBehaviourPun
         Quaternion offsetRotation = Quaternion.Euler(0f, rotationOffset, 0f);
 
         Quaternion finalRotation = targetRotation * offsetRotation;
-        Debug.Log($"Calculated rotation for {(isMaster ? "master" : "other")} player: {finalRotation}");
 
         return finalRotation;
     }
@@ -76,6 +75,13 @@ public class PlayerPositionController : MonoBehaviourPun
     {
         GameObject head = isMaster ? headMaster : headOther;
         GameObject ownPlayer = isMaster ? GameObject.Find("VR Player (Host)/Virtual") : GameObject.Find("VR Player (Guest)/Virtual");
+        GameObject masterPlayer = GameObject.Find("VR Player (Host)/Real/Head");
+        GameObject otherPlayer = GameObject.Find("VR Player (Guest)/Real/Head");
+
+        // Calculate horizontal distance between master and other player
+        Vector3 masterPosition = new Vector3(masterPlayer.transform.position.x, 0, masterPlayer.transform.position.z);
+        Vector3 otherPosition = new Vector3(otherPlayer.transform.position.x, 0, otherPlayer.transform.position.z);
+        float horizontalDistanceBetweenPlayers = (masterPosition - otherPosition).magnitude;
 
         Vector3 directionToHead;
         if (headMaster.transform.position == headOther.transform.position)
@@ -85,12 +91,14 @@ public class PlayerPositionController : MonoBehaviourPun
         }
         else
         {
-            // Calculate the direction from the midpoint to the head
-            directionToHead = (head.transform.position - midpoint).normalized;
+            // Calculate the direction from the midpoint to the head, ignoring y-axis differences
+            Vector3 headPositionWithoutY = new Vector3(head.transform.position.x, 0, head.transform.position.z);
+            Vector3 midpointWithoutY = new Vector3(midpoint.x, 0, midpoint.z);
+            directionToHead = (headPositionWithoutY - midpointWithoutY).normalized;
         }
 
-        // Calculate the new position for the head
-        Vector3 newHeadPosition = midpoint + directionToHead * (targetDistanceBetweenPlayers / 2);
+        // Adjust the new head position calculation using the horizontal distance
+        Vector3 newHeadPosition = midpoint + directionToHead * (horizontalDistanceBetweenPlayers / 2);
 
         // Calculate the offset from the OwnPlayer to the head
         Vector3 offsetToHead = head.transform.position - ownPlayer.transform.position;
@@ -123,7 +131,6 @@ public class PlayerPositionController : MonoBehaviourPun
 
         if (otherPlayer != null)
         {
-            Debug.Log("Moving other player.");
             newPosition.y = 0;
             otherPlayer.transform.position = newPosition;
             otherPlayer.transform.rotation = newRotation;
