@@ -83,22 +83,21 @@ public class PlayerPositionController : MonoBehaviourPun
         Vector3 otherPosition = new Vector3(otherPlayer.transform.position.x, 0, otherPlayer.transform.position.z);
         float horizontalDistanceBetweenPlayers = (masterPosition - otherPosition).magnitude;
 
-        Vector3 directionToHead;
-        if (headMaster.transform.position == headOther.transform.position)
+        // Determine direction to move from the midpoint based on master or other
+        Vector3 directionFromMidpoint = isMaster ? Vector3.right : Vector3.left;
+
+        // Position players on opposite sides of the midpoint along the x-axis
+        Vector3 newHeadPosition = midpoint + directionFromMidpoint * (horizontalDistanceBetweenPlayers / 2);
+
+        // Ensure master is always on the positive side and the other on the negative
+        if (!isMaster)
         {
-            // Use a default direction if both heads are at the same position
-            directionToHead = isMaster ? Vector3.right : Vector3.left;
+            newHeadPosition = new Vector3(-Mathf.Abs(newHeadPosition.x), newHeadPosition.y, newHeadPosition.z);
         }
         else
         {
-            // Calculate the direction from the midpoint to the head, ignoring y-axis differences
-            Vector3 headPositionWithoutY = new Vector3(head.transform.position.x, 0, head.transform.position.z);
-            Vector3 midpointWithoutY = new Vector3(midpoint.x, 0, midpoint.z);
-            directionToHead = (headPositionWithoutY - midpointWithoutY).normalized;
+            newHeadPosition = new Vector3(Mathf.Abs(newHeadPosition.x), newHeadPosition.y, newHeadPosition.z);
         }
-
-        // Adjust the new head position calculation using the horizontal distance
-        Vector3 newHeadPosition = midpoint + directionToHead * (horizontalDistanceBetweenPlayers / 2);
 
         // Calculate the offset from the OwnPlayer to the head
         Vector3 offsetToHead = head.transform.position - ownPlayer.transform.position;
