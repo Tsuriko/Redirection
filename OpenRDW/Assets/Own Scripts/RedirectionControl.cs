@@ -131,6 +131,7 @@ namespace HR_Toolkit
             if (rdwManager != null)
             {
                 rdwManager.enabled = false;
+                rdwManager.realObject = target;
                 rdwManager.InitializeRedirection();
             }
             if (handRedirectionManager != null)
