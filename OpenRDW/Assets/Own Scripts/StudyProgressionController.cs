@@ -145,12 +145,9 @@ public class StudyProgressionController : MonoBehaviour
         {
             photonView.RPC("UpdateStudyID", RpcTarget.All, StudyID);
         }
-        randomVariablesManager.SetSeedWithStudyId(StudyID);
-        randomVariablesManager.GenerateAllPossibleCombinationsRandomly();
-        allPossibleCombinations = new List<RandomVariablesManager.VariablesCombination>(randomVariablesManager.AllCombinations);
         Debug.Log("Initializing Study, Put the HMD on the same space like the other and press Space to continue");
         globalScript.enableKeyPresses = false;
-        studyLogger.SetupNewParticipant("RDW Test", StudyID);
+        
 
         nextAction = ActionAwaiting.SyncPlayers;
     }
@@ -174,6 +171,7 @@ public class StudyProgressionController : MonoBehaviour
     private void StartFirstTask()
     {
         Debug.Log("Starting First Task");
+        studyLogger.SetupNewParticipant("RDW Test", StudyID);
         questionaireScript.MoveQuestionnaireBehind(GameObject.Find("Standing Position(virtual)").transform);
         SetVariablesCombination(0, 0, false, 1);
         Debug.Log("Let the player face each other and press Space to Teleport the virtual Players to their Position. The first task will start" );
@@ -235,7 +233,11 @@ public class StudyProgressionController : MonoBehaviour
         globalScript.activateAttachRedirectionTargetsScript();
         globalScript.activateAttachRedirectionTargetsScript();
         SaveInitialValues();
-        if (firstTaskDone) globalScript.ActivateRedirectionLogic();
+        if (firstTaskDone)
+        {
+            globalScript.resetRedirection();
+            globalScript.ActivateRedirectionLogic();
+        }
         globalScript.deleteStandingGoalObject();
         
         Debug.Log("Executing Task");
@@ -271,7 +273,6 @@ public class StudyProgressionController : MonoBehaviour
         else
         {
             currentRandomTask++;
-            globalScript.resetRedirection();
             if (currentRandomTask < allPossibleCombinations.Count)
             {
                 nextAction = ActionAwaiting.RandomTask;

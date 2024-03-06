@@ -197,6 +197,7 @@ namespace HR_Toolkit
 
         public void EndCurrentRedirection()
         {
+            if (!target) return;
             if (!target.thisIsAResetPosition)
             {
                 lastTarget = target;
