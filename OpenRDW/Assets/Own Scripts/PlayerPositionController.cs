@@ -75,29 +75,15 @@ public class PlayerPositionController : MonoBehaviourPun
     {
         GameObject head = isMaster ? headMaster : headOther;
         GameObject ownPlayer = isMaster ? GameObject.Find("VR Player (Host)/Virtual") : GameObject.Find("VR Player (Guest)/Virtual");
-        GameObject masterPlayer = GameObject.Find("VR Player (Host)/Real/Head");
-        GameObject otherPlayer = GameObject.Find("VR Player (Guest)/Real/Head");
 
-        // Calculate horizontal distance between master and other player
-        Vector3 masterPosition = new Vector3(masterPlayer.transform.position.x, 0, masterPlayer.transform.position.z);
-        Vector3 otherPosition = new Vector3(otherPlayer.transform.position.x, 0, otherPlayer.transform.position.z);
-        float horizontalDistanceBetweenPlayers = (masterPosition - otherPosition).magnitude;
+        // Calculate horizontal distance between the virtual representations of the master and other player
+        GameObject masterPlayerVirtual = GameObject.Find("VR Player (Host)/Real/Head");
+        GameObject otherPlayerVirtual = GameObject.Find("VR Player (Guest)/Real/Head");
+        float horizontalDistanceBetweenPlayers = (masterPlayerVirtual.transform.position - otherPlayerVirtual.transform.position).magnitude;
 
-        // Determine direction to move from the midpoint based on master or other
-        Vector3 directionFromMidpoint = isMaster ? Vector3.right : Vector3.left;
-
-        // Position players on opposite sides of the midpoint along the x-axis
-        Vector3 newHeadPosition = midpoint + directionFromMidpoint * (horizontalDistanceBetweenPlayers / 2);
-
-        // Ensure master is always on the positive side and the other on the negative
-        if (!isMaster)
-        {
-            newHeadPosition = new Vector3(-Mathf.Abs(newHeadPosition.x), newHeadPosition.y, newHeadPosition.z);
-        }
-        else
-        {
-            newHeadPosition = new Vector3(Mathf.Abs(newHeadPosition.x), newHeadPosition.y, newHeadPosition.z);
-        }
+        // Position players on opposite sides of the origin (0, 0, 0) based on the horizontal distance
+        float halfDistance = horizontalDistanceBetweenPlayers / 2;
+        Vector3 newHeadPosition = isMaster ? new Vector3(halfDistance, 0, 0) : new Vector3(-halfDistance, 0, 0);
 
         // Calculate the offset from the OwnPlayer to the head
         Vector3 offsetToHead = head.transform.position - ownPlayer.transform.position;

@@ -25,7 +25,7 @@ public class VirtualPlayerTracking : MonoBehaviour
         trackedHead = GameObject.Find("Camera").transform;
         trackedLeftHand = GameObject.Find("Controller (left)").transform;
         trackedRightHand = GameObject.Find("Controller (right)").transform;
-        trackedCameraRig = GameObject.Find("[CameraRig]").transform;
+        trackedCameraRig = GameObject.Find("OwnPlayer").transform;
     }
 
     private void Update()
