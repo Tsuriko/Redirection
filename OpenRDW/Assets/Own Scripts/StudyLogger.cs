@@ -30,14 +30,14 @@ public class StudyLogger : MonoBehaviour
     private Vector3 initialOtherVirtualPosition;
     private Vector3 initialHostVirtualRotation;
     private Vector3 initialOtherVirtualRotation;
-    private Vector3 initalHostRealPosition;
-    private Vector3 initalOtherRealPosition;
+    private Vector3 initialHostRealPosition;
+    private Vector3 initialOtherRealPosition;
     private Vector3 initalHostRealRotation;
-    private Vector3 initalOtherRealRotation;
-    private Vector3 initalHostRealHandPosition;
-    private Vector3 initalOtherRealHandPosition;
-    private Vector3 initalHostVirtualHandPosition;
-    private Vector3 initalOtherVirtualHandPosition;
+    private Vector3 initialOtherRealRotation;
+    private Vector3 initialHostRealHandPosition;
+    private Vector3 initialOtherRealHandPosition;
+    private Vector3 initialHostVirtualHandPosition;
+    private Vector3 initialOtherVirtualHandPosition;
     private string initialTime;
 
     private Vector3 midRealTargetPosition;
@@ -170,14 +170,14 @@ public class StudyLogger : MonoBehaviour
                       $"{Vector3ToString(this.initialOtherVirtualPosition)}{csvCellSeparator}" +
                       $"{Vector3ToString(this.initialHostVirtualRotation)}{csvCellSeparator}" +
                       $"{Vector3ToString(this.initialOtherVirtualRotation)}{csvCellSeparator}" +
-                      $"{Vector3ToString(this.initalHostRealPosition)}{csvCellSeparator}" +
-                      $"{Vector3ToString(this.initalOtherRealPosition)}{csvCellSeparator}" +
+                      $"{Vector3ToString(this.initialHostRealPosition)}{csvCellSeparator}" +
+                      $"{Vector3ToString(this.initialOtherRealPosition)}{csvCellSeparator}" +
                       $"{Vector3ToString(this.initalHostRealRotation)}{csvCellSeparator}" +
-                      $"{Vector3ToString(this.initalOtherRealRotation)}{csvCellSeparator}" +
-                      $"{Vector3ToString(this.initalHostRealHandPosition)}{csvCellSeparator}" +
-                      $"{Vector3ToString(this.initalOtherRealHandPosition)}{csvCellSeparator}" +
-                      $"{Vector3ToString(this.initalHostVirtualHandPosition)}{csvCellSeparator}" +
-                      $"{Vector3ToString(this.initalOtherVirtualHandPosition)}{csvCellSeparator}" +
+                      $"{Vector3ToString(this.initialOtherRealRotation)}{csvCellSeparator}" +
+                      $"{Vector3ToString(this.initialHostRealHandPosition)}{csvCellSeparator}" +
+                      $"{Vector3ToString(this.initialOtherRealHandPosition)}{csvCellSeparator}" +
+                      $"{Vector3ToString(this.initialHostVirtualHandPosition)}{csvCellSeparator}" +
+                      $"{Vector3ToString(this.initialOtherVirtualHandPosition)}{csvCellSeparator}" +
                       $"{this.initialTime}{csvCellSeparator}" +
                       $"{Vector3ToString(this.midRealTargetPosition)}{csvCellSeparator}" +
                       $"{Vector3ToString(this.midVirtualTargetPosition)}{csvCellSeparator}" +
@@ -224,17 +224,16 @@ public class StudyLogger : MonoBehaviour
         initialRealTargetPostion = ConfigurationScript.Instance.redirectedRealTarget.transform.position;
         initialVirtualTargetPostion = ConfigurationScript.Instance.redirectedVirtualObject.transform.position;
         initialHostVirtualPosition = ConfigurationScript.Instance.vrPlayerHost.transform.Find("Virtual/Head").position;
-        //initialOtherVirtualPosition = ConfigurationScript.Instance.vrPlayerGuest.transform.Find("Virtual/Head").position;
+        
         initialHostVirtualRotation = ConfigurationScript.Instance.vrPlayerHost.transform.Find("Virtual/Head").rotation.eulerAngles;
-        //initialOtherVirtualRotation = ConfigurationScript.Instance.vrPlayerGuest.transform.Find("Virtual/Head").rotation.eulerAngles;
-        initalHostRealHandPosition = ConfigurationScript.Instance.vrPlayerHost.transform.Find("Real/Right Hand/Sphere").position;
-        initalHostVirtualHandPosition = ConfigurationScript.Instance.vrPlayerHost.transform.Find("Virtual/Right Hand/Sphere").position;
-        //initalOtherRealHandPosition = ConfigurationScript.Instance.vrPlayerGuest.transform.Find("Real/Right Hand/Sphere").position;
-        //initalOtherVirtualHandPosition = ConfigurationScript.Instance.vrPlayerGuest.transform.Find("Virtual/Right Hand/Sphere").position;
-        initalHostRealPosition = ConfigurationScript.Instance.vrPlayerHost.transform.Find("Real/Head").position;
-        //initalOtherRealPosition = ConfigurationScript.Instance.vrPlayerGuest.transform.Find("Real/Head").position;
+        
+        initialHostRealHandPosition = ConfigurationScript.Instance.vrPlayerHost.transform.Find("Real/Right Hand/Sphere").position;
+        initialHostVirtualHandPosition = ConfigurationScript.Instance.vrPlayerHost.transform.Find("Virtual/Right Hand/Sphere").position;
+        
+        initialHostRealPosition = ConfigurationScript.Instance.vrPlayerHost.transform.Find("Real/Head").position;
+        
         initalHostRealRotation = ConfigurationScript.Instance.vrPlayerHost.transform.Find("Real/Head").rotation.eulerAngles;
-        //initalOtherRealRotation = ConfigurationScript.Instance.vrPlayerGuest.transform.Find("Real/Head").rotation.eulerAngles;
+        
         initialTime = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
         Debug.Log(StudyProgressionController.instance.offsetValue);
         offsetValue = StudyProgressionController.instance.offsetValue;
@@ -244,43 +243,60 @@ public class StudyLogger : MonoBehaviour
         currentLiveRedirection = StudyProgressionController.instance.currentLiveRedirection;
         currentRedirectedWalkingIntensity = StudyProgressionController.instance.currentRedirectedWalkingIntensity;
         currentRandomTask = StudyProgressionController.instance.currentRandomTask;
-
+        initialOtherVirtualPosition = ConfigurationScript.Instance.vrPlayerGuest.transform.Find("Virtual/Head").position;
+        initialOtherVirtualRotation = ConfigurationScript.Instance.vrPlayerGuest.transform.Find("Virtual/Head").rotation.eulerAngles;
+        initialOtherRealHandPosition = ConfigurationScript.Instance.vrPlayerGuest.transform.Find("Real/Right Hand/Sphere").position;
+        initialOtherVirtualHandPosition = ConfigurationScript.Instance.vrPlayerGuest.transform.Find("Virtual/Right Hand/Sphere").position;
+        initialOtherRealPosition = ConfigurationScript.Instance.vrPlayerGuest.transform.Find("Real/Head").position;
+        initialOtherRealRotation = ConfigurationScript.Instance.vrPlayerGuest.transform.Find("Real/Head").rotation.eulerAngles;
+        Debug.Log("Real Distance:" + (initialHostRealPosition - initialOtherRealPosition).magnitude);
+        Debug.Log("Virtual Distance:" + (initialHostVirtualPosition - initialOtherVirtualPosition).magnitude);
     }
     public void SaveMidValues()
     {
         midRealTargetPosition = ConfigurationScript.Instance.redirectedRealTarget.transform.position;
         midVirtualTargetPosition = ConfigurationScript.Instance.redirectedVirtualObject.transform.position;
         midHostVirtualPosition = ConfigurationScript.Instance.vrPlayerHost.transform.Find("Virtual/Head").position;
-        //midOtherVirtualPosition = ConfigurationScript.Instance.vrPlayerGuest.transform.Find("Virtual/Head").position;
+        
         midHostVirtualRotation = ConfigurationScript.Instance.vrPlayerHost.transform.Find("Virtual/Head").rotation.eulerAngles;
-        //midOtherVirtualRotation = ConfigurationScript.Instance.vrPlayerGuest.transform.Find("Virtual/Head").rotation.eulerAngles;
+        
         midHostRealHandPosition = ConfigurationScript.Instance.vrPlayerHost.transform.Find("Real/Right Hand/Sphere").position;
         midHostVirtualHandPosition = ConfigurationScript.Instance.vrPlayerHost.transform.Find("Virtual/Right Hand/Sphere").position;
+        
+        midHostRealPosition = ConfigurationScript.Instance.vrPlayerHost.transform.Find("Real/Head").position;
+        
+        midHostRealRotation = ConfigurationScript.Instance.vrPlayerHost.transform.Find("Real/Head").rotation.eulerAngles;
+        
+        midTime = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+        //midOtherVirtualPosition = ConfigurationScript.Instance.vrPlayerGuest.transform.Find("Virtual/Head").position;
+        //midOtherVirtualRotation = ConfigurationScript.Instance.vrPlayerGuest.transform.Find("Virtual/Head").rotation.eulerAngles;
         //midOtherRealHandPosition = ConfigurationScript.Instance.vrPlayerGuest.transform.Find("Real/Right Hand/Sphere").position;
         //midOtherVirtualHandPosition = ConfigurationScript.Instance.vrPlayerGuest.transform.Find("Virtual/Right Hand/Sphere").position;
-        midHostRealPosition = ConfigurationScript.Instance.vrPlayerHost.transform.Find("Real/Head").position;
         //midOtherRealPosition = ConfigurationScript.Instance.vrPlayerGuest.transform.Find("Real/Head").position;
-        midHostRealRotation = ConfigurationScript.Instance.vrPlayerHost.transform.Find("Real/Head").rotation.eulerAngles;
         //midOtherRealRotation = ConfigurationScript.Instance.vrPlayerGuest.transform.Find("Real/Head").rotation.eulerAngles;
-        midTime = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
     }
     public void SaveFinalValues()
     {
         finalRealTargetPosition = ConfigurationScript.Instance.redirectedRealTarget.transform.position;
         finalVirtualTargetPosition = ConfigurationScript.Instance.redirectedVirtualObject.transform.position;
         finalHostVirtualPosition = ConfigurationScript.Instance.vrPlayerHost.transform.Find("Virtual/Head").position;
-        //finalOtherVirtualPosition = ConfigurationScript.Instance.vrPlayerGuest.transform.Find("Virtual/Head").position;
+        
         finalHostVirtualRotation = ConfigurationScript.Instance.vrPlayerHost.transform.Find("Virtual/Head").rotation.eulerAngles;
-        //finalOtherVirtualRotation = ConfigurationScript.Instance.vrPlayerGuest.transform.Find("Virtual/Head").rotation.eulerAngles;
+        
         finalHostRealHandPosition = ConfigurationScript.Instance.vrPlayerHost.transform.Find("Real/Right Hand/Sphere").position;
         finalHostVirtualHandPosition = ConfigurationScript.Instance.vrPlayerHost.transform.Find("Virtual/Right Hand/Sphere").position;
+        
+        finalHostRealPosition = ConfigurationScript.Instance.vrPlayerHost.transform.Find("Real/Head").position;
+        
+        finalHostRealRotation = ConfigurationScript.Instance.vrPlayerHost.transform.Find("Real/Head").rotation.eulerAngles;
+        
+        finalTime = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+        //finalOtherVirtualPosition = ConfigurationScript.Instance.vrPlayerGuest.transform.Find("Virtual/Head").position;
+        //finalOtherVirtualRotation = ConfigurationScript.Instance.vrPlayerGuest.transform.Find("Virtual/Head").rotation.eulerAngles;
         //finalOtherRealHandPosition = ConfigurationScript.Instance.vrPlayerGuest.transform.Find("Real/Right Hand/Sphere").position;
         //finalOtherVirtualHandPosition = ConfigurationScript.Instance.vrPlayerGuest.transform.Find("Virtual/Right Hand/Sphere").position;
-        finalHostRealPosition = ConfigurationScript.Instance.vrPlayerHost.transform.Find("Real/Head").position;
         //finalOtherRealPosition = ConfigurationScript.Instance.vrPlayerGuest.transform.Find("Real/Head").position;
-        finalHostRealRotation = ConfigurationScript.Instance.vrPlayerHost.transform.Find("Real/Head").rotation.eulerAngles;
         //finalOtherRealRotation = ConfigurationScript.Instance.vrPlayerGuest.transform.Find("Real/Head").rotation.eulerAngles;
-        finalTime = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
     }
 

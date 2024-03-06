@@ -28,7 +28,6 @@ public class CustomRDWTake3 : MonoBehaviour
             Debug.LogError("Ensure all transforms are set in the script!");
             return;
         }
-
         InitializeRedirection();
     }
 

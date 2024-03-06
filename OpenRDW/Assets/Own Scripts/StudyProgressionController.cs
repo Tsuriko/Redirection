@@ -222,9 +222,9 @@ public class StudyProgressionController : MonoBehaviour
     private void PrepareTask()
     {
         Debug.Log("Preparing Task");
-        if (firstTaskDone) { 
+        if (firstTaskDone) {
             //globalScript.ConfigurePlayerPositionController();
-            globalScript.ActivatePlayerPositionController();
+            if (IsMasterClient) globalScript.ActivatePlayerPositionController();
         }
         Debug.Log("Press Space to start Redirection");
         nextAction = ActionAwaiting.TaskExecution;
@@ -261,7 +261,6 @@ public class StudyProgressionController : MonoBehaviour
         Debug.Log("Resetting Task");
         SaveFinalValues();
         //globalScript.deleteStandingGoalObject();
-        globalScript.resetRedirection();
         studyLogger.WriteAllStudyData(!firstTaskDone ? -1 : currentRandomTask);
         Debug.Log("Break Time. Press Space to continue");
         if (!firstTaskDone)
@@ -272,6 +271,7 @@ public class StudyProgressionController : MonoBehaviour
         else
         {
             currentRandomTask++;
+            globalScript.resetRedirection();
             if (currentRandomTask < allPossibleCombinations.Count)
             {
                 nextAction = ActionAwaiting.RandomTask;
@@ -328,6 +328,9 @@ public class StudyProgressionController : MonoBehaviour
     public void UpdateStudyID(int newStudyID)
     {
         StudyID = newStudyID;
+        randomVariablesManager.SetSeedWithStudyId(StudyID);
+        randomVariablesManager.GenerateAllPossibleCombinationsRandomly();
+        allPossibleCombinations = new List<RandomVariablesManager.VariablesCombination>(randomVariablesManager.AllCombinations);
     }
     public bool isTaskReview()
     {
