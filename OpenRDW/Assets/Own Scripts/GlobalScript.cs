@@ -44,13 +44,6 @@ public class GlobalScript : MonoBehaviour
     [Tooltip("Hand Redirection Live redirection Algorithm")]
     public bool liveRedirection = false;
 
-    [Header("Player Position Controller Settings for virtual avatar")]
-    [Tooltip("Desired distance between players.")]
-    public float targetDistanceBetweenPlayers = 4f;
-    [Tooltip("Rotation offset for the master player.")]
-    public float rotationOffsetMaster = 0;
-    [Tooltip("Rotation offset for the other player.")]
-    public float rotationOffsetOther = 0;
 
     [Header("StandingPosition Seettings")]
     [Tooltip("Standing Goal Object")]
@@ -249,9 +242,6 @@ public class GlobalScript : MonoBehaviour
     {
         if (playerPositionControllerScriptComponent != null)
         {
-            playerPositionControllerScriptComponent.targetDistanceBetweenPlayers = targetDistanceBetweenPlayers;
-            playerPositionControllerScriptComponent.rotationOffsetMaster = rotationOffsetMaster;
-            playerPositionControllerScriptComponent.rotationOffsetOther = rotationOffsetOther;
         }
     }
     public void ActivateStandingPosition()

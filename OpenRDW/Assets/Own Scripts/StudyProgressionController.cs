@@ -82,7 +82,7 @@ public class StudyProgressionController : MonoBehaviour
         {
             SynchronizeStandingPositionLocal();
         }
-        if (Input.GetKeyDown(KeyCode.Y) && (nextAction == ActionAwaiting.FirstTask || nextAction == ActionAwaiting.RandomTask))
+        if (Input.GetKeyDown(KeyCode.Y) && (nextAction == ActionAwaiting.FirstTask || nextAction == ActionAwaiting.RandomTask || nextAction == ActionAwaiting.SaveMarkerPosition))
         {
             SyncPlayers();
         }
