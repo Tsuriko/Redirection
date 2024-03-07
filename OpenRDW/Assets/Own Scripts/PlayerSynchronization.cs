@@ -44,12 +44,12 @@ public class PlayerSynchronization : MonoBehaviour
     public void moveVirtualPlayerToReal()
     {
         realParent = GameObject.Find("VR Player (Host)/Real").transform;
-        Transform cameraRig = ConfigurationScript.Instance.ownPlayer.transform;
+        Transform ownPlayer  = ConfigurationScript.Instance.ownPlayer.transform;
 
 
 
-        cameraRig.position = realParent.position - new Vector3(0f, 5.0f, 0f);
-        cameraRig.rotation = realParent.rotation;
+        ownPlayer.position = realParent.position - new Vector3(0f, 5.0f, 0f);
+        ownPlayer.rotation = realParent.rotation;
 
         movePlayer = false;
     }

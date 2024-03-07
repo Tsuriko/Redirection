@@ -12,6 +12,7 @@ public class StudyProgressionController : MonoBehaviour
     public List<RandomVariablesManager.VariablesCombination> allPossibleCombinations;
     private StudyLogger studyLogger;
     public QuestionnaireScript questionaireScript;
+    public RandomVariablesManager.VariablesCombination currentCombination;
 
     [HideInInspector] public float offsetValue = 1;
     [HideInInspector] public int personRedirected = 0;
@@ -209,7 +210,7 @@ public class StudyProgressionController : MonoBehaviour
     private void StartRandomTask()
     {
         Debug.Log("Starting Random Task Number " + currentRandomTask + " of " + allPossibleCombinations.Count);
-        RandomVariablesManager.VariablesCombination currentCombination = allPossibleCombinations[currentRandomTask];
+        currentCombination = allPossibleCombinations[currentRandomTask];
         SetVariablesCombination(currentCombination.offsetValue, currentCombination.personRedirected, currentCombination.liveRedirection, currentCombination.redirectedWalkingIntensity);
         globalScript.SetupTrial(currentOffsetMaster, currentOffsetOther, currentLiveRedirection, currentRedirectedWalkingIntensity);
         if(IsMasterClient) globalScript.spawnStandingGoalObject();

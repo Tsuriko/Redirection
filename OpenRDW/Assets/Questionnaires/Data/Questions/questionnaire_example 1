@@ -1,0 +1,48 @@
+{
+   "qTitle":"Example Questionnaire",
+   "qInstructions":"Please answer all questions....",
+   "qId":"exampleQE",
+   "questions":[
+      {
+         "pId":"page1",
+         "qType":"radio",
+         "qInstructions":"Choose one option for each question",
+         "qData":[
+            {
+               "qId":"q1",
+               "qText":"UIST is an amazing conference",
+               "qMandatory":"false",
+               "qOptions":[
+                  "",
+				  "Strongly Disagree",
+                  "Disagree",  
+                  "Neutral",			                    
+                  "Agree",
+				  "Strongly Agree",
+                  ""
+               ]
+            },
+            {
+               "qId":"q2",
+               "qText":"VR is a beautiful research tool",
+               "qMandatory":"false",
+               "qOptions":[
+                  "",
+				  "Strongly Disagree",
+                  "Disagree",  
+                  "Neutral",			                    
+                  "Agree",
+				  "Strongly Agree",
+                  ""
+               ]
+            },
+         ]
+      }
+  
+            
+         
+      
+   ],
+   "qMessage":"You have completed the questionnaire",
+   "qAcknowledgments":"Thank you very much for taking part in the experiment! We appreciate your time!"
+}

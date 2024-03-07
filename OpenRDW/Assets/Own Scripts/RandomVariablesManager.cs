@@ -19,7 +19,7 @@ public class RandomVariablesManager : MonoBehaviour
     private readonly float[] offsetValues = { -2, -1, 1, 2 };
     private readonly int[] personRedirected = { 0, 1, 2 }; // 0 = both, 1 = host, 2 = other
     private readonly bool[] liveRedirectionValues = { true, false };
-    private readonly float[] redirectedWalkingIntensity = { 0.5f, 0.7f, 1f };
+    private readonly float[] redirectedWalkingIntensity = { 0.5f, 1f };
 
     public List<VariablesCombination> AllCombinations { get; private set; }
 

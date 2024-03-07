@@ -209,8 +209,6 @@ public class StudyLogger : MonoBehaviour
                       $"{Vector3ToString(this.finalHostVirtualHandPosition)}{csvCellSeparator}" +
                       $"{Vector3ToString(this.finalOtherVirtualHandPosition)}{csvCellSeparator}" +
                       $"{this.finalTime}";
-
-                      Debug.Log(line);
         File.AppendAllText(this.dataOutputFile, line + this.csvLineSeparator);
     }
 
@@ -235,7 +233,6 @@ public class StudyLogger : MonoBehaviour
         initalHostRealRotation = ConfigurationScript.Instance.vrPlayerHost.transform.Find("Real/Head").rotation.eulerAngles;
         
         initialTime = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-        Debug.Log(StudyProgressionController.instance.offsetValue);
         offsetValue = StudyProgressionController.instance.offsetValue;
         personRedirected = StudyProgressionController.instance.personRedirected;
         currentOffsetMaster = StudyProgressionController.instance.currentOffsetMaster;
@@ -249,8 +246,13 @@ public class StudyLogger : MonoBehaviour
         initialOtherVirtualHandPosition = ConfigurationScript.Instance.vrPlayerGuest.transform.Find("Virtual/Right Hand/Sphere").position;
         initialOtherRealPosition = ConfigurationScript.Instance.vrPlayerGuest.transform.Find("Real/Head").position;
         initialOtherRealRotation = ConfigurationScript.Instance.vrPlayerGuest.transform.Find("Real/Head").rotation.eulerAngles;
-        Debug.Log("Real Distance:" + (initialHostRealPosition - initialOtherRealPosition).magnitude);
-        Debug.Log("Virtual Distance:" + (initialHostVirtualPosition - initialOtherVirtualPosition).magnitude);
+        Vector3 realDistance = new Vector3(initialHostRealPosition.x - initialOtherRealPosition.x, 0f, initialHostRealPosition.z - initialOtherRealPosition.z);
+        float realHorizontalDistance = realDistance.magnitude;
+        Debug.Log("Real Horizontal Distance: " + realHorizontalDistance);
+        // Calculate horizontal distance in virtual world
+        Vector3 virtualDistance = new Vector3(initialHostVirtualPosition.x - initialOtherVirtualPosition.x, 0f, initialHostVirtualPosition.z - initialOtherVirtualPosition.z);
+        float virtualHorizontalDistance = virtualDistance.magnitude;
+        Debug.Log("Virtual Horizontal Distance: " + virtualHorizontalDistance);
     }
     public void SaveMidValues()
     {
