@@ -126,6 +126,11 @@ namespace HR_Toolkit
                 rdwManager.enabled = false;
             }
         }
+        public void EndRedirection()
+        {
+            EndHandRedirection();
+            EndRedirectedWalking();
+        }
         public void resetRedirection()
         {
             if (rdwManager != null)

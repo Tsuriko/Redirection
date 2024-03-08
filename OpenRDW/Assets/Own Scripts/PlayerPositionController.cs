@@ -5,16 +5,17 @@ public class PlayerPositionController : MonoBehaviourPun
 {
     public KeyCode triggerKey = KeyCode.G; // Replace with your desired button
 
-    public GameObject headMaster;
-    public GameObject headOther;
+    public GameObject head;
+    public GameObject ownPlayer;
+    public bool isMaster;
 
     void Start()
     {
         // Find the head GameObjects of both players during initialization
-        headMaster = GameObject.Find("VR Player (Host)/Virtual/Head");
-        headOther = GameObject.Find("VR Player (Guest)/Virtual/Head");
+        head = GameObject.Find("VR Player (Host)/Virtual/Head");
+        ownPlayer = GameObject.Find("OwnPlayer");
 
-        if (headMaster == null || headOther == null)
+        if (head == null)
         {
             Debug.LogError("Head GameObjects not found. Make sure they have the correct names.");
         }
@@ -26,41 +27,31 @@ public class PlayerPositionController : MonoBehaviourPun
 
     public void ActivatePlayerPositioning()
     {
-        if (PhotonNetwork.IsMasterClient)
+        isMaster = PhotonNetwork.IsMasterClient;
+        if (isMaster) photonView.RPC("MovePlayer", RpcTarget.All);
+
+    }
+    [PunRPC]
+    private void MovePlayer(){
+        
+
+        if (head != null)
         {
-            Debug.Log("Activating Player Positioning.");
+            // Apply only the rotation for both players
+            MoveOwnPlayerLocallyOnlyRotation(CalculateRotation());
 
-            if (headMaster != null && headOther != null)
-            {
-                // Calculate and apply rotation first
-                Quaternion rotationMaster = CalculateRotation(true);
-                Quaternion rotationOther = CalculateRotation(false);
+            // Recalculate position based on the new rotation
 
-                // Apply only the rotation for both players
-                MoveOwnPlayerLocallyOnlyRotation(rotationMaster);
-                photonView.RPC("MoveOwnPlayerLocallyOnlyRotation", RpcTarget.Others, rotationOther);
-
-                // Recalculate position based on the new rotation
-                Vector3 newPositionMaster = CalculateNewPosition(true);
-                Vector3 newPositionOther = CalculateNewPosition(false);
-
-                // Apply the recalculated position
-                MoveOwnPlayerLocally(newPositionMaster, rotationMaster); // Reuses existing method to apply position
-                photonView.RPC("MoveOwnPlayerLocally", RpcTarget.Others, newPositionOther, rotationOther);
-            }
-            else
-            {
-                Debug.LogError("One or both head GameObjects are null.");
-            }
+            // Apply the recalculated position
+            Vector3 newPosition = CalculatePosition();
+            MoveOwnPlayerLocally(newPosition);
         }
     }
 
-    private Quaternion CalculateRotation(bool isMaster)
+    private Quaternion CalculateRotation()
     {
         // Assuming 'head' is the GameObject you're trying to align but can't modify directly,
         // and 'ownPlayer' is the parent whose rotation you can modify.
-        GameObject head = isMaster ? headMaster : headOther;
-        GameObject ownPlayer = isMaster ? GameObject.Find("VR Player (Host)/Virtual") : GameObject.Find("VR Player (Guest)/Virtual");
 
         // Desired direction facing along the X-axis, based on whether they're master or not.
         Vector3 desiredDirection = isMaster ? Vector3.left : Vector3.right;
@@ -77,15 +68,13 @@ public class PlayerPositionController : MonoBehaviourPun
         return parentTargetRotation;
     }
 
-    private Vector3 CalculateNewPosition(bool isMaster)
+    private Vector3 CalculatePosition()
     {
-        GameObject head = isMaster ? headMaster : headOther;
-        GameObject ownPlayer = isMaster ? GameObject.Find("VR Player (Host)/Virtual") : GameObject.Find("VR Player (Guest)/Virtual");
 
         // Calculate horizontal distance between the virtual representations of the master and other player
-        GameObject masterPlayerVirtual = GameObject.Find("VR Player (Host)/Real/Head");
+        GameObject hostPlayerVirtual = GameObject.Find("VR Player (Host)/Real/Head");
         GameObject otherPlayerVirtual = GameObject.Find("VR Player (Guest)/Real/Head");
-        float horizontalDistanceBetweenPlayers = (masterPlayerVirtual.transform.position - otherPlayerVirtual.transform.position).magnitude;
+        float horizontalDistanceBetweenPlayers = (hostPlayerVirtual.transform.position - otherPlayerVirtual.transform.position).magnitude;
 
         // Position players on opposite sides of the origin (0, 0, 0) based on the horizontal distance
         float halfDistance = horizontalDistanceBetweenPlayers / 2;
@@ -98,54 +87,39 @@ public class PlayerPositionController : MonoBehaviourPun
         // Calculate and return the new position for the OwnPlayer, adjusting for the offset
         return newHeadPosition - offsetToHead;
     }
-
-    [PunRPC]
-    private void MoveOwnPlayerLocally(Vector3 newPosition, Quaternion newRotation)
+    private void MoveOwnPlayerLocally(Vector3 newPosition)
     {
-        GameObject ownPlayer = GameObject.Find("OwnPlayer");
-
 
         if (ownPlayer != null)
         {
             Debug.Log("Moving own player locally.");
             newPosition.y = 0;
             ownPlayer.transform.position = newPosition;
-            ownPlayer.transform.rotation = newRotation;
+            Debug.Log(newPosition);
         }
         else
         {
             Debug.LogError("OwnPlayer GameObject not found.");
         }
     }
-
-    [PunRPC]
-    private void MoveOtherPlayer(Vector3 newPosition, Quaternion newRotation)
+private void MoveOwnPlayerLocallyOnlyRotation(Quaternion newRotation)
+{
+    if (ownPlayer != null && head != null)
     {
-        GameObject otherPlayer = GameObject.Find("OwnPlayer"); // Replace with the name of the other client's "OwnPlayer" object
+        Debug.Log("Rotating own player around the head locally.");
 
-        if (otherPlayer != null)
+        // Calculate the rotation difference
+        Quaternion rotationDifference = newRotation * Quaternion.Inverse(ownPlayer.transform.rotation);
+
+        // Get the angle and axis from the rotation difference
+        rotationDifference.ToAngleAxis(out float angle, out Vector3 axis);
+
+        // Check if the rotation is significant
+        if (angle > 0.01f || angle < -0.01f) // A small threshold to avoid floating point imprecision issues
         {
-            newPosition.y = 0;
-            otherPlayer.transform.position = newPosition;
-            otherPlayer.transform.rotation = newRotation;
-        }
-        else
-        {
-            Debug.LogError("OtherPlayer GameObject not found.");
+            // Apply the rotation around the head position
+            ownPlayer.transform.RotateAround(head.transform.position, axis, angle);
         }
     }
-    [PunRPC]
-    private void MoveOwnPlayerLocallyOnlyRotation(Quaternion newRotation)
-    {
-        GameObject ownPlayer = GameObject.Find("OwnPlayer");
-        if (ownPlayer != null)
-        {
-            Debug.Log("Applying rotation to own player locally.");
-            ownPlayer.transform.rotation = newRotation;
-        }
-        else
-        {
-            Debug.LogError("OwnPlayer GameObject not found.");
-        }
-    }
+}
 }

@@ -228,6 +228,13 @@ public class GlobalScript : MonoBehaviour
             redirectionControlScriptComponent.resetRedirection();
         }
     }
+    public void EndRedirection()
+    {
+        if (redirectionControlScriptComponent != null)
+        {
+            redirectionControlScriptComponent.EndRedirection();
+        }
+    }
 
     public void ActivatePlayerPositionController()
     {

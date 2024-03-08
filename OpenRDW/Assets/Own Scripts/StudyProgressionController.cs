@@ -221,6 +221,7 @@ public class StudyProgressionController : MonoBehaviour
     private void PrepareTask()
     {
         Debug.Log("Preparing Task");
+        globalScript.
         if (firstTaskDone) {
             //globalScript.ConfigurePlayerPositionController();
             if (IsMasterClient) globalScript.ActivatePlayerPositionController();
@@ -250,8 +251,7 @@ public class StudyProgressionController : MonoBehaviour
         Debug.Log("Reviewing Task");
         if (firstTaskDone)
         {
-            globalScript.EndHandRedirection();
-            globalScript.EndRedirectedWalking();
+            globalScript.EndRedirection();
         }
         //if (IsMasterClient) globalScript.spawnStandingGoalObject();
         questionaireScript.EnableQuestionnaire(true);
