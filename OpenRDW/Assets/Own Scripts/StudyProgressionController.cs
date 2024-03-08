@@ -221,7 +221,6 @@ public class StudyProgressionController : MonoBehaviour
     private void PrepareTask()
     {
         Debug.Log("Preparing Task");
-        globalScript.
         if (firstTaskDone) {
             //globalScript.ConfigurePlayerPositionController();
             if (IsMasterClient) globalScript.ActivatePlayerPositionController();
