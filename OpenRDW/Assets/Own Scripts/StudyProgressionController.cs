@@ -13,6 +13,8 @@ public class StudyProgressionController : MonoBehaviour
     private StudyLogger studyLogger;
     public QuestionnaireScript questionaireScript;
     public RandomVariablesManager.VariablesCombination currentCombination;
+    public bool IsQuestionSubmitted = false;
+    public bool IsOtherQuestionSubmitted = false;
 
     [HideInInspector] public float offsetValue = 1;
     [HideInInspector] public int personRedirected = 0;
@@ -86,6 +88,13 @@ public class StudyProgressionController : MonoBehaviour
         {
             SyncPlayers();
         }
+        if (IsQuestionSubmitted && IsOtherQuestionSubmitted && nextAction == ActionAwaiting.TaskReset)
+        {
+            IsQuestionSubmitted = false;
+            IsOtherQuestionSubmitted = false;
+            CallTriggerNextAction();
+        }
+
     }
 
     [PunRPC]
@@ -148,7 +157,7 @@ public class StudyProgressionController : MonoBehaviour
         }
         Debug.Log("Initializing Study, Put the HMD on the same space like the other and press Space to continue");
         globalScript.enableKeyPresses = false;
-        
+
 
         nextAction = ActionAwaiting.SyncPlayers;
     }
@@ -173,11 +182,12 @@ public class StudyProgressionController : MonoBehaviour
     {
         Debug.Log("Starting First Task");
         studyLogger.SetupNewParticipant("RDW Test", StudyID);
-        questionaireScript.MoveQuestionnaireBehind(GameObject.Find("Standing Position(virtual)").transform);
+
         SetVariablesCombination(0, 0, false, 1);
-        Debug.Log("Let the player face each other and press Space to Teleport the virtual Players to their Position. The first task will start" );
+        Debug.Log("Let the player face each other and press Space to Teleport the virtual Players to their Position. The first task will start");
         globalScript.SetupTrial(currentOffsetMaster, currentOffsetOther, currentLiveRedirection, currentRedirectedWalkingIntensity);
-        nextAction = ActionAwaiting.TaskPreparation;
+        //nextAction = ActionAwaiting.TaskPreparation;
+        nextAction = ActionAwaiting.TaskExecution;
     }
 
     private void SetVariablesCombination(float offset, int personRedirected, bool liveRedirection, float redirectedWalkingIntensity)
@@ -213,15 +223,17 @@ public class StudyProgressionController : MonoBehaviour
         currentCombination = allPossibleCombinations[currentRandomTask];
         SetVariablesCombination(currentCombination.offsetValue, currentCombination.personRedirected, currentCombination.liveRedirection, currentCombination.redirectedWalkingIntensity);
         globalScript.SetupTrial(currentOffsetMaster, currentOffsetOther, currentLiveRedirection, currentRedirectedWalkingIntensity);
-        if(IsMasterClient) globalScript.spawnStandingGoalObject();
+        if (IsMasterClient) globalScript.spawnStandingGoalObject();
         Debug.Log("Position the Players on their Standing Position. Press Space to Teleport the virtual Players to their Position");
-        nextAction = ActionAwaiting.TaskPreparation;
+        //nextAction = ActionAwaiting.TaskPreparation;
+        nextAction = ActionAwaiting.TaskExecution;
     }
 
     private void PrepareTask()
     {
         Debug.Log("Preparing Task");
-        if (firstTaskDone) {
+        if (firstTaskDone)
+        {
             //globalScript.ConfigurePlayerPositionController();
             if (IsMasterClient) globalScript.ActivatePlayerPositionController();
         }
@@ -231,6 +243,11 @@ public class StudyProgressionController : MonoBehaviour
 
     private void ExecuteTask()
     {
+        if (firstTaskDone)
+        {
+            //globalScript.ConfigurePlayerPositionController();
+            if (IsMasterClient) globalScript.ActivatePlayerPositionController();
+        }
         globalScript.activateAttachRedirectionTargetsScript();
         globalScript.activateAttachRedirectionTargetsScript();
         SaveInitialValues();
@@ -239,10 +256,11 @@ public class StudyProgressionController : MonoBehaviour
             globalScript.resetRedirection();
             globalScript.ActivateRedirectionLogic();
         }
+        questionaireScript.MoveQuestionnaireBehind(GameObject.Find("Standing Position(virtual)").transform);
         globalScript.deleteStandingGoalObject();
-        
+
         Debug.Log("Executing Task");
-        
+
         nextAction = ActionAwaiting.TaskReview;
     }
     private void ReviewTask()
@@ -263,6 +281,7 @@ public class StudyProgressionController : MonoBehaviour
         Debug.Log("Resetting Task");
         SaveFinalValues();
         //globalScript.deleteStandingGoalObject();
+        questionaireScript.EnableQuestionnaire(false);
         studyLogger.WriteAllStudyData(!firstTaskDone ? -1 : currentRandomTask);
         Debug.Log("Break Time. Press Space to continue");
         if (!firstTaskDone)
@@ -336,6 +355,16 @@ public class StudyProgressionController : MonoBehaviour
     public bool isTaskReview()
     {
         return nextAction == ActionAwaiting.TaskReview;
+    }
+    public void QuestionSubmitted()
+    {
+        IsQuestionSubmitted = true;
+        photonView.RPC("OtherQuestionSubmitted", RpcTarget.Others);
+    }
+    [PunRPC]
+    public void OtherQuestionSubmitted()
+    {
+        IsOtherQuestionSubmitted = true;
     }
 
 }

@@ -1,31 +1,42 @@
 QuestionType;Question;QuestionID;Answer
-radio;UIST is an amazing conference;q1;4
-radio;VR is a beautiful research tool;q2;5
-radio;Happiness is the key to success;q3;5
-radio;Debugging is awesome;q4;5
-radio;I like fixing bugs;q5;4
-radio;I would use the VRQuestionnaireToolkit;q6;5
-radioGrid;Hololens_The system was easy to use;q7;4
-radioGrid;Oculus Rift_The system was easy to use;q7;3
-radioGrid;Vive_The system was easy to use;q7;4
-radioGrid;Magic Leap_The system was easy to use;q7;4
-radioGrid;Hololens_The system was easy to use;q8;5
-radioGrid;Oculus Rift_The system was easy to use;q8;6
-radioGrid;Vive_The system was easy to use;q8;6
-radioGrid;Magic Leap_The system was easy to use;q8;7
-checkbox; If you don’t use VR frequently, what is keeping you from adopting this? -It's too expensive;q9;1
-checkbox; If you don’t use VR frequently, what is keeping you from adopting this? -The technology isn't that good yet ;q9;1
-checkbox; If you don’t use VR frequently, what is keeping you from adopting this? -There is not enough content and/or games ;q9;
-checkbox; If you don’t use VR frequently, what is keeping you from adopting this? -I don't like wearing the headset ;q9;1
-checkbox; If you don’t use VR frequently, what is keeping you from adopting this? -The experience isn't immersive enough;q9;1
-checkbox; If you don’t use VR frequently, what is keeping you from adopting this? -The experience isn't better than traditional gaming;q9;
-linearSlider;Temporal Demand:			How hurried or rushed was the pace of the task?;s1;0
-linearSlider;Physical Demand:				How physically demanding was the task?;s2;1
-linearSlider;Mental Demand:				How mentally demanding was the task?;s3;2
-linearGrid;Mental Demand:				How mentally demanding was the task?;s4;5
-linearGrid;Physical Demand:				How physically demanding was the task?;s5;3
-linearGrid;Temporal Demand:		    How hurried or rushed was the pace of the task?;s6;4
-dropdown;Demanding;d1;2
-dropdown;Mental;d2;2
-dropdown;Physical;d3;1
+radio;I felt that my movements in the virtual environment accurately matched my physical movements.;q1_trial1;4
+radio;I felt the interactions with the other participant using my virtual hands were natural and intuitive.;q2_trial1;4
+radio;I felt that my movements in the virtual environment accurately matched my physical movements.;q1_trial2;3
+radio;I felt the interactions with the other participant using my virtual hands were natural and intuitive.;q2_trial2;3
+radio;I felt that my movements in the virtual environment accurately matched my physical movements.;q1_trial3;1
+radio;I felt the interactions with the other participant using my virtual hands were natural and intuitive.;q2_trial3;5
+radio;I felt that my movements in the virtual environment accurately matched my physical movements.;q1_trial4;3
+radio;I felt the interactions with the other participant using my virtual hands were natural and intuitive.;q2_trial4;5
+radio;I felt that my movements in the virtual environment accurately matched my physical movements.;q1_trial5;5
+radio;I felt the interactions with the other participant using my virtual hands were natural and intuitive.;q2_trial5;4
+radio;I felt that my movements in the virtual environment accurately matched my physical movements.;q1_trial6;4
+radio;I felt the interactions with the other participant using my virtual hands were natural and intuitive.;q2_trial6;5
+radio;I felt that my movements in the virtual environment accurately matched my physical movements.;q1_trial7;5
+radio;I felt the interactions with the other participant using my virtual hands were natural and intuitive.;q2_trial7;3
+radio;I felt that my movements in the virtual environment accurately matched my physical movements.;q1_trial8;3
+radio;I felt the interactions with the other participant using my virtual hands were natural and intuitive.;q2_trial8;5
+radio;I felt that my movements in the virtual environment accurately matched my physical movements.;q1_trial9;4
+radio;I felt the interactions with the other participant using my virtual hands were natural and intuitive.;q2_trial9;5
+radio;I felt that my movements in the virtual environment accurately matched my physical movements.;q1_trial10;3
+radio;I felt the interactions with the other participant using my virtual hands were natural and intuitive.;q2_trial10;4
+radio;I felt that my movements in the virtual environment accurately matched my physical movements.;q1_trial11;5
+radio;I felt the interactions with the other participant using my virtual hands were natural and intuitive.;q2_trial11;3
+radio;I felt that my movements in the virtual environment accurately matched my physical movements.;q1_trial12;3
+radio;I felt the interactions with the other participant using my virtual hands were natural and intuitive.;q2_trial12;4
+radio;I felt that my movements in the virtual environment accurately matched my physical movements.;q1_trial13;2
+radio;I felt the interactions with the other participant using my virtual hands were natural and intuitive.;q2_trial13;3
+radio;I felt that my movements in the virtual environment accurately matched my physical movements.;q1_trial14;3
+radio;I felt the interactions with the other participant using my virtual hands were natural and intuitive.;q2_trial14;4
+radio;I felt that my movements in the virtual environment accurately matched my physical movements.;q1_trial15;4
+radio;I felt the interactions with the other participant using my virtual hands were natural and intuitive.;q2_trial15;3
+radio;I felt that my movements in the virtual environment accurately matched my physical movements.;q1_trial16;3
+radio;I felt the interactions with the other participant using my virtual hands were natural and intuitive.;q2_trial16;4
+radio;I felt that my movements in the virtual environment accurately matched my physical movements.;q1_trial17;5
+radio;I felt the interactions with the other participant using my virtual hands were natural and intuitive.;q2_trial17;3
+radio;I felt that my movements in the virtual environment accurately matched my physical movements.;q1_trial18;3
+radio;I felt the interactions with the other participant using my virtual hands were natural and intuitive.;q2_trial18;4
+radio;I felt that my movements in the virtual environment accurately matched my physical movements.;q1_trial19;5
+radio;I felt the interactions with the other participant using my virtual hands were natural and intuitive.;q2_trial19;3
+radio;I felt that my movements in the virtual environment accurately matched my physical movements.;q1_trial20;3
+radio;I felt the interactions with the other participant using my virtual hands were natural and intuitive.;q2_trial20;5
 

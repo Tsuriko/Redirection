@@ -7,10 +7,12 @@ public class RandomVariablesManager : MonoBehaviour
     [Serializable]
     public struct VariablesCombination
     {
+        //public TaskCategory taskCategory;
         public float offsetValue;
         public int personRedirected; // Changed from float to int to match the data type
         public bool liveRedirection;
         public float redirectedWalkingIntensity;
+        //public float redirectionSliderValue;
     }
 
     [Header("Seed for Random Generation")]
@@ -22,6 +24,15 @@ public class RandomVariablesManager : MonoBehaviour
     private readonly float[] redirectedWalkingIntensity = { 0.5f, 1f };
 
     public List<VariablesCombination> AllCombinations { get; private set; }
+    public enum TaskCategory
+{
+    T0_Practice,
+    T1_NoRedirection,
+    T2_RDW,
+    T3_HR,
+    T4_CombinedNearThreshold,
+    T5_CombinedBeyondThreshold
+}
 
     private void Awake()
     {

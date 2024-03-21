@@ -1,4 +1,42 @@
 QuestionType,Question,QuestionID,Answer
-radio,UIST is an amazing conference,q1,3
-radio,VR is a beautiful research tool,q2,3
+radio,I felt that my movements in the virtual environment accurately matched my physical movements.,q1_trial1,4
+radio,I felt the interactions with the other participant using my virtual hands were natural and intuitive.,q2_trial1,4
+radio,I felt that my movements in the virtual environment accurately matched my physical movements.,q1_trial2,4
+radio,I felt the interactions with the other participant using my virtual hands were natural and intuitive.,q2_trial2,4
+radio,I felt that my movements in the virtual environment accurately matched my physical movements.,q1_trial3,5
+radio,I felt the interactions with the other participant using my virtual hands were natural and intuitive.,q2_trial3,5
+radio,I felt that my movements in the virtual environment accurately matched my physical movements.,q1_trial4,4
+radio,I felt the interactions with the other participant using my virtual hands were natural and intuitive.,q2_trial4,5
+radio,I felt that my movements in the virtual environment accurately matched my physical movements.,q1_trial5,5
+radio,I felt the interactions with the other participant using my virtual hands were natural and intuitive.,q2_trial5,4
+radio,I felt that my movements in the virtual environment accurately matched my physical movements.,q1_trial6,4
+radio,I felt the interactions with the other participant using my virtual hands were natural and intuitive.,q2_trial6,4
+radio,I felt that my movements in the virtual environment accurately matched my physical movements.,q1_trial7,4
+radio,I felt the interactions with the other participant using my virtual hands were natural and intuitive.,q2_trial7,4
+radio,I felt that my movements in the virtual environment accurately matched my physical movements.,q1_trial8,5
+radio,I felt the interactions with the other participant using my virtual hands were natural and intuitive.,q2_trial8,5
+radio,I felt that my movements in the virtual environment accurately matched my physical movements.,q1_trial9,4
+radio,I felt the interactions with the other participant using my virtual hands were natural and intuitive.,q2_trial9,4
+radio,I felt that my movements in the virtual environment accurately matched my physical movements.,q1_trial10,4
+radio,I felt the interactions with the other participant using my virtual hands were natural and intuitive.,q2_trial10,4
+radio,I felt that my movements in the virtual environment accurately matched my physical movements.,q1_trial11,4
+radio,I felt the interactions with the other participant using my virtual hands were natural and intuitive.,q2_trial11,5
+radio,I felt that my movements in the virtual environment accurately matched my physical movements.,q1_trial12,4
+radio,I felt the interactions with the other participant using my virtual hands were natural and intuitive.,q2_trial12,4
+radio,I felt that my movements in the virtual environment accurately matched my physical movements.,q1_trial13,4
+radio,I felt the interactions with the other participant using my virtual hands were natural and intuitive.,q2_trial13,4
+radio,I felt that my movements in the virtual environment accurately matched my physical movements.,q1_trial14,4
+radio,I felt the interactions with the other participant using my virtual hands were natural and intuitive.,q2_trial14,4
+radio,I felt that my movements in the virtual environment accurately matched my physical movements.,q1_trial15,4
+radio,I felt the interactions with the other participant using my virtual hands were natural and intuitive.,q2_trial15,4
+radio,I felt that my movements in the virtual environment accurately matched my physical movements.,q1_trial16,4
+radio,I felt the interactions with the other participant using my virtual hands were natural and intuitive.,q2_trial16,4
+radio,I felt that my movements in the virtual environment accurately matched my physical movements.,q1_trial17,4
+radio,I felt the interactions with the other participant using my virtual hands were natural and intuitive.,q2_trial17,4
+radio,I felt that my movements in the virtual environment accurately matched my physical movements.,q1_trial18,4
+radio,I felt the interactions with the other participant using my virtual hands were natural and intuitive.,q2_trial18,4
+radio,I felt that my movements in the virtual environment accurately matched my physical movements.,q1_trial19,4
+radio,I felt the interactions with the other participant using my virtual hands were natural and intuitive.,q2_trial19,4
+radio,I felt that my movements in the virtual environment accurately matched my physical movements.,q1_trial20,4
+radio,I felt the interactions with the other participant using my virtual hands were natural and intuitive.,q2_trial20,4
 
