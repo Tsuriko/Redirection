@@ -22,10 +22,6 @@ public class QuestionnaireScript : MonoBehaviour
        
         // Subscribe to the questionnaire finished event
         _exportToCsvScript = _vrQuestionnaireToolkit.GetComponentInChildren<ExportToCSV>();
-        if (_exportToCsvScript != null)
-        {
-            _exportToCsvScript.QuestionnaireFinishedEvent.AddListener(OnQuestionnaireSubmit);
-        }
     }
 
     void Update()
@@ -56,14 +52,13 @@ public class QuestionnaireScript : MonoBehaviour
         }
     }
 
-    private void OnQuestionnaireSubmit()
+    public void OnQuestionnaireSubmit()
     {
         // Handle the questionnaire submit event here
         Debug.Log("Questionnaire submitted!");
 
         // Example action: Disable questionnaire after submission
         EnableQuestionnaire(false);
-        StudyProgressionController.instance.QuestionSubmitted();
 
         // Or move to the next questionnaire, log data, etc.
     }

@@ -39,7 +39,7 @@ public class GlobalScript : MonoBehaviour
     public float redirectionSliderValue = 0.5f;
 
     [Tooltip("RDW Redirection intensity value.")]
-    [Range(0f, 1f)]
+    [Range(0f, 2f)]
     public float redirectIntensity = 1f;
     [Tooltip("Hand Redirection Live redirection Algorithm")]
     public bool liveRedirection = false;
@@ -276,6 +276,14 @@ public class GlobalScript : MonoBehaviour
             standingPositionScriptComponent.SpawnVirtualCloneWithOffset(0);
         }
     }
+    public void SavePositionAndRotationToFaceObject()
+    {
+        if (standingPositionScriptComponent != null)
+        {
+            standingPositionScriptComponent.CallSavePositionAndRotationToFaceObjectRPC();
+            standingPositionScriptComponent.SpawnVirtualCloneWithOffset(0);
+        }
+    }
 
 
     public void spawnStandingGoalObject()
@@ -308,11 +316,12 @@ public class GlobalScript : MonoBehaviour
 
         }
     }
-    public void SetupTrial(float offsetMaster, float offsetOther, bool liveRedirection, float redirectedWalkingIntensity)
+    public void SetupTrial(float offset, bool liveRedirection, float redirectedWalkingIntensity, float redirectionSliderValue)
     {        
-        this.standingPositionOffset = offsetMaster;
-        this.standingPositionOffsetOther = offsetOther;
+        this.standingPositionOffset = offset;
+        this.standingPositionOffsetOther = offset;
         this.liveRedirection = liveRedirection;
         this.redirectIntensity = redirectedWalkingIntensity;
+        this.redirectionSliderValue = redirectionSliderValue;
     }
 }

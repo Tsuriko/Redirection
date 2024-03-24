@@ -67,13 +67,13 @@ namespace HR_Toolkit
         {
             onRedirectionActivated.Invoke();
             redirectionTechnique.Init(this, RedirectionManager.instance.body.transform,RedirectionManager.instance.warpOrigin.transform.position);
-            HighlightOn();
+            //HighlightOn();
         }
 
         public void EndRedirection()
         {
             onRedirectionDeactivated.Invoke();
-            HighlightOff();
+            //HighlightOff();
             redirectionTechnique.EndRedirection();
         }
 

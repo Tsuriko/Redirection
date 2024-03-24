@@ -16,14 +16,13 @@ public class StudyLogger : MonoBehaviour
 
 
 
-
+    private RandomVariablesManager.TaskCategory taskCategory;
     private float offsetValue;
-    private int personRedirected;
-    private float currentOffsetMaster;
-    private float currentOffsetOther;
     private bool currentLiveRedirection;
     private float currentRedirectedWalkingIntensity;
-    private int currentRandomTask;
+    private float currentRedirectionSliderValue;
+
+    private int TaskNumber;
     private Vector3 initialRealTargetPostion;
     private Vector3 initialVirtualTargetPostion;
     private Vector3 initialHostVirtualPosition;
@@ -83,6 +82,8 @@ public class StudyLogger : MonoBehaviour
     private float finalRealHandDistance;
     private float finalVirtualHandDistance;
     private string finalTime;
+    private float startTime;
+    private float totalTime;
 
 
 
@@ -108,70 +109,29 @@ public class StudyLogger : MonoBehaviour
             {
                 File.WriteAllText(dataOutputFile,
                     "TrialNumber" + csvCellSeparator +
+                    "TotalTime" + csvCellSeparator +
+                    "TaskCategory" + csvCellSeparator +
                     "OffsetValue" + csvCellSeparator +
-                    "PersonRedirected" + csvCellSeparator +
-                    "CurrentOffsetMaster" + csvCellSeparator +
-                    "CurrentOffsetOther" + csvCellSeparator +
-                    "CurrentLiveRedirection" + csvCellSeparator +
-                    "CurrentRedirectedWalkingIntensity" + csvCellSeparator +
-                    "CurrentRandomTask" + csvCellSeparator +
-                    "InitialRealTargetPosition" + csvCellSeparator +
-                    "InitialVirtualTargetPosition" + csvCellSeparator +
-                    "InitialHostVirtualPosition" + csvCellSeparator +
-                    "InitialOtherVirtualPosition" + csvCellSeparator +
-                    "InitialHostVirtualRotation" + csvCellSeparator +
-                    "InitialOtherVirtualRotation" + csvCellSeparator +
-                    "InitialHostRealPosition" + csvCellSeparator +
-                    "InitialOtherRealPosition" + csvCellSeparator +
-                    "InitialHostRealRotation" + csvCellSeparator +
-                    "InitialOtherRealRotation" + csvCellSeparator +
-                    "InitialHostRealHandPosition" + csvCellSeparator +
-                    "InitialOtherRealHandPosition" + csvCellSeparator +
-                    "InitialHostVirtualHandPosition" + csvCellSeparator +
-                    "InitialOtherVirtualHandPosition" + csvCellSeparator +
+                    "LiveRedirection" + csvCellSeparator +
+                    "RedirectedWalkingIntensity" + csvCellSeparator +
+                    "RedirectionSliderValue" + csvCellSeparator +
                     "InitialRealHeadDistance" + csvCellSeparator +
                     "InitialVirtualHeadDistance" + csvCellSeparator +
                     "InitialRealHandDistance" + csvCellSeparator +
                     "InitialVirtualHandDistance" + csvCellSeparator +
                     "InitialTime" + csvCellSeparator +
-                    "MidRealTargetPosition" + csvCellSeparator +
-                    "MidVirtualTargetPosition" + csvCellSeparator +
-                    "MidHostVirtualPosition" + csvCellSeparator +
-                    "MidOtherVirtualPosition" + csvCellSeparator +
-                    "MidHostVirtualRotation" + csvCellSeparator +
-                    "MidOtherVirtualRotation" + csvCellSeparator +
-                    "MidHostRealPosition" + csvCellSeparator +
-                    "MidOtherRealPosition" + csvCellSeparator +
-                    "MidHostRealRotation" + csvCellSeparator +
-                    "MidOtherRealRotation" + csvCellSeparator +
-                    "MidHostRealHandPosition" + csvCellSeparator +
-                    "MidOtherRealHandPosition" + csvCellSeparator +
-                    "MidHostVirtualHandPosition" + csvCellSeparator +
-                    "MidOtherVirtualHandPosition" + csvCellSeparator +
                     "MidRealHeadDistance" + csvCellSeparator +
                     "MidVirtualHeadDistance" + csvCellSeparator +
                     "MidRealHandDistance" + csvCellSeparator +
                     "MidVirtualHandDistance" + csvCellSeparator +
                     "MidTime" + csvCellSeparator +
-                    "FinalRealTargetPosition" + csvCellSeparator +
-                    "FinalVirtualTargetPosition" + csvCellSeparator +
-                    "FinalHostVirtualPosition" + csvCellSeparator +
-                    "FinalOtherVirtualPosition" + csvCellSeparator +
-                    "FinalHostVirtualRotation" + csvCellSeparator +
-                    "FinalOtherVirtualRotation" + csvCellSeparator +
-                    "FinalHostRealPosition" + csvCellSeparator +
-                    "FinalOtherRealPosition" + csvCellSeparator +
-                    "FinalHostRealRotation" + csvCellSeparator +
-                    "FinalOtherRealRotation" + csvCellSeparator +
-                    "FinalHostRealHandPosition" + csvCellSeparator +
-                    "FinalOtherRealHandPosition" + csvCellSeparator +
-                    "FinalHostVirtualHandPosition" + csvCellSeparator +
-                    "FinalOtherVirtualHandPosition" + csvCellSeparator +
                     "FinalRealHeadDistance" + csvCellSeparator +
                     "FinalVirtualHeadDistance" + csvCellSeparator +
                     "FinalRealHandDistance" + csvCellSeparator +
                     "FinalVirtualHandDistance" + csvCellSeparator +
-                    "FinalTime" + this.csvLineSeparator);
+                    "FinalTime" + csvCellSeparator +
+                    csvLineSeparator);
+
                 break;
             }
         }
@@ -180,71 +140,30 @@ public class StudyLogger : MonoBehaviour
 
     public void WriteAllStudyData(int trialNumber)
     {
-        string line = $"{trialNumber}{csvCellSeparator}" +
-                      $"{this.offsetValue}{csvCellSeparator}" +
-                      $"{this.personRedirected}{csvCellSeparator}" +
-                      $"{this.currentOffsetMaster}{csvCellSeparator}" +
-                      $"{this.currentOffsetOther}{csvCellSeparator}" +
-                      $"{this.currentLiveRedirection}{csvCellSeparator}" +
-                      $"{this.currentRedirectedWalkingIntensity}{csvCellSeparator}" +
-                      $"{this.currentRandomTask}{csvCellSeparator}" +
-                      $"{Vector3ToString(this.initialRealTargetPostion)}{csvCellSeparator}" +
-                      $"{Vector3ToString(this.initialVirtualTargetPostion)}{csvCellSeparator}" +
-                      $"{Vector3ToString(this.initialHostVirtualPosition)}{csvCellSeparator}" +
-                      $"{Vector3ToString(this.initialOtherVirtualPosition)}{csvCellSeparator}" +
-                      $"{Vector3ToString(this.initialHostVirtualRotation)}{csvCellSeparator}" +
-                      $"{Vector3ToString(this.initialOtherVirtualRotation)}{csvCellSeparator}" +
-                      $"{Vector3ToString(this.initialHostRealPosition)}{csvCellSeparator}" +
-                      $"{Vector3ToString(this.initialOtherRealPosition)}{csvCellSeparator}" +
-                      $"{Vector3ToString(this.initalHostRealRotation)}{csvCellSeparator}" +
-                      $"{Vector3ToString(this.initialOtherRealRotation)}{csvCellSeparator}" +
-                      $"{Vector3ToString(this.initialHostRealHandPosition)}{csvCellSeparator}" +
-                      $"{Vector3ToString(this.initialOtherRealHandPosition)}{csvCellSeparator}" +
-                      $"{Vector3ToString(this.initialHostVirtualHandPosition)}{csvCellSeparator}" +
-                      $"{Vector3ToString(this.initialOtherVirtualHandPosition)}{csvCellSeparator}" +
-                      $"{this.initialRealHeadDistance}{csvCellSeparator}" +
-                        $"{this.initialVirtualHeadDistance}{csvCellSeparator}" +
-                        $"{this.initialRealHandDistance}{csvCellSeparator}" +
-                        $"{this.initialVirtualHandDistance}{csvCellSeparator}" +
-                      $"{this.initialTime}{csvCellSeparator}" +
-                      $"{Vector3ToString(this.midRealTargetPosition)}{csvCellSeparator}" +
-                      $"{Vector3ToString(this.midVirtualTargetPosition)}{csvCellSeparator}" +
-                      $"{Vector3ToString(this.midHostVirtualPosition)}{csvCellSeparator}" +
-                      $"{Vector3ToString(this.midOtherVirtualPosition)}{csvCellSeparator}" +
-                      $"{Vector3ToString(this.midHostVirtualRotation)}{csvCellSeparator}" +
-                      $"{Vector3ToString(this.midOtherVirtualRotation)}{csvCellSeparator}" +
-                      $"{Vector3ToString(this.midHostRealPosition)}{csvCellSeparator}" +
-                      $"{Vector3ToString(this.midOtherRealPosition)}{csvCellSeparator}" +
-                      $"{Vector3ToString(this.midHostRealRotation)}{csvCellSeparator}" +
-                      $"{Vector3ToString(this.midOtherRealRotation)}{csvCellSeparator}" +
-                      $"{Vector3ToString(this.midHostRealHandPosition)}{csvCellSeparator}" +
-                      $"{Vector3ToString(this.midOtherRealHandPosition)}{csvCellSeparator}" +
-                      $"{Vector3ToString(this.midHostVirtualHandPosition)}{csvCellSeparator}" +
-                      $"{Vector3ToString(this.midOtherVirtualHandPosition)}{csvCellSeparator}" +
-                        $"{this.midRealHeadDistance}{csvCellSeparator}" +
-                            $"{this.midVirtualHeadDistance}{csvCellSeparator}" +
-                            $"{this.midRealHandDistance}{csvCellSeparator}" +
-                            $"{this.midVirtualHandDistance}{csvCellSeparator}" +
-                      $"{this.midTime}{csvCellSeparator}" +
-                      $"{Vector3ToString(this.finalRealTargetPosition)}{csvCellSeparator}" +
-                      $"{Vector3ToString(this.finalVirtualTargetPosition)}{csvCellSeparator}" +
-                      $"{Vector3ToString(this.finalHostVirtualPosition)}{csvCellSeparator}" +
-                      $"{Vector3ToString(this.finalOtherVirtualPosition)}{csvCellSeparator}" +
-                      $"{Vector3ToString(this.finalHostVirtualRotation)}{csvCellSeparator}" +
-                      $"{Vector3ToString(this.finalOtherVirtualRotation)}{csvCellSeparator}" +
-                      $"{Vector3ToString(this.finalHostRealPosition)}{csvCellSeparator}" +
-                      $"{Vector3ToString(this.finalOtherRealPosition)}{csvCellSeparator}" +
-                      $"{Vector3ToString(this.finalHostRealRotation)}{csvCellSeparator}" +
-                      $"{Vector3ToString(this.finalOtherRealRotation)}{csvCellSeparator}" +
-                      $"{Vector3ToString(this.finalHostRealHandPosition)}{csvCellSeparator}" +
-                      $"{Vector3ToString(this.finalOtherRealHandPosition)}{csvCellSeparator}" +
-                      $"{Vector3ToString(this.finalHostVirtualHandPosition)}{csvCellSeparator}" +
-                      $"{Vector3ToString(this.finalOtherVirtualHandPosition)}{csvCellSeparator}" +
-                        $"{this.finalRealHeadDistance}{csvCellSeparator}" +
-                            $"{this.finalVirtualHeadDistance}{csvCellSeparator}" +
-                            $"{this.finalRealHandDistance}{csvCellSeparator}" +
-                            $"{this.finalVirtualHandDistance}{csvCellSeparator}" +
-                      $"{this.finalTime}";
+        string line = 
+            $"{trialNumber}{csvCellSeparator}" +
+            $"{totalTime}{csvCellSeparator}" +
+            $"{taskCategory}{csvCellSeparator}" +
+            $"{offsetValue}{csvCellSeparator}" +
+            $"{currentLiveRedirection}{csvCellSeparator}" +
+            $"{currentRedirectedWalkingIntensity}{csvCellSeparator}" +
+            $"{currentRedirectionSliderValue}{csvCellSeparator}" +
+            $"{initialRealHeadDistance}{csvCellSeparator}" +
+            $"{initialVirtualHeadDistance}{csvCellSeparator}" +
+            $"{initialRealHandDistance}{csvCellSeparator}" +
+            $"{initialVirtualHandDistance}{csvCellSeparator}" +
+            $"{initialTime}{csvCellSeparator}" +
+            $"{midRealHeadDistance}{csvCellSeparator}" +
+            $"{midVirtualHeadDistance}{csvCellSeparator}" +
+            $"{midRealHandDistance}{csvCellSeparator}" +
+            $"{midVirtualHandDistance}{csvCellSeparator}" +
+            $"{midTime}{csvCellSeparator}" +
+            $"{finalRealHeadDistance}{csvCellSeparator}" +
+            $"{finalVirtualHeadDistance}{csvCellSeparator}" +
+            $"{finalRealHandDistance}{csvCellSeparator}" +
+            $"{finalVirtualHandDistance}{csvCellSeparator}" +
+            $"{finalTime}{csvCellSeparator}";
+
         File.AppendAllText(this.dataOutputFile, line + this.csvLineSeparator);
     }
 
@@ -253,7 +172,8 @@ public class StudyLogger : MonoBehaviour
         return $"{vector.x},{vector.y},{vector.z}";
     }
     public void SaveInitialValues()
-    {
+    {   
+        startTime = Time.time;
 
         initialRealTargetPostion = ConfigurationScript.Instance.redirectedRealTarget.transform.position;
         initialVirtualTargetPostion = ConfigurationScript.Instance.redirectedVirtualObject.transform.position;
@@ -269,13 +189,12 @@ public class StudyLogger : MonoBehaviour
         initalHostRealRotation = ConfigurationScript.Instance.vrPlayerHost.transform.Find("Real/Head").rotation.eulerAngles;
 
         initialTime = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+        taskCategory = StudyProgressionController.instance.taskCategory;
         offsetValue = StudyProgressionController.instance.offsetValue;
-        personRedirected = StudyProgressionController.instance.personRedirected;
-        currentOffsetMaster = StudyProgressionController.instance.currentOffsetMaster;
-        currentOffsetOther = StudyProgressionController.instance.currentOffsetOther;
         currentLiveRedirection = StudyProgressionController.instance.currentLiveRedirection;
         currentRedirectedWalkingIntensity = StudyProgressionController.instance.currentRedirectedWalkingIntensity;
-        currentRandomTask = StudyProgressionController.instance.currentRandomTask;
+        currentRedirectionSliderValue = StudyProgressionController.instance.currentRedirectionSliderValue;
+        TaskNumber = StudyProgressionController.instance.TaskNumber;
         initialOtherVirtualPosition = ConfigurationScript.Instance.vrPlayerGuest.transform.Find("Virtual/Head").position;
         initialOtherVirtualRotation = ConfigurationScript.Instance.vrPlayerGuest.transform.Find("Virtual/Head").rotation.eulerAngles;
         initialOtherRealHandPosition = ConfigurationScript.Instance.vrPlayerGuest.transform.Find("Real/Right Hand/Sphere").position;
@@ -316,13 +235,13 @@ public class StudyLogger : MonoBehaviour
         //midOtherRealPosition = ConfigurationScript.Instance.vrPlayerGuest.transform.Find("Real/Head").position;
         //midOtherRealRotation = ConfigurationScript.Instance.vrPlayerGuest.transform.Find("Real/Head").rotation.eulerAngles;
         midRealHeadDistance = new Vector3(midHostRealPosition.x - midOtherRealPosition.x, 0f, midHostRealPosition.z - midOtherRealPosition.z).magnitude;
-        Debug.Log("Real Horizontal Distance: " + midRealHeadDistance);
+        //Debug.Log("Real Horizontal Distance: " + midRealHeadDistance);
         midVirtualHeadDistance = new Vector3(midHostVirtualPosition.x - midOtherVirtualPosition.x, 0f, midHostVirtualPosition.z - midOtherVirtualPosition.z).magnitude;
-        Debug.Log("Virtual Horizontal Distance: " + midVirtualHeadDistance);
+        //Debug.Log("Virtual Horizontal Distance: " + midVirtualHeadDistance);
         midRealHandDistance = new Vector3(midHostRealHandPosition.x - midOtherRealHandPosition.x, 0f, midHostRealHandPosition.z - midOtherRealHandPosition.z).magnitude;
-        Debug.Log("Real Hand Horizontal Distance: " + midRealHandDistance);
+        //Debug.Log("Real Hand Horizontal Distance: " + midRealHandDistance);
         midVirtualHandDistance = new Vector3(midHostVirtualHandPosition.x - midOtherVirtualHandPosition.x, 0f, midHostVirtualHandPosition.z - midOtherVirtualHandPosition.z).magnitude;
-        Debug.Log("Virtual Hand Horizontal Distance: " + midVirtualHandDistance);
+        //Debug.Log("Virtual Hand Horizontal Distance: " + midVirtualHandDistance);
 
     }
     public void SaveFinalValues()
@@ -348,13 +267,16 @@ public class StudyLogger : MonoBehaviour
         //finalOtherRealPosition = ConfigurationScript.Instance.vrPlayerGuest.transform.Find("Real/Head").position;
         //finalOtherRealRotation = ConfigurationScript.Instance.vrPlayerGuest.transform.Find("Real/Head").rotation.eulerAngles;
         finalRealHeadDistance = new Vector3(finalHostRealPosition.x - finalOtherRealPosition.x, 0f, finalHostRealPosition.z - finalOtherRealPosition.z).magnitude;
-        Debug.Log("Real Horizontal Distance: " + finalRealHeadDistance);
+        //Debug.Log("Real Horizontal Distance: " + finalRealHeadDistance);
         finalVirtualHeadDistance = new Vector3(finalHostVirtualPosition.x - finalOtherVirtualPosition.x, 0f, finalHostVirtualPosition.z - finalOtherVirtualPosition.z).magnitude;
-        Debug.Log("Virtual Horizontal Distance: " + finalVirtualHeadDistance);
+        //Debug.Log("Virtual Horizontal Distance: " + finalVirtualHeadDistance);
         finalRealHandDistance = new Vector3(finalHostRealHandPosition.x - finalOtherRealHandPosition.x, 0f, finalHostRealHandPosition.z - finalOtherRealHandPosition.z).magnitude;
-        Debug.Log("Real Hand Horizontal Distance: " + finalRealHandDistance);
+        //Debug.Log("Real Hand Horizontal Distance: " + finalRealHandDistance);
         finalVirtualHandDistance = new Vector3(finalHostVirtualHandPosition.x - finalOtherVirtualHandPosition.x, 0f, finalHostVirtualHandPosition.z - finalOtherVirtualHandPosition.z).magnitude;
-        Debug.Log("Virtual Hand Horizontal Distance: " + finalVirtualHandDistance);
+        //Debug.Log("Virtual Hand Horizontal Distance: " + finalVirtualHandDistance);
+        totalTime = Time.time - startTime;
+
+
 
 
     }

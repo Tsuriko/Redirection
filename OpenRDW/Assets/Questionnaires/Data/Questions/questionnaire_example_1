@@ -1,5 +1,4 @@
 {"qTitle": "Redirection Questionnaire",
- "qInstructions": "Please answer all questions based on your experience during the study. Your feedback is invaluable.",
  "qId": "exampleQE",
  "questions": [{"pId": "page1",
    "qType": "radio",

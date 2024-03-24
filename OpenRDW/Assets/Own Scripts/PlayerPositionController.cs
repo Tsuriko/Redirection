@@ -48,25 +48,28 @@ public class PlayerPositionController : MonoBehaviourPun
         }
     }
 
-    private Quaternion CalculateRotation()
-    {
-        // Assuming 'head' is the GameObject you're trying to align but can't modify directly,
-        // and 'ownPlayer' is the parent whose rotation you can modify.
+private Quaternion CalculateRotation()
+{
+    // Desired direction facing along the X-axis, based on whether they're master or not.
+    Vector3 desiredDirection = isMaster ? Vector3.left : Vector3.right;
 
-        // Desired direction facing along the X-axis, based on whether they're master or not.
-        Vector3 desiredDirection = isMaster ? Vector3.left : Vector3.right;
+    // Calculate the current forward direction of the head in world space
+    Vector3 currentHeadForward = head.transform.forward;
+    // Project the current forward and desired direction onto the horizontal plane (y = 0)
+    currentHeadForward.y = 0;
+    desiredDirection.y = 0;
 
-        // Calculate the current forward direction of the head in world space
-        Vector3 currentHeadForward = head.transform.forward;
+    // Calculate the rotation needed to align the head's forward direction with the desired direction
+    Quaternion fromCurrentToDesired = Quaternion.FromToRotation(currentHeadForward, desiredDirection);
 
-        // Calculate the rotation needed to align the head's forward direction with the desired direction
-        Quaternion fromCurrentToDesired = Quaternion.FromToRotation(currentHeadForward, desiredDirection);
+    // Extract the y component of the rotation
+    float yRotation = fromCurrentToDesired.eulerAngles.y;
 
-        // Apply this rotation to the parent, considering the current rotation of the head relative to the parent
-        Quaternion parentTargetRotation = fromCurrentToDesired * ownPlayer.transform.rotation;
+    // Create a new Quaternion for the parent that only includes the y-component rotation
+    Quaternion parentTargetRotation = Quaternion.Euler(0, yRotation, 0) * ownPlayer.transform.rotation;
 
-        return parentTargetRotation;
-    }
+    return parentTargetRotation;
+}
 
     private Vector3 CalculatePosition()
     {

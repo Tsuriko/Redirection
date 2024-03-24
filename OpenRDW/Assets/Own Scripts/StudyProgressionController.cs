@@ -9,21 +9,23 @@ public class StudyProgressionController : MonoBehaviour
     public int StudyID = 0;
     private GlobalScript globalScript;
     private RandomVariablesManager randomVariablesManager;
-    public List<RandomVariablesManager.VariablesCombination> allPossibleCombinations;
+    public List<List<RandomVariablesManager.VariablesCombination>> studyCategoryOrderList = new List<List<RandomVariablesManager.VariablesCombination>>();
+    public int currentStudyCategoryIndex = 0;
     private StudyLogger studyLogger;
     public QuestionnaireScript questionaireScript;
+    public List<RandomVariablesManager.VariablesCombination> currenCategoryList;
+    public int currentCategoryIndex = 0;
     public RandomVariablesManager.VariablesCombination currentCombination;
     public bool IsQuestionSubmitted = false;
     public bool IsOtherQuestionSubmitted = false;
+    public int TaskNumber = 0;
 
-    [HideInInspector] public float offsetValue = 1;
-    [HideInInspector] public int personRedirected = 0;
-    [HideInInspector] public float currentOffsetMaster = 0;
-    [HideInInspector] public float currentOffsetOther = 0;
+    [HideInInspector] public RandomVariablesManager.TaskCategory taskCategory;
+    [HideInInspector] public float offsetValue = 0;
     [HideInInspector] public bool currentLiveRedirection = false;
     [HideInInspector] public float currentRedirectedWalkingIntensity = 0;
+    [HideInInspector] public float currentRedirectionSliderValue = 0;
 
-    public int currentRandomTask = 0;
     private bool firstTaskDone = false;
     private PhotonView photonView;
     public bool IsMasterClient;
@@ -38,9 +40,9 @@ public class StudyProgressionController : MonoBehaviour
         TaskExecution,
         TaskReset,
         TaskReview,
-        DetermineNextTask,
         FirstTask,
         RandomTask,
+    
     }
 
     public ActionAwaiting nextAction = ActionAwaiting.InitializeStudy;
@@ -71,18 +73,18 @@ public class StudyProgressionController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (nextAction == ActionAwaiting.TaskPreparation || nextAction == ActionAwaiting.TaskExecution || nextAction == ActionAwaiting.TaskReset || nextAction == ActionAwaiting.TaskReview || nextAction == ActionAwaiting.FirstTask || nextAction == ActionAwaiting.RandomTask)
+            if (nextAction == ActionAwaiting.TaskPreparation || nextAction == ActionAwaiting.TaskExecution || nextAction == ActionAwaiting.TaskReset || nextAction == ActionAwaiting.TaskReview || nextAction == ActionAwaiting.FirstTask || nextAction == ActionAwaiting.RandomTask || nextAction == ActionAwaiting.SaveMarkerPosition)
             {
                 CallTriggerNextAction();
             }
-            if (nextAction == ActionAwaiting.InitializeStudy || nextAction == ActionAwaiting.SyncPlayers || nextAction == ActionAwaiting.SaveMarkerPosition)
+            if (nextAction == ActionAwaiting.InitializeStudy || nextAction == ActionAwaiting.SyncPlayers )
             {
                 TriggerNextAction();
             }
         }
         if (Input.GetKeyDown(KeyCode.S) && (nextAction == ActionAwaiting.FirstTask || nextAction == ActionAwaiting.RandomTask))
         {
-            SynchronizeStandingPositionLocal();
+            SynchronizeStandingPositionRemote();
         }
         if (Input.GetKeyDown(KeyCode.Y) && (nextAction == ActionAwaiting.FirstTask || nextAction == ActionAwaiting.RandomTask || nextAction == ActionAwaiting.SaveMarkerPosition))
         {
@@ -129,9 +131,6 @@ public class StudyProgressionController : MonoBehaviour
             case ActionAwaiting.TaskReset:
                 ResetTask();
                 break;
-            case ActionAwaiting.DetermineNextTask:
-                DetermineNextTask();
-                break;
             default:
                 Debug.Log("No action or unknown action awaited.");
                 break;
@@ -166,15 +165,15 @@ public class StudyProgressionController : MonoBehaviour
     {
         Debug.Log("Syncing Players");
         globalScript.syncPlayers();
-        Debug.Log("Let Player put the HMD on and let them to the real marker and press Space to continue");
+        Debug.Log("Let Player put the HMD on and let them to the real marker and press Space to continue. Now only the master client can press Space");
         nextAction = ActionAwaiting.SaveMarkerPosition;
     }
 
     private void SaveMarkerPosition()
     {
         Debug.Log("Saving Marker Position");
-        SynchronizeStandingPositionLocal();
-        Debug.Log("Use the S key to position the arrows direction to the other player. Press Space to continue. Now only the master client can press Space");
+        SynchronizeStandingPositionRemote();
+        Debug.Log("Use the S key to position the arrows direction to the other player. Press Space to continue. ");
         nextAction = ActionAwaiting.FirstTask;
     }
 
@@ -183,46 +182,28 @@ public class StudyProgressionController : MonoBehaviour
         Debug.Log("Starting First Task");
         studyLogger.SetupNewParticipant("RDW Test", StudyID);
 
-        SetVariablesCombination(0, 0, false, 1);
+        SetVariablesCombination(RandomVariablesManager.TaskCategory.FirstTask, 0, false, 0, 0);
         Debug.Log("Let the player face each other and press Space to Teleport the virtual Players to their Position. The first task will start");
-        globalScript.SetupTrial(currentOffsetMaster, currentOffsetOther, currentLiveRedirection, currentRedirectedWalkingIntensity);
+        globalScript.SetupTrial(offsetValue, currentLiveRedirection, currentRedirectedWalkingIntensity, currentRedirectionSliderValue);
         //nextAction = ActionAwaiting.TaskPreparation;
         nextAction = ActionAwaiting.TaskExecution;
     }
 
-    private void SetVariablesCombination(float offset, int personRedirected, bool liveRedirection, float redirectedWalkingIntensity)
+    private void SetVariablesCombination(RandomVariablesManager.TaskCategory taskCategory, float offset, bool liveRedirection, float redirectedWalkingIntensity, float redirectionSliderValue)
     {
+
+        this.taskCategory = taskCategory;
         this.currentLiveRedirection = liveRedirection;
         this.currentRedirectedWalkingIntensity = redirectedWalkingIntensity;
         this.offsetValue = offset;
-        this.personRedirected = personRedirected;
-
-        // Logic to distribute offset based on personRedirected
-        switch (personRedirected)
-        {
-            case 0: // Both master and other share the offset equally
-                this.currentOffsetMaster = offset / 2f;
-                this.currentOffsetOther = offset / 2f;
-                break;
-            case 1: // Master gets all the offset, other gets none
-                this.currentOffsetMaster = offset;
-                this.currentOffsetOther = 0;
-                break;
-            case 2: // Other gets all the offset, master gets none
-                this.currentOffsetMaster = 0;
-                this.currentOffsetOther = offset;
-                break;
-            default:
-                Debug.LogError("Invalid personRedirected value: " + personRedirected);
-                break;
-        }
+        this.currentRedirectionSliderValue = redirectionSliderValue;
     }
     private void StartRandomTask()
     {
-        Debug.Log("Starting Random Task Number " + currentRandomTask + " of " + allPossibleCombinations.Count);
-        currentCombination = allPossibleCombinations[currentRandomTask];
-        SetVariablesCombination(currentCombination.offsetValue, currentCombination.personRedirected, currentCombination.liveRedirection, currentCombination.redirectedWalkingIntensity);
-        globalScript.SetupTrial(currentOffsetMaster, currentOffsetOther, currentLiveRedirection, currentRedirectedWalkingIntensity);
+        Debug.Log("Starting Category " + currentStudyCategoryIndex + " Task Number " + (currentCategoryIndex+1) + " of " + currenCategoryList.Count);
+        currentCombination = currenCategoryList[currentCategoryIndex];
+        SetVariablesCombination(currentCombination.taskCategory, currentCombination.offsetValue, currentCombination.liveRedirection, currentCombination.redirectedWalkingIntensity, currentCombination.redirectionSliderValue);
+        globalScript.SetupTrial(offsetValue, currentLiveRedirection, currentRedirectedWalkingIntensity, currentRedirectionSliderValue);
         if (IsMasterClient) globalScript.spawnStandingGoalObject();
         Debug.Log("Position the Players on their Standing Position. Press Space to Teleport the virtual Players to their Position");
         //nextAction = ActionAwaiting.TaskPreparation;
@@ -282,7 +263,8 @@ public class StudyProgressionController : MonoBehaviour
         SaveFinalValues();
         //globalScript.deleteStandingGoalObject();
         questionaireScript.EnableQuestionnaire(false);
-        studyLogger.WriteAllStudyData(!firstTaskDone ? -1 : currentRandomTask);
+        studyLogger.WriteAllStudyData(TaskNumber);
+        TaskNumber++;
         Debug.Log("Break Time. Press Space to continue");
         if (!firstTaskDone)
         {
@@ -291,41 +273,37 @@ public class StudyProgressionController : MonoBehaviour
         }
         else
         {
-            currentRandomTask++;
-            if (currentRandomTask < allPossibleCombinations.Count)
+            currentCategoryIndex++;
+            if (currentCategoryIndex < currenCategoryList.Count)
             {
                 nextAction = ActionAwaiting.RandomTask;
             }
             else
             {
-                Debug.Log("All tasks done");
-            }
-        }
-    }
-    private void DetermineNextTask()
-    {
-        Debug.Log("Determining Next Task");
-        if (!firstTaskDone)
-        {
-            firstTaskDone = true;
-            nextAction = ActionAwaiting.RandomTask;
-        }
-        else
-        {
-            currentRandomTask++;
-            if (currentRandomTask < allPossibleCombinations.Count)
-            {
-                nextAction = ActionAwaiting.RandomTask;
-            }
-            else
-            {
-                Debug.Log("All tasks done");
+                Debug.Log("Catgory " + currentStudyCategoryIndex + " done. Press Space to continue with the next Category");
+                currentStudyCategoryIndex++;
+                if (currentStudyCategoryIndex < studyCategoryOrderList.Count)
+                {
+                    currenCategoryList = studyCategoryOrderList[currentStudyCategoryIndex];
+                    currentCategoryIndex = 0;
+                    nextAction = ActionAwaiting.RandomTask;
+                }
+                else
+                {
+                    Debug.Log("All Categories done."); 
+                }
             }
         }
     }
     private void SynchronizeStandingPositionLocal()
     {
         globalScript.SetAndSynchronizeStandingPosition();
+        Debug.Log("SynchronizeStandingPositionLocal");
+    }
+
+        private void SynchronizeStandingPositionRemote()
+    {
+        globalScript.SavePositionAndRotationToFaceObject();
         Debug.Log("SynchronizeStandingPositionLocal");
     }
     public void SaveInitialValues()
@@ -349,8 +327,9 @@ public class StudyProgressionController : MonoBehaviour
     {
         StudyID = newStudyID;
         randomVariablesManager.SetSeedWithStudyId(StudyID);
-        randomVariablesManager.GenerateAllPossibleCombinationsRandomly();
-        allPossibleCombinations = new List<RandomVariablesManager.VariablesCombination>(randomVariablesManager.AllCombinations);
+        randomVariablesManager.GenerateStudyListOrder();
+        studyCategoryOrderList = randomVariablesManager.studyOrderCombination;
+        currenCategoryList = studyCategoryOrderList[currentStudyCategoryIndex];
     }
     public bool isTaskReview()
     {
@@ -360,6 +339,10 @@ public class StudyProgressionController : MonoBehaviour
     {
         IsQuestionSubmitted = true;
         photonView.RPC("OtherQuestionSubmitted", RpcTarget.Others);
+    }
+    public void OnNextPage()
+    {
+        questionaireScript.OnQuestionnaireSubmit();
     }
     [PunRPC]
     public void OtherQuestionSubmitted()

@@ -1,5 +1,5 @@
 using UnityEngine;
-using Photon.Pun; 
+using Photon.Pun;
 using System.Collections.Generic;
 
 
@@ -8,6 +8,7 @@ public class StandingPosition : MonoBehaviourPunCallbacks
     public GameObject objectToSpawn;
     public Transform virtualAvatar;
     public Transform realAvatar;
+    public Transform targetObject;
 
     public float offset = 0f;
     public float offsetOther = 0f;
@@ -26,6 +27,19 @@ public class StandingPosition : MonoBehaviourPunCallbacks
     {
         savedPosition = new Vector3(realAvatar.position.x, realAvatar.position.y, realAvatar.position.z);
         savedYRotation = realAvatar.eulerAngles.y;
+    }
+    [PunRPC]
+    public void SavePositionAndRotationToFaceObjectRPC()
+    {
+        if (targetObject == null) targetObject = ConfigurationScript.Instance.vrPlayerGuest.transform.Find("Real/Head");
+        if (targetObject != null)
+        {
+            savedPosition = new Vector3(realAvatar.position.x, realAvatar.position.y, realAvatar.position.z);
+            Vector3 targetDirection = targetObject.transform.position - realAvatar.position;
+            targetDirection.y = 0; // Ignore the Y component for Y-axis rotation
+            Quaternion lookRotation = Quaternion.LookRotation(targetDirection);
+            savedYRotation = lookRotation.eulerAngles.y;
+        }
     }
 
     [PunRPC]
@@ -51,7 +65,6 @@ public class StandingPosition : MonoBehaviourPunCallbacks
 
         virtualClone = Instantiate(objectToSpawn, virtualClonePosition, Quaternion.Euler(0, savedYRotation, 0)); // Instantiate and assign to virtualClone
         virtualClone.name = objectToSpawn.name + "(virtual)";
-        Debug.Log("Spawn");
     }
 
     public void CallSpawnVirtualCloneWithOffset()
@@ -65,6 +78,10 @@ public class StandingPosition : MonoBehaviourPunCallbacks
     {
         photonView.RPC("DeleteAllSpawnedVirtualClonesRPC", RpcTarget.All);
     }
+    public void CallSavePositionAndRotationToFaceObjectRPC()
+{
+    photonView.RPC("SavePositionAndRotationToFaceObjectRPC", RpcTarget.All);
+}
 
     [PunRPC]
     private void DeleteAllSpawnedVirtualClonesRPC()

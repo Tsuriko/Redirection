@@ -18,8 +18,8 @@ public class TargetCollisionManager : MonoBehaviour
         // check whether this is the current target
         if (collision.gameObject == RedirectionManager.instance.target.GetRealTargetObject())
         {
-            RedirectionManager.instance.reachedTarget = true;           // tell RedirectionManager that we reached the target
-            RedirectionManager.instance.target.HandReachedCube();
+            //RedirectionManager.instance.reachedTarget = true;           // tell RedirectionManager that we reached the target
+            //RedirectionManager.instance.target.HandReachedCube();
             //if (StudyProgressionController.instance != null) StudyProgressionController.instance.TriggerNextActionViaEndOfRedirection();
         }
     }

@@ -11,7 +11,7 @@ namespace HR_Toolkit
         [Range(0f, 1f)]
         public float sliderValue = 0.5f;
 
-        [Range(0f, 1f)]
+        [Range(0f, 2f)]
         public float redirectIntensity = 1f;
 
         public bool liveRedirection = false;
@@ -21,7 +21,7 @@ namespace HR_Toolkit
         public KeyCode triggerKey = KeyCode.R;
 
         private float initialDistanceToTarget;
-        private bool hasSwitchedToHandRedirection = false;
+        public bool hasSwitchedToHandRedirection = false;
         public bool isRedirectionEnabled = false; // Flag to control redirection activation
 
         void Awake()

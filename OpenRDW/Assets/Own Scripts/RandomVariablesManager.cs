@@ -7,25 +7,26 @@ public class RandomVariablesManager : MonoBehaviour
     [Serializable]
     public struct VariablesCombination
     {
-        //public TaskCategory taskCategory;
+        public TaskCategory taskCategory;
         public float offsetValue;
-        public int personRedirected; // Changed from float to int to match the data type
         public bool liveRedirection;
         public float redirectedWalkingIntensity;
-        //public float redirectionSliderValue;
+        public float redirectionSliderValue;
     }
 
     [Header("Seed for Random Generation")]
     [SerializeField] private int seed = 12345; // Default seed, can be set in Inspector
+    public List<List<VariablesCombination>> studyOrderCombination = new List<List<VariablesCombination>>();
 
-    private readonly float[] offsetValues = { -2, -1, 1, 2 };
-    private readonly int[] personRedirected = { 0, 1, 2 }; // 0 = both, 1 = host, 2 = other
-    private readonly bool[] liveRedirectionValues = { true, false };
-    private readonly float[] redirectedWalkingIntensity = { 0.5f, 1f };
+    public List<VariablesCombination> T0Combinations { get; private set; }
+    public List<VariablesCombination> T1Combinations { get; private set; }
+    public List<VariablesCombination> T2Combinations { get; private set; }
+    public List<VariablesCombination> T3Combinations { get; private set; }
+    public List<VariablesCombination> T45Combinations { get; private set; }
 
-    public List<VariablesCombination> AllCombinations { get; private set; }
     public enum TaskCategory
 {
+    FirstTask,
     T0_Practice,
     T1_NoRedirection,
     T2_RDW,
@@ -36,7 +37,7 @@ public class RandomVariablesManager : MonoBehaviour
 
     private void Awake()
     {
-        GenerateAllPossibleCombinations();
+        GenerateStudyListOrder();
     }
 
     public void SetSeedWithStudyId(int studyId)
@@ -44,34 +45,284 @@ public class RandomVariablesManager : MonoBehaviour
         seed += studyId; // Adds the study ID to the existing seed
     }
 
-    public void GenerateAllPossibleCombinations()
+    public void GenerateHardcodedCombinations()
     {
         // Use the provided seed for repeatable results
         UnityEngine.Random.InitState(seed);
 
-        AllCombinations = new List<VariablesCombination>();
+        T0Combinations = new List<VariablesCombination>();
+        T1Combinations = new List<VariablesCombination>();
+        T2Combinations = new List<VariablesCombination>();
+        T3Combinations = new List<VariablesCombination>();
+        T45Combinations = new List<VariablesCombination>();
+        //T5Combinations = new List<VariablesCombination>();
 
-        foreach (var offsetValue in offsetValues)
+        // T0 no rdw
+        T0Combinations.Add(new VariablesCombination
         {
-            foreach (var person in personRedirected)
-            {
-                foreach (var liveRedirection in liveRedirectionValues)
-                {
-                    foreach (var intensity in redirectedWalkingIntensity)
-                    {
-                        VariablesCombination combination = new VariablesCombination
-                        {
-                            offsetValue = offsetValue, // Corrected to match struct member name
-                            personRedirected = person, // Corrected to match struct member name
-                            liveRedirection = liveRedirection, // Corrected to match struct member name
-                            redirectedWalkingIntensity = intensity // Corrected to match struct member name
-                        };
+            taskCategory = TaskCategory.T0_Practice,
+            offsetValue = 3,
+            liveRedirection = false,
+            redirectedWalkingIntensity = 0,
+            redirectionSliderValue = 0
+        });
+        // only RDW
+        T0Combinations.Add(new VariablesCombination
+        {
+            taskCategory = TaskCategory.T0_Practice,
+            offsetValue = 3,
+            liveRedirection = false,
+            redirectedWalkingIntensity = 1,
+            redirectionSliderValue = 1
+        });
 
-                        AllCombinations.Add(combination);
-                    }
-                }
-            }
-        }
+        // only HR
+        T0Combinations.Add(new VariablesCombination
+        {
+            taskCategory = TaskCategory.T0_Practice,
+            offsetValue = 3,
+            liveRedirection = false,
+            redirectedWalkingIntensity = 0,
+            redirectionSliderValue = 0.7f
+        });
+        //both 
+        T0Combinations.Add(new VariablesCombination
+        {
+            taskCategory = TaskCategory.T0_Practice,
+            offsetValue = 3,
+            liveRedirection = false,
+            redirectedWalkingIntensity = 1,
+            redirectionSliderValue = 0.7f
+        });
+
+        // T1 no redirection
+        T1Combinations.Add(new VariablesCombination
+        {
+            taskCategory = TaskCategory.T1_NoRedirection,
+            offsetValue = 0,
+            liveRedirection = false,
+            redirectedWalkingIntensity = 0,
+            redirectionSliderValue = 0
+        });
+        T1Combinations.Add(new VariablesCombination
+        {
+            taskCategory = TaskCategory.T1_NoRedirection,
+            offsetValue = 0.3f,
+            liveRedirection = false,
+            redirectedWalkingIntensity = 0,
+            redirectionSliderValue = 0
+        });
+        T1Combinations.Add(new VariablesCombination
+        {
+            taskCategory = TaskCategory.T1_NoRedirection,
+            offsetValue = -0.3f,
+            liveRedirection = false,
+            redirectedWalkingIntensity = 0,
+            redirectionSliderValue = 0
+        });
+               T1Combinations.Add(new VariablesCombination
+        {
+            taskCategory = TaskCategory.T1_NoRedirection,
+            offsetValue = 0.6f,
+            liveRedirection = false,
+            redirectedWalkingIntensity = 0,
+            redirectionSliderValue = 0
+        });
+               T1Combinations.Add(new VariablesCombination
+        {
+            taskCategory = TaskCategory.T1_NoRedirection,
+            offsetValue = -0.6f,
+            liveRedirection = false,
+            redirectedWalkingIntensity = 0,
+            redirectionSliderValue = 0
+        });
+
+        // T2 RDW
+        T2Combinations.Add(new VariablesCombination
+        {
+            taskCategory = TaskCategory.T2_RDW,
+            offsetValue = 0.0f,
+            liveRedirection = false,
+            redirectedWalkingIntensity = 1,
+            redirectionSliderValue = 0
+        });
+        T2Combinations.Add(new VariablesCombination
+        {
+            taskCategory = TaskCategory.T2_RDW,
+            offsetValue = 0.3f,
+            liveRedirection = false,
+            redirectedWalkingIntensity = 1,
+            redirectionSliderValue = 0
+        });
+        T2Combinations.Add(new VariablesCombination
+        {
+            taskCategory = TaskCategory.T2_RDW,
+            offsetValue = -0.3f,
+            liveRedirection = false,
+            redirectedWalkingIntensity = 1,
+            redirectionSliderValue = 0
+        });
+        T2Combinations.Add(new VariablesCombination
+        {
+            taskCategory = TaskCategory.T2_RDW,
+            offsetValue = 0.6f,
+            liveRedirection = false,
+            redirectedWalkingIntensity = 1,
+            redirectionSliderValue = 0
+        });
+        T2Combinations.Add(new VariablesCombination
+        {
+            taskCategory = TaskCategory.T2_RDW,
+            offsetValue = -0.6f,
+            liveRedirection = false,
+            redirectedWalkingIntensity = 1,
+            redirectionSliderValue = 0
+        });
+        // T3 HR
+
+        T3Combinations.Add(new VariablesCombination
+        {
+            taskCategory = TaskCategory.T3_HR,
+            offsetValue = 0.0f,
+            liveRedirection = false,
+            redirectedWalkingIntensity = 0,
+            redirectionSliderValue = 0.7f
+        });
+        T3Combinations.Add(new VariablesCombination
+        {
+            taskCategory = TaskCategory.T3_HR,
+            offsetValue = 0.15f,
+            liveRedirection = false,
+            redirectedWalkingIntensity = 0,
+            redirectionSliderValue = 0.7f
+        });
+        T3Combinations.Add(new VariablesCombination
+        {
+            taskCategory = TaskCategory.T3_HR,
+            offsetValue = -0.15f,
+            liveRedirection = false,
+            redirectedWalkingIntensity = 0,
+            redirectionSliderValue = 0.7f
+        });
+        T3Combinations.Add(new VariablesCombination
+        {
+            taskCategory = TaskCategory.T3_HR,
+            offsetValue = 0.05f,
+            liveRedirection = false,
+            redirectedWalkingIntensity = 0,
+            redirectionSliderValue = 0.7f
+        });
+        T3Combinations.Add(new VariablesCombination
+        {
+            taskCategory = TaskCategory.T3_HR,
+            offsetValue = -0.05f,
+            liveRedirection = false,
+            redirectedWalkingIntensity = 0,
+            redirectionSliderValue = 0.7f
+        });
+        // T4 Combined Near Threshold
+        T45Combinations.Add(new VariablesCombination
+        {
+            taskCategory = TaskCategory.T4_CombinedNearThreshold,
+            offsetValue = 0.0f,
+            liveRedirection = false,
+            redirectedWalkingIntensity = 0.8f,
+            redirectionSliderValue = 0.7f
+        });
+        T45Combinations.Add(new VariablesCombination
+        {
+            taskCategory = TaskCategory.T4_CombinedNearThreshold,
+            offsetValue = 0.3f,
+            liveRedirection = false,
+            redirectedWalkingIntensity = 0.8f,
+            redirectionSliderValue = 0.7f
+        });
+        T45Combinations.Add(new VariablesCombination
+        {
+            taskCategory = TaskCategory.T4_CombinedNearThreshold,
+            offsetValue = -0.3f,
+            liveRedirection = false,
+            redirectedWalkingIntensity = 0.8f,
+            redirectionSliderValue = 0.7f
+        });
+        T45Combinations.Add(new VariablesCombination
+        {
+            taskCategory = TaskCategory.T4_CombinedNearThreshold,
+            offsetValue = 0.6f,
+            liveRedirection = false,
+            redirectedWalkingIntensity = 0.8f,
+            redirectionSliderValue = 0.7f
+        });
+        T45Combinations.Add(new VariablesCombination
+        {
+            taskCategory = TaskCategory.T4_CombinedNearThreshold,
+            offsetValue = -0.6f,
+            liveRedirection = false,
+            redirectedWalkingIntensity = 0.8f,
+            redirectionSliderValue = 0.7f
+        });
+        // T5 Combined Beyond Threshold
+        T45Combinations.Add(new VariablesCombination
+        {
+            taskCategory = TaskCategory.T5_CombinedBeyondThreshold,
+            offsetValue = 0.0f,
+            liveRedirection = false,
+            redirectedWalkingIntensity = 1,
+            redirectionSliderValue = 0.7f
+        });
+        T45Combinations.Add(new VariablesCombination
+        {
+            taskCategory = TaskCategory.T5_CombinedBeyondThreshold,
+            offsetValue = 0.3f,
+            liveRedirection = false,
+            redirectedWalkingIntensity = 1,
+            redirectionSliderValue = 0.7f
+        });
+        T45Combinations.Add(new VariablesCombination
+        {
+            taskCategory = TaskCategory.T5_CombinedBeyondThreshold,
+            offsetValue = -0.3f,
+            liveRedirection = false,
+            redirectedWalkingIntensity = 1,
+            redirectionSliderValue = 0.7f
+        });
+        T45Combinations.Add(new VariablesCombination
+        {
+            taskCategory = TaskCategory.T5_CombinedBeyondThreshold,
+            offsetValue = 0.6f,
+            liveRedirection = false,
+            redirectedWalkingIntensity = 1,
+            redirectionSliderValue = 0.7f
+        });
+        T45Combinations.Add(new VariablesCombination
+        {
+            taskCategory = TaskCategory.T5_CombinedBeyondThreshold,
+            offsetValue = -0.6f,
+            liveRedirection = false,
+            redirectedWalkingIntensity = 1,
+            redirectionSliderValue = 0.7f
+        });
+        T45Combinations.Add(new VariablesCombination
+        {
+            taskCategory = TaskCategory.T5_CombinedBeyondThreshold,
+            offsetValue = 1f,
+            liveRedirection = false,
+            redirectedWalkingIntensity = 1,
+            redirectionSliderValue = 0.7f
+        });
+        T45Combinations.Add(new VariablesCombination
+        {
+            taskCategory = TaskCategory.T5_CombinedBeyondThreshold,
+            offsetValue = -1f,
+            liveRedirection = false,
+            redirectedWalkingIntensity = 1,
+            redirectionSliderValue = 0.7f
+        });
+
+
+
+
+
     }
     private void Shuffle<T>(IList<T> list)
     {
@@ -85,9 +336,32 @@ public class RandomVariablesManager : MonoBehaviour
             list[n] = value;
         }
     }
-    public void GenerateAllPossibleCombinationsRandomly()
+    public void GenerateAllCombinations()
     {
-        GenerateAllPossibleCombinations();
-        Shuffle(AllCombinations);
+        GenerateHardcodedCombinations();
+        Shuffle(T1Combinations);
+        Shuffle(T2Combinations);
+        Shuffle(T3Combinations);
+        Shuffle(T45Combinations);
     }
+    public void GenerateStudyListOrder()
+{
+    GenerateAllCombinations();
+
+    // Create a list to store the order of the lists
+    studyOrderCombination = new List<List<VariablesCombination>>();
+
+    // Add T0 combinations to the order
+    studyOrderCombination.Add(T0Combinations);
+
+    // Shuffle the order of T1, T2, and T3 lists
+    List<List<VariablesCombination>> t123Lists = new List<List<VariablesCombination>> { T1Combinations, T2Combinations, T3Combinations };
+    Shuffle(t123Lists);
+
+    // Add shuffled T1, T2, and T3 lists to the order
+    studyOrderCombination.AddRange(t123Lists);
+
+    // Add T45 combinations to the order
+    studyOrderCombination.Add(T45Combinations);
+}
 }
