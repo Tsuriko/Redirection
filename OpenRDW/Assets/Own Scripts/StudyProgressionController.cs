@@ -303,7 +303,8 @@ public class StudyProgressionController : MonoBehaviour
 
         private void SynchronizeStandingPositionRemote()
     {
-        globalScript.SavePositionAndRotationToFaceObject();
+        
+        if (PhotonNetwork.IsMasterClient) globalScript.SavePositionAndRotationToFaceObject();
         Debug.Log("SynchronizeStandingPositionLocal");
     }
     public void SaveInitialValues()
