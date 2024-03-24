@@ -61,7 +61,7 @@ public class RandomVariablesManager : MonoBehaviour
         T0Combinations.Add(new VariablesCombination
         {
             taskCategory = TaskCategory.T0_Practice,
-            offsetValue = 3,
+            offsetValue = 1,
             liveRedirection = false,
             redirectedWalkingIntensity = 0,
             redirectionSliderValue = 0
@@ -70,7 +70,7 @@ public class RandomVariablesManager : MonoBehaviour
         T0Combinations.Add(new VariablesCombination
         {
             taskCategory = TaskCategory.T0_Practice,
-            offsetValue = 3,
+            offsetValue = 1,
             liveRedirection = false,
             redirectedWalkingIntensity = 1,
             redirectionSliderValue = 1
@@ -80,7 +80,7 @@ public class RandomVariablesManager : MonoBehaviour
         T0Combinations.Add(new VariablesCombination
         {
             taskCategory = TaskCategory.T0_Practice,
-            offsetValue = 3,
+            offsetValue = 1,
             liveRedirection = false,
             redirectedWalkingIntensity = 0,
             redirectionSliderValue = 0.7f
@@ -89,7 +89,7 @@ public class RandomVariablesManager : MonoBehaviour
         T0Combinations.Add(new VariablesCombination
         {
             taskCategory = TaskCategory.T0_Practice,
-            offsetValue = 3,
+            offsetValue = 1,
             liveRedirection = false,
             redirectedWalkingIntensity = 1,
             redirectionSliderValue = 0.7f

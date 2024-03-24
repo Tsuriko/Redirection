@@ -59,6 +59,7 @@ public class QuestionnaireScript : MonoBehaviour
 
         // Example action: Disable questionnaire after submission
         EnableQuestionnaire(false);
+        StudyProgressionController.instance.QuestionSubmitted();
 
         // Or move to the next questionnaire, log data, etc.
     }
