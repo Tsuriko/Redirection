@@ -166,7 +166,7 @@ namespace VRQuestionnaireToolkit
                 //if its not the first or last page, call the onnextpage method
                 if(_pageFactory.CurrentPage != 0 && _pageFactory.CurrentPage != _pageFactory.PageList.Count - 2)
                 {
-                    StudyProgressionController.instance.OnNextPage();
+                    if (StudyProgressionController.instance) StudyProgressionController.instance.OnNextPage();
                 }
                 _pageFactory.PageList[_pageFactory.CurrentPage].SetActive(false);
                 ++_pageFactory.CurrentPage;

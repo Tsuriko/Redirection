@@ -1,4 +1,4 @@
-﻿using HR_Toolkit;
+using HR_Toolkit;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,6 +18,7 @@ public class TargetCollisionManager : MonoBehaviour
         // check whether this is the current target
         if (collision.gameObject == RedirectionManager.instance.target.GetRealTargetObject())
         {
+            //change the next two lines when warp origin needed
             //RedirectionManager.instance.reachedTarget = true;           // tell RedirectionManager that we reached the target
             //RedirectionManager.instance.target.HandReachedCube();
             //if (StudyProgressionController.instance != null) StudyProgressionController.instance.TriggerNextActionViaEndOfRedirection();

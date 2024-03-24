@@ -172,7 +172,7 @@ public class StudyProgressionController : MonoBehaviour
     private void SaveMarkerPosition()
     {
         Debug.Log("Saving Marker Position");
-        SynchronizeStandingPositionLocal();
+        SynchronizeStandingPositionToFaceObject();
         Debug.Log("Use the S key to position the arrows direction to the other player. Press Space to continue. ");
         nextAction = ActionAwaiting.FirstTask;
     }

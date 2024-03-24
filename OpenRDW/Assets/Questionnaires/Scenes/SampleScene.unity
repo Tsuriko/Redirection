@@ -526,7 +526,7 @@ PrefabInstance:
     - target: {fileID: 8697000387260259616, guid: 93494b0f3d397d74ba1458871f004384,
         type: 3}
       propertyPath: Condition
-      value: A
+      value: Master
       objectReference: {fileID: 0}
     - target: {fileID: 8697000387260259616, guid: 93494b0f3d397d74ba1458871f004384,
         type: 3}
@@ -546,7 +546,7 @@ PrefabInstance:
     - target: {fileID: 8697000387260259616, guid: 93494b0f3d397d74ba1458871f004384,
         type: 3}
       propertyPath: ParticipantId
-      value: id1
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8697000387260259616, guid: 93494b0f3d397d74ba1458871f004384,
         type: 3}
@@ -596,7 +596,7 @@ PrefabInstance:
     - target: {fileID: 8697000387260259616, guid: 93494b0f3d397d74ba1458871f004384,
         type: 3}
       propertyPath: AlsoConsolidateResults
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8697000387260259616, guid: 93494b0f3d397d74ba1458871f004384,
         type: 3}
@@ -751,7 +751,7 @@ PrefabInstance:
     - target: {fileID: 8697000387260259645, guid: 93494b0f3d397d74ba1458871f004384,
         type: 3}
       propertyPath: JsonInputPath_1
-      value: Assets/Questionnaires/Data/Questions/questionnaire_example_1
+      value: Assets/Questionnaires/Data/Questions/questionnaire_T0
       objectReference: {fileID: 0}
     - target: {fileID: 8697000387260259645, guid: 93494b0f3d397d74ba1458871f004384,
         type: 3}
