@@ -207,22 +207,10 @@ public class StudyProgressionController : MonoBehaviour
         if (IsMasterClient) globalScript.spawnStandingGoalObject();
         Debug.Log("Position the Players on their Standing Position. Press Space to Teleport the virtual Players to their Position");
         //nextAction = ActionAwaiting.TaskPreparation;
-        nextAction = ActionAwaiting.TaskExecution;
+        nextAction = ActionAwaiting.TaskPreparation;
     }
 
     private void PrepareTask()
-    {
-        Debug.Log("Preparing Task");
-        if (firstTaskDone)
-        {
-            //globalScript.ConfigurePlayerPositionController();
-            if (IsMasterClient) globalScript.ActivatePlayerPositionController();
-        }
-        Debug.Log("Press Space to start Redirection");
-        nextAction = ActionAwaiting.TaskExecution;
-    }
-
-    private void ExecuteTask()
     {
         if (firstTaskDone)
         {
@@ -230,7 +218,13 @@ public class StudyProgressionController : MonoBehaviour
             if (IsMasterClient) globalScript.ActivatePlayerPositionController();
         }
         globalScript.activateAttachRedirectionTargetsScript();
-        globalScript.activateAttachRedirectionTargetsScript();
+        nextAction = ActionAwaiting.TaskExecution;
+        TriggerNextAction();
+
+    }
+
+    private void ExecuteTask()
+    {        
         SaveInitialValues();
         if (firstTaskDone)
         {
