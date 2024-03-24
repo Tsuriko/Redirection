@@ -84,7 +84,7 @@ public class StudyProgressionController : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.S) && (nextAction == ActionAwaiting.FirstTask || nextAction == ActionAwaiting.RandomTask))
         {
-            SynchronizeStandingPositionRemote();
+            CallSynchronizeStandingPosition();
         }
         if (Input.GetKeyDown(KeyCode.Y) && (nextAction == ActionAwaiting.FirstTask || nextAction == ActionAwaiting.RandomTask || nextAction == ActionAwaiting.SaveMarkerPosition))
         {
@@ -172,7 +172,7 @@ public class StudyProgressionController : MonoBehaviour
     private void SaveMarkerPosition()
     {
         Debug.Log("Saving Marker Position");
-        SynchronizeStandingPositionRemote();
+        SynchronizeStandingPositionLocal();
         Debug.Log("Use the S key to position the arrows direction to the other player. Press Space to continue. ");
         nextAction = ActionAwaiting.FirstTask;
     }
@@ -295,18 +295,19 @@ public class StudyProgressionController : MonoBehaviour
             }
         }
     }
+    [PunRPC]
     private void SynchronizeStandingPositionLocal()
     {
         globalScript.SetAndSynchronizeStandingPosition();
         Debug.Log("SynchronizeStandingPositionLocal");
     }
-
-        private void SynchronizeStandingPositionRemote()
+    public void CallSynchronizeStandingPosition()
     {
-        
-        if (PhotonNetwork.IsMasterClient) globalScript.SavePositionAndRotationToFaceObject();
-        Debug.Log("SynchronizeStandingPositionLocal");
+        if (IsMasterClient) photonView.RPC("SynchronizeStandingPositionLocal", RpcTarget.All);
     }
+    
+
+
     public void SaveInitialValues()
     {
         studyLogger.SaveInitialValues();
