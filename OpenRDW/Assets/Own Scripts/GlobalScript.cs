@@ -249,6 +249,7 @@ public class GlobalScript : MonoBehaviour
     {
         if (playerPositionControllerScriptComponent != null)
         {
+            playerPositionControllerScriptComponent.enabled = true;
         }
     }
     public void ActivateStandingPosition()
