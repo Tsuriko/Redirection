@@ -218,6 +218,7 @@ public class StudyProgressionController : MonoBehaviour
             if (IsMasterClient) globalScript.ActivatePlayerPositionController();
         }
         globalScript.activateAttachRedirectionTargetsScript();
+        globalScript.activateAttachRedirectionTargetsScript();
         nextAction = ActionAwaiting.TaskExecution;
         TriggerNextAction();
 
@@ -295,9 +296,15 @@ public class StudyProgressionController : MonoBehaviour
         globalScript.SetAndSynchronizeStandingPosition();
         Debug.Log("SynchronizeStandingPositionLocal");
     }
+    [PunRPC]
+    private void SynchronizeStandingPositionToFaceObject()
+    {
+        globalScript.SavePositionAndRotationToFaceObject();
+        
+    }
     public void CallSynchronizeStandingPosition()
     {
-        if (IsMasterClient) photonView.RPC("SynchronizeStandingPositionLocal", RpcTarget.All);
+        if (IsMasterClient) photonView.RPC("SynchronizeStandingPositionToFaceObject", RpcTarget.All);
     }
     
 
