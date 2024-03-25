@@ -20,7 +20,9 @@ namespace HR_Toolkit
         private RedirectionManager handRedirectionManager;
         public KeyCode triggerKey = KeyCode.R;
 
-        private float initialDistanceToTarget;
+        public float initialDistanceToTarget;
+        public float currentDistanceToTarget;
+        public float switchDistance;
         public bool hasSwitchedToHandRedirection = false;
         public bool isRedirectionEnabled = false; // Flag to control redirection activation
 
@@ -48,8 +50,8 @@ namespace HR_Toolkit
 
             if (isRedirectionEnabled)
             {
-                float currentDistanceToTarget = CalculateHorizontalDistance(user.position, target.position);
-                float switchDistance = initialDistanceToTarget * sliderValue;
+                currentDistanceToTarget = CalculateHorizontalDistance(user.position, target.position);
+                switchDistance = initialDistanceToTarget * sliderValue;
 
 
                 if (!hasSwitchedToHandRedirection && currentDistanceToTarget <= switchDistance)

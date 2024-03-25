@@ -83,7 +83,7 @@ public class RandomVariablesManager : MonoBehaviour
             offsetValue = 1,
             liveRedirection = false,
             redirectedWalkingIntensity = 0,
-            redirectionSliderValue = 0.7f
+            redirectionSliderValue = 0.3f
         });
         //both 
         T0Combinations.Add(new VariablesCombination
@@ -92,7 +92,7 @@ public class RandomVariablesManager : MonoBehaviour
             offsetValue = 1,
             liveRedirection = false,
             redirectedWalkingIntensity = 1,
-            redirectionSliderValue = 0.7f
+            redirectionSliderValue = 0.3f
         });
 
         // T1 no redirection
@@ -186,7 +186,7 @@ public class RandomVariablesManager : MonoBehaviour
             offsetValue = 0.0f,
             liveRedirection = false,
             redirectedWalkingIntensity = 0,
-            redirectionSliderValue = 0.7f
+            redirectionSliderValue = 0.3f
         });
         T3Combinations.Add(new VariablesCombination
         {
@@ -194,7 +194,7 @@ public class RandomVariablesManager : MonoBehaviour
             offsetValue = 0.15f,
             liveRedirection = false,
             redirectedWalkingIntensity = 0,
-            redirectionSliderValue = 0.7f
+            redirectionSliderValue = 0.3f
         });
         T3Combinations.Add(new VariablesCombination
         {
@@ -202,7 +202,7 @@ public class RandomVariablesManager : MonoBehaviour
             offsetValue = -0.15f,
             liveRedirection = false,
             redirectedWalkingIntensity = 0,
-            redirectionSliderValue = 0.7f
+            redirectionSliderValue = 0.3f
         });
         T3Combinations.Add(new VariablesCombination
         {
@@ -210,7 +210,7 @@ public class RandomVariablesManager : MonoBehaviour
             offsetValue = 0.05f,
             liveRedirection = false,
             redirectedWalkingIntensity = 0,
-            redirectionSliderValue = 0.7f
+            redirectionSliderValue = 0.3f
         });
         T3Combinations.Add(new VariablesCombination
         {
@@ -218,7 +218,7 @@ public class RandomVariablesManager : MonoBehaviour
             offsetValue = -0.05f,
             liveRedirection = false,
             redirectedWalkingIntensity = 0,
-            redirectionSliderValue = 0.7f
+            redirectionSliderValue = 0.3f
         });
         // T4 Combined Near Threshold
         T45Combinations.Add(new VariablesCombination
@@ -227,7 +227,7 @@ public class RandomVariablesManager : MonoBehaviour
             offsetValue = 0.0f,
             liveRedirection = false,
             redirectedWalkingIntensity = 0.8f,
-            redirectionSliderValue = 0.7f
+            redirectionSliderValue = 0.3f
         });
         T45Combinations.Add(new VariablesCombination
         {
@@ -235,7 +235,7 @@ public class RandomVariablesManager : MonoBehaviour
             offsetValue = 0.3f,
             liveRedirection = false,
             redirectedWalkingIntensity = 0.8f,
-            redirectionSliderValue = 0.7f
+            redirectionSliderValue = 0.3f
         });
         T45Combinations.Add(new VariablesCombination
         {
@@ -243,7 +243,7 @@ public class RandomVariablesManager : MonoBehaviour
             offsetValue = -0.3f,
             liveRedirection = false,
             redirectedWalkingIntensity = 0.8f,
-            redirectionSliderValue = 0.7f
+            redirectionSliderValue = 0.3f
         });
         T45Combinations.Add(new VariablesCombination
         {
@@ -251,7 +251,7 @@ public class RandomVariablesManager : MonoBehaviour
             offsetValue = 0.6f,
             liveRedirection = false,
             redirectedWalkingIntensity = 0.8f,
-            redirectionSliderValue = 0.7f
+            redirectionSliderValue = 0.3f
         });
         T45Combinations.Add(new VariablesCombination
         {
@@ -259,7 +259,7 @@ public class RandomVariablesManager : MonoBehaviour
             offsetValue = -0.6f,
             liveRedirection = false,
             redirectedWalkingIntensity = 0.8f,
-            redirectionSliderValue = 0.7f
+            redirectionSliderValue = 0.3f
         });
         // T5 Combined Beyond Threshold
         T45Combinations.Add(new VariablesCombination
@@ -268,7 +268,7 @@ public class RandomVariablesManager : MonoBehaviour
             offsetValue = 0.0f,
             liveRedirection = false,
             redirectedWalkingIntensity = 1,
-            redirectionSliderValue = 0.7f
+            redirectionSliderValue = 0.3f
         });
         T45Combinations.Add(new VariablesCombination
         {
@@ -276,7 +276,7 @@ public class RandomVariablesManager : MonoBehaviour
             offsetValue = 0.3f,
             liveRedirection = false,
             redirectedWalkingIntensity = 1,
-            redirectionSliderValue = 0.7f
+            redirectionSliderValue = 0.3f
         });
         T45Combinations.Add(new VariablesCombination
         {
@@ -284,7 +284,7 @@ public class RandomVariablesManager : MonoBehaviour
             offsetValue = -0.3f,
             liveRedirection = false,
             redirectedWalkingIntensity = 1,
-            redirectionSliderValue = 0.7f
+            redirectionSliderValue = 0.3f
         });
         T45Combinations.Add(new VariablesCombination
         {
@@ -292,7 +292,7 @@ public class RandomVariablesManager : MonoBehaviour
             offsetValue = 0.6f,
             liveRedirection = false,
             redirectedWalkingIntensity = 1,
-            redirectionSliderValue = 0.7f
+            redirectionSliderValue = 0.3f
         });
         T45Combinations.Add(new VariablesCombination
         {
@@ -300,7 +300,7 @@ public class RandomVariablesManager : MonoBehaviour
             offsetValue = -0.6f,
             liveRedirection = false,
             redirectedWalkingIntensity = 1,
-            redirectionSliderValue = 0.7f
+            redirectionSliderValue = 0.3f
         });
         T45Combinations.Add(new VariablesCombination
         {
@@ -308,7 +308,7 @@ public class RandomVariablesManager : MonoBehaviour
             offsetValue = 1f,
             liveRedirection = false,
             redirectedWalkingIntensity = 1,
-            redirectionSliderValue = 0.7f
+            redirectionSliderValue = 0.3f
         });
         T45Combinations.Add(new VariablesCombination
         {
@@ -316,7 +316,7 @@ public class RandomVariablesManager : MonoBehaviour
             offsetValue = -1f,
             liveRedirection = false,
             redirectedWalkingIntensity = 1,
-            redirectionSliderValue = 0.7f
+            redirectionSliderValue = 0.3f
         });
 
 
