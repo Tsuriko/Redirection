@@ -15,8 +15,9 @@ public class CustomRDWTake3 : MonoBehaviour
 
     private Quaternion previousCameraRotation;
     private Vector3 previousPosition;
-    private float initialDistanceToVirtualObject;
-    private float initialAngleDifference;
+    public float initialDistanceToVirtualObject;
+    public float currentDistanceToVirtualObject;
+    public float initialAngleDifference;
     private Quaternion initialParentRotation;
     private float translativeGainFactor;
     public bool alignmentAchieved;
@@ -73,14 +74,27 @@ public class CustomRDWTake3 : MonoBehaviour
     {
         if (alignmentAchieved && redirectTurnsOffAfterAlignment) return;
 
-        float currentDistanceToVirtualObject = HorizontalDistance(vrCamera.position, virtualObject.position);
-        float distanceRatio = currentDistanceToVirtualObject / initialDistanceToVirtualObject;
-        float adjustedAngleDifference = initialAngleDifference * (1 - distanceRatio) * redirectIntensity;
+        currentDistanceToVirtualObject = HorizontalDistance(vrCamera.position, virtualObject.position);
 
         if (currentDistanceToVirtualObject > alignmentThresholdDistance)
         {
-            Quaternion targetRotation = Quaternion.Euler(0, adjustedAngleDifference, 0);
-            vrCameraParent.rotation = initialParentRotation * targetRotation;
+            // Calculate the desired rotation based on distance ratio and adjusted angle difference
+            float distanceRatio = currentDistanceToVirtualObject / initialDistanceToVirtualObject;
+            float adjustedAngleDifference = initialAngleDifference * (1 - distanceRatio) * redirectIntensity;
+
+            // Determine the target rotation as an adjustment from the initial parent rotation
+            Quaternion targetRotation = Quaternion.Euler(0, adjustedAngleDifference, 0) * initialParentRotation;
+
+            // Calculate the rotation difference between the current and target orientations
+            Quaternion rotationDifference = targetRotation * Quaternion.Inverse(vrCameraParent.rotation);
+            rotationDifference.ToAngleAxis(out float angle, out Vector3 axis);
+
+            // Ensure there's a significant rotation to apply
+            if (angle > 0.01f || angle < -0.01f) // A small threshold to avoid floating point imprecision issues
+            {
+                // Apply the rotation difference around the VR camera's position
+                vrCameraParent.RotateAround(vrCamera.position, axis, angle);
+            }
         }
         else
         {
@@ -97,7 +111,7 @@ public class CustomRDWTake3 : MonoBehaviour
     private void AdjustPlayerMovement()
     {
         Vector3 realWorldMovement = vrCamera.position - previousPosition;
-        
+
         Vector3 scaledMovement = realWorldMovement * translativeGainFactor;
 
         vrCameraParent.position += scaledMovement;

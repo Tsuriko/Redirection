@@ -221,8 +221,8 @@ public class StudyProgressionController : MonoBehaviour
         }
         globalScript.activateAttachRedirectionTargetsScript();
         globalScript.activateAttachRedirectionTargetsScript();
+        questionaireScript.MoveQuestionnaireBehind(GameObject.Find("Standing Position(virtual)").transform);
         nextAction = ActionAwaiting.TaskExecution;
-        TriggerNextAction();
 
     }
 
@@ -234,7 +234,6 @@ public class StudyProgressionController : MonoBehaviour
             globalScript.resetRedirection();
             globalScript.ActivateRedirectionLogic();
         }
-        questionaireScript.MoveQuestionnaireBehind(GameObject.Find("Standing Position(virtual)").transform);
         globalScript.deleteStandingGoalObject();
 
         Debug.Log("Executing Task");
