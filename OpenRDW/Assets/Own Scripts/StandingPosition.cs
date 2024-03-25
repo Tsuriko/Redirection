@@ -13,7 +13,7 @@ public class StandingPosition : MonoBehaviourPunCallbacks
     public float offset = 0f;
     public float offsetOther = 0f;
     public Vector3 savedPosition;
-    private float savedYRotation;
+    public float savedYRotation;
     private GameObject virtualClone; // Changed from List to a single GameObject
 
 

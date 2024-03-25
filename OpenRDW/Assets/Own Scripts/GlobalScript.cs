@@ -163,6 +163,7 @@ public class GlobalScript : MonoBehaviour
         }
         realAvatar = ConfigurationScript.Instance.vrPlayerHost.transform.Find("Real/Head");
         ActivateStandingPosition();
+        ConfigurePlayerPositionController();
 
     }
 
