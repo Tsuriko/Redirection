@@ -1,0 +1,4 @@
+TrialNumber;TotalTime;TaskCategory;OffsetValue;RedirectedWalkingIntensity;RedirectionSliderValue;InitialRealHeadDistance;InitialVirtualHeadDistance;InitialRealHandDistance;InitialVirtualHandDistance;InitialTime;MidRealHeadDistance;MidVirtualHeadDistance;MidRealHandDistance;MidVirtualHandDistance;MidTime;FinalRealHeadDistance;FinalVirtualHeadDistance;FinalRealHandDistance;FinalVirtualHandDistance;FinalTime;
+0;17.5658;FirstTask;0;0;0;4.607581;4.607456;4.531996;4.529792;2024-03-25 16:12:38;0;0;0;0;;2.931712;2.931457;3.117613;3.117552;2024-03-25 16:12:55;
+1;13.44751;T0_Practice;1;0;0;3.599002;3.919394;1.58811;1.80921;2024-03-25 16:16:18;0;0;0;0;;4.298639;4.682775;4.140476;4.658923;2024-03-25 16:16:31;
+2;24.11041;T0_Practice;1;1;1;5.09236;5.138032;4.880548;4.815454;2024-03-25 16:17:56;5.091938;5.137536;4.880013;4.814898;2024-03-25 16:17:56;4.353139;4.557252;4.000957;4.277129;2024-03-25 16:18:20;
