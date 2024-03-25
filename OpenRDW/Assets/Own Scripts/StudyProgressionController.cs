@@ -214,8 +214,7 @@ public class StudyProgressionController : MonoBehaviour
     {
         if (firstTaskDone)
         {
-            globalScript.ConfigurePlayerPositionController();
-            if (IsMasterClient) globalScript.ActivatePlayerPositionController();
+            globalScript.ActivatePlayerPositionController();
         }
         globalScript.activateAttachRedirectionTargetsScript();
         globalScript.activateAttachRedirectionTargetsScript();

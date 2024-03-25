@@ -28,7 +28,7 @@ public class PlayerPositionController : MonoBehaviourPun
     public void ActivatePlayerPositioning()
     {
         isMaster = PhotonNetwork.IsMasterClient;
-        if (isMaster) photonView.RPC("MovePlayer", RpcTarget.All);
+        MovePlayer();
 
     }
     [PunRPC]
