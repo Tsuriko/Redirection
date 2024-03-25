@@ -7,6 +7,7 @@ public class StudyProgressionController : MonoBehaviour
 
     public static StudyProgressionController instance;
     public int StudyID = 0;
+    public string ParticipantId = "0";
     private GlobalScript globalScript;
     private RandomVariablesManager randomVariablesManager;
     public List<List<RandomVariablesManager.VariablesCombination>> studyCategoryOrderList = new List<List<RandomVariablesManager.VariablesCombination>>();
@@ -56,6 +57,7 @@ public class StudyProgressionController : MonoBehaviour
         photonView = GetComponent<PhotonView>();
         questionaireScript = FindObjectOfType<QuestionnaireScript>();
         questionaireScript.enabled = true;
+        SetParticipantID();
     }
     void Awake()
     {
@@ -154,6 +156,7 @@ public class StudyProgressionController : MonoBehaviour
         {
             photonView.RPC("UpdateStudyID", RpcTarget.All, StudyID);
         }
+
         Debug.Log("Initializing Study, Put the HMD on the same space like the other and press Space to continue");
         globalScript.enableKeyPresses = false;
 
@@ -180,7 +183,7 @@ public class StudyProgressionController : MonoBehaviour
     private void StartFirstTask()
     {
         Debug.Log("Starting First Task");
-        studyLogger.SetupNewParticipant("RDW Test", StudyID);
+        studyLogger.SetupNewParticipant("RDW Test", ParticipantId, StudyID);
 
         SetVariablesCombination(RandomVariablesManager.TaskCategory.FirstTask, 0, false, 0, 0);
         Debug.Log("Let the player face each other and press Space to Teleport the virtual Players to their Position. The first task will start");
@@ -350,6 +353,11 @@ public class StudyProgressionController : MonoBehaviour
     public void OtherQuestionSubmitted()
     {
         IsOtherQuestionSubmitted = true;
+    }
+    public void SetParticipantID()
+    {
+        questionaireScript.SetParticipantID(ParticipantId);
+
     }
 
 }

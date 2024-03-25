@@ -90,11 +90,11 @@ public class StudyLogger : MonoBehaviour
 
 
 
-    public void SetupNewParticipant(string studyName, int studyNumber)
+    public void SetupNewParticipant(string studyName, string participantID, int studyID)
     {
-        string currentFolder = Application.streamingAssetsPath + "/" + studyName + "/" + studyNumber + "/";
+        string currentFolder = Application.streamingAssetsPath + "/" + studyName + "/" + participantID + "/";
         Directory.CreateDirectory(currentFolder);
-        dataOutputFile = currentFolder + studyNumber + "_data.csv";
+        dataOutputFile = currentFolder + participantID + "_" + studyID + "_data.csv";
 
         int i = 2;
         while (true)
@@ -102,7 +102,7 @@ public class StudyLogger : MonoBehaviour
             if (File.Exists(dataOutputFile))
             {
                 Debug.LogError(logPrefix + "DataOutputFile already exists at '" + dataOutputFile + "'. A new file will be added at '" + dataOutputFile + i + "'.");
-                dataOutputFile = currentFolder + studyNumber + "_data" + i + ".csv";
+                dataOutputFile = currentFolder + participantID + "_" + studyID + "_data" + i + ".csv";
                 i++;
             }
             else

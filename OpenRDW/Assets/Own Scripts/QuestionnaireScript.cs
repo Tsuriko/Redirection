@@ -22,6 +22,28 @@ public class QuestionnaireScript : MonoBehaviour
        
         // Subscribe to the questionnaire finished event
         _exportToCsvScript = _vrQuestionnaireToolkit.GetComponentInChildren<ExportToCSV>();
+        _exportToCsvScript.QuestionnaireFinishedEvent.AddListener(SwitchQuestionnaire);
+    }
+
+    void SwitchQuestionnaire()
+    {
+        int currentStudyCategoryIndex = StudyProgressionController.instance.currentStudyCategoryIndex;
+
+        // Deactivate all questionnaires
+        for (int i = 0; i < _generateQuestionnaire.Questionnaires.Count; i++)
+        {
+            _generateQuestionnaire.Questionnaires[i].SetActive(false);
+        }
+
+        // Validate index and activate the corresponding questionnaire
+        if (currentStudyCategoryIndex >= 0 && currentStudyCategoryIndex < _generateQuestionnaire.Questionnaires.Count)
+        {
+            _generateQuestionnaire.Questionnaires[currentStudyCategoryIndex].SetActive(true);
+        }
+        else
+        {
+            Debug.Log("Invalid category index");
+        }
     }
 
     void Update()
@@ -62,5 +84,9 @@ public class QuestionnaireScript : MonoBehaviour
         StudyProgressionController.instance.QuestionSubmitted();
 
         // Or move to the next questionnaire, log data, etc.
+    }
+    public void SetParticipantID(string participantID)
+    {
+        _vrQuestionnaireToolkit.GetComponent<StudySetup>().ParticipantId = participantID;
     }
 }

@@ -61,9 +61,15 @@ public class StandingPosition : MonoBehaviourPunCallbacks
 
         Vector3 relativePosition = Quaternion.Inverse(realAvatar.rotation) * (spawnPosition - realAvatar.position);
         Vector3 virtualClonePosition = virtualAvatar.position + (virtualAvatar.rotation * relativePosition);
+
+        // Calculate rotation difference between real and virtual avatars
+        float rotationDifference = virtualAvatar.eulerAngles.y - realAvatar.eulerAngles.y;
+        // Apply the rotation difference to the savedYRotation
+        float relativeRotationY = savedYRotation + rotationDifference;
+
         virtualClonePosition.y = 0;
 
-        virtualClone = Instantiate(objectToSpawn, virtualClonePosition, Quaternion.Euler(0, savedYRotation, 0)); // Instantiate and assign to virtualClone
+        virtualClone = Instantiate(objectToSpawn, virtualClonePosition, Quaternion.Euler(0, relativeRotationY, 0)); // Instantiate and assign to virtualClone
         virtualClone.name = objectToSpawn.name + "(virtual)";
     }
 
@@ -79,9 +85,9 @@ public class StandingPosition : MonoBehaviourPunCallbacks
         photonView.RPC("DeleteAllSpawnedVirtualClonesRPC", RpcTarget.All);
     }
     public void CallSavePositionAndRotationToFaceObjectRPC()
-{
-    photonView.RPC("SavePositionAndRotationToFaceObjectRPC", RpcTarget.All);
-}
+    {
+        photonView.RPC("SavePositionAndRotationToFaceObjectRPC", RpcTarget.All);
+    }
 
     [PunRPC]
     private void DeleteAllSpawnedVirtualClonesRPC()
