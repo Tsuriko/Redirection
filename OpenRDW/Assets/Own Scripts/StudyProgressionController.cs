@@ -219,7 +219,7 @@ public class StudyProgressionController : MonoBehaviour
         {
             globalScript.ActivatePlayerPositionController();
         }
-        globalScript.activateAttachRedirectionTargetsScript();
+        
         globalScript.activateAttachRedirectionTargetsScript();
         questionaireScript.MoveQuestionnaireBehind(GameObject.Find("Standing Position(virtual)").transform);
         nextAction = ActionAwaiting.TaskExecution;
@@ -228,6 +228,7 @@ public class StudyProgressionController : MonoBehaviour
 
     private void ExecuteTask()
     {        
+        globalScript.activateAttachRedirectionTargetsScript();
         SaveInitialValues();
         if (firstTaskDone)
         {

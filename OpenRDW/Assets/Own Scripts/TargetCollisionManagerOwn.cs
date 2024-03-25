@@ -18,5 +18,10 @@ public class TargetCollisionManagerOwn : MonoBehaviour
             Debug.Log("Target reached");
             StudyProgressionController.instance.TriggerNextActionViaEndOfRedirection();
         }
+        if (collision.gameObject == ConfigurationScript.Instance.vrPlayerGuest.transform.Find("Real/Right Hand").gameObject)
+        {
+            Debug.Log("Target reached");
+            StudyProgressionController.instance.TriggerNextActionViaEndOfRedirection();
+        }
     }
 }
