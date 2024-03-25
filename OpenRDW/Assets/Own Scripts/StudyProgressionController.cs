@@ -90,7 +90,7 @@ public class StudyProgressionController : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Y) && (nextAction == ActionAwaiting.FirstTask || nextAction == ActionAwaiting.RandomTask || nextAction == ActionAwaiting.SaveMarkerPosition))
         {
-            SyncPlayers();
+            globalScript.syncPlayers();
         }
         if (IsQuestionSubmitted && IsOtherQuestionSubmitted && nextAction == ActionAwaiting.TaskReset)
         {
