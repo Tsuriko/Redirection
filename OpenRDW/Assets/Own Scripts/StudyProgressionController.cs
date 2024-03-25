@@ -92,6 +92,10 @@ public class StudyProgressionController : MonoBehaviour
         {
             globalScript.syncPlayers();
         }
+        if (Input.GetKeyDown(KeyCode.C) && nextAction == ActionAwaiting.TaskExecution)
+        {
+            globalScript.activateAttachRedirectionTargetsScript();
+        }
         if (IsQuestionSubmitted && IsOtherQuestionSubmitted && nextAction == ActionAwaiting.TaskReset)
         {
             IsQuestionSubmitted = false;
