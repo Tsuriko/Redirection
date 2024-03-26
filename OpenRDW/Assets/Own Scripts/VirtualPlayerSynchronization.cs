@@ -22,7 +22,7 @@ public class VirtualPlayerSynchronization : MonoBehaviour
 
 
 
-            ownPlayer.position = realParent.position - new Vector3(0f, 6.0f, 0f);
+            ownPlayer.position = realParent.position - new Vector3(0f, 5.0f, 0f);
             ownPlayer.rotation = realParent.rotation;
 
             movePlayer = false;

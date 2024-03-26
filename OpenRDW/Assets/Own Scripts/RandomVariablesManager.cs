@@ -58,7 +58,6 @@ public class RandomVariablesManager : MonoBehaviour
         //T5Combinations = new List<VariablesCombination>();
 
         // T0 no rdw
-        /*
         T0Combinations.Add(new VariablesCombination
         {
             taskCategory = TaskCategory.T0_Practice,
@@ -67,14 +66,13 @@ public class RandomVariablesManager : MonoBehaviour
             redirectedWalkingIntensity = 0,
             redirectionSliderValue = 0
         });
-        */
         // only RDW
         T0Combinations.Add(new VariablesCombination
         {
             taskCategory = TaskCategory.T0_Practice,
             offsetValue = 0.5f,
             liveRedirection = false,
-            redirectedWalkingIntensity = 1.4f,
+            redirectedWalkingIntensity = 1,
             redirectionSliderValue = 1
         });
 
@@ -82,7 +80,7 @@ public class RandomVariablesManager : MonoBehaviour
         T0Combinations.Add(new VariablesCombination
         {
             taskCategory = TaskCategory.T0_Practice,
-            offsetValue = 0.2f,
+            offsetValue = 0.5f,
             liveRedirection = false,
             redirectedWalkingIntensity = 0,
             redirectionSliderValue = 0.3f
@@ -96,7 +94,7 @@ public class RandomVariablesManager : MonoBehaviour
             redirectedWalkingIntensity = 1,
             redirectionSliderValue = 0.3f
         });
-        /*
+
         // T1 no redirection
         T1Combinations.Add(new VariablesCombination
         {
@@ -122,14 +120,14 @@ public class RandomVariablesManager : MonoBehaviour
             redirectedWalkingIntensity = 0,
             redirectionSliderValue = 0
         });
-        */
+
         // T2 RDW
         T2Combinations.Add(new VariablesCombination
         {
             taskCategory = TaskCategory.T2_RDW,
             offsetValue = 0.0f,
             liveRedirection = false,
-            redirectedWalkingIntensity = 1.4f,
+            redirectedWalkingIntensity = 1,
             redirectionSliderValue = 0
         });
         T2Combinations.Add(new VariablesCombination
@@ -137,7 +135,7 @@ public class RandomVariablesManager : MonoBehaviour
             taskCategory = TaskCategory.T2_RDW,
             offsetValue = 0.3f,
             liveRedirection = false,
-            redirectedWalkingIntensity = 1.4f,
+            redirectedWalkingIntensity = 1,
             redirectionSliderValue = 0
         });
         T2Combinations.Add(new VariablesCombination
@@ -145,7 +143,7 @@ public class RandomVariablesManager : MonoBehaviour
             taskCategory = TaskCategory.T2_RDW,
             offsetValue = -0.3f,
             liveRedirection = false,
-            redirectedWalkingIntensity = 1.4f,
+            redirectedWalkingIntensity = 1,
             redirectionSliderValue = 0
         });
 
@@ -205,7 +203,7 @@ public class RandomVariablesManager : MonoBehaviour
             taskCategory = TaskCategory.T4_CombinedNearThreshold,
             offsetValue = 0.3f,
             liveRedirection = false,
-            redirectedWalkingIntensity = 1,
+            redirectedWalkingIntensity = 0.8f,
             redirectionSliderValue = 0.3f
         });
         T45Combinations.Add(new VariablesCombination
@@ -213,7 +211,7 @@ public class RandomVariablesManager : MonoBehaviour
             taskCategory = TaskCategory.T4_CombinedNearThreshold,
             offsetValue = -0.3f,
             liveRedirection = false,
-            redirectedWalkingIntensity = 1,
+            redirectedWalkingIntensity = 0.8f,
             redirectionSliderValue = 0.3f
         });
         T45Combinations.Add(new VariablesCombination
@@ -221,7 +219,7 @@ public class RandomVariablesManager : MonoBehaviour
             taskCategory = TaskCategory.T4_CombinedNearThreshold,
             offsetValue = 0.6f,
             liveRedirection = false,
-            redirectedWalkingIntensity = 1,
+            redirectedWalkingIntensity = 0.8f,
             redirectionSliderValue = 0.3f
         });
         T45Combinations.Add(new VariablesCombination
@@ -229,7 +227,7 @@ public class RandomVariablesManager : MonoBehaviour
             taskCategory = TaskCategory.T4_CombinedNearThreshold,
             offsetValue = -0.6f,
             liveRedirection = false,
-            redirectedWalkingIntensity = 1,
+            redirectedWalkingIntensity = 0.8f,
             redirectionSliderValue = 0.3f
         });
         // T5 Combined Beyond Threshold
@@ -238,7 +236,7 @@ public class RandomVariablesManager : MonoBehaviour
             taskCategory = TaskCategory.T5_CombinedBeyondThreshold,
             offsetValue = 0.0f,
             liveRedirection = false,
-            redirectedWalkingIntensity = 1.3f,
+            redirectedWalkingIntensity = 1,
             redirectionSliderValue = 0.3f
         });
         T45Combinations.Add(new VariablesCombination
@@ -246,7 +244,7 @@ public class RandomVariablesManager : MonoBehaviour
             taskCategory = TaskCategory.T5_CombinedBeyondThreshold,
             offsetValue = 0.3f,
             liveRedirection = false,
-            redirectedWalkingIntensity = 1.3f,
+            redirectedWalkingIntensity = 1,
             redirectionSliderValue = 0.3f
         });
         T45Combinations.Add(new VariablesCombination
@@ -254,7 +252,7 @@ public class RandomVariablesManager : MonoBehaviour
             taskCategory = TaskCategory.T5_CombinedBeyondThreshold,
             offsetValue = -0.3f,
             liveRedirection = false,
-            redirectedWalkingIntensity = 1.3f,
+            redirectedWalkingIntensity = 1,
             redirectionSliderValue = 0.3f
         });
         T45Combinations.Add(new VariablesCombination
@@ -262,7 +260,7 @@ public class RandomVariablesManager : MonoBehaviour
             taskCategory = TaskCategory.T5_CombinedBeyondThreshold,
             offsetValue = 0.6f,
             liveRedirection = false,
-            redirectedWalkingIntensity = 1.3f,
+            redirectedWalkingIntensity = 1,
             redirectionSliderValue = 0.3f
         });
         T45Combinations.Add(new VariablesCombination
@@ -270,7 +268,7 @@ public class RandomVariablesManager : MonoBehaviour
             taskCategory = TaskCategory.T5_CombinedBeyondThreshold,
             offsetValue = -0.6f,
             liveRedirection = false,
-            redirectedWalkingIntensity = 1.3f,
+            redirectedWalkingIntensity = 1,
             redirectionSliderValue = 0.3f
         });
 

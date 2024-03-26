@@ -7,12 +7,11 @@ public class AttachRedirectionTargets : MonoBehaviour
 {
     private ConfigurationScript.AttachMethod attachMethod => ConfigurationScript.Instance.attachMethod;
     public Transform realHandOfOtherPlayer;
-    public Transform otherPlayerRealHead;
-    public Transform otherPlayerVirtualHead;
-    public Transform hostRealHead;
-    public Transform hostVirtualHead;
     public Transform virtualHandOfOtherPlayer;
+    private Transform ownRealHand;
     private Transform realHandOfOtherPlayerVirtual;
+    private Transform hostVirtualHand;
+    private Transform hostRealHand;
     private GameObject midpointObject;
     private GameObject midpointObjectStreamed;
     private MidpointSynchronization midpointSync;
@@ -46,25 +45,22 @@ public class AttachRedirectionTargets : MonoBehaviour
         otherPlayerHandObject = ConfigurationScript.Instance.otherPlayerHandObject;
         midpointObject = ConfigurationScript.Instance.midpointObject;
         midpointObjectStreamed = ConfigurationScript.Instance.midpointObjectStreamed;
-
     }
 
     public void HandleKeyPress()
     {
         FindObjects();
         Debug.Log("Redirection Targets Attached");
-        
-    realHandOfOtherPlayerVirtual = GameObject.Find("OtherPlayerHandObject(virtual)").transform;
+        realHandOfOtherPlayerVirtual = GameObject.Find("OtherPlayerHandObject(virtual)").transform;
         GameObject vrPlayerGuest = ConfigurationScript.Instance.vrPlayerGuest;
         //TODO f�r MP das zur�cksetztn
-        otherPlayerRealHead = vrPlayerGuest.transform.Find("Real/Head");
-        otherPlayerVirtualHead = vrPlayerGuest.transform.Find("Virtual/Head");
-        hostRealHead = ConfigurationScript.Instance.vrPlayerHost.transform.Find("Real/Head");
-        hostVirtualHead = ConfigurationScript.Instance.vrPlayerHost.transform.Find("Virtual/Head");
         realHandOfOtherPlayer = vrPlayerGuest.transform.Find("Real/Right Hand");
         virtualHandOfOtherPlayer = vrPlayerGuest.transform.Find("Virtual/Right Hand");
         //realHandOfOtherPlayer = GameObject.Find("Fake Real hand").transform;
         //virtualHandOfOtherPlayer = GameObject.Find("Fake Virtual hand").transform; ;
+        hostVirtualHand = ConfigurationScript.Instance.vrPlayerHost.transform.Find("Virtual/Right Hand");
+        hostRealHand = ConfigurationScript.Instance.vrPlayerHost.transform.Find("Real/Right Hand");
+        ownRealHand = ConfigurationScript.Instance.controllerRight.transform;
         midpointSync = ConfigurationScript.Instance.vrPlayerHost.GetComponent<MidpointSynchronization>();
 
         EnableVirtualToRealConnection();
@@ -73,15 +69,15 @@ public class AttachRedirectionTargets : MonoBehaviour
 
         if (attachMethod == ConfigurationScript.AttachMethod.midpoint)
         {
-            //if (!isMidPointSet)
-            //{
+            if (!isMidPointSet)
+            {
                 SetCombinedMidpoints();
                 midpointSync.UpdateMidpoints(initialRealMidpoint, initialVirtualMidpoint);
-            //}
-            //else
-            //{
-            //    ResetCombinedMidpoints();
-            //}
+            }
+            else
+            {
+                ResetCombinedMidpoints();
+            }
         }
     }
 
@@ -96,8 +92,8 @@ public class AttachRedirectionTargets : MonoBehaviour
 
     void SetCombinedMidpoints()
     {
-        Vector3 realMidpoint = (otherPlayerRealHead.position + hostRealHead.position) * 0.5f;
-        Vector3 virtualMidpoint = (otherPlayerVirtualHead.position + hostVirtualHead.position) * 0.5f;
+        Vector3 realMidpoint = (realHandOfOtherPlayer.position + hostRealHand.position) * 0.5f;
+        Vector3 virtualMidpoint = (hostVirtualHand.position + virtualHandOfOtherPlayer.position) * 0.5f;
 
         midpointObject.transform.position = realMidpoint;
         redirectionRealTarget.transform.position = midpointObjectStreamed.transform.position;

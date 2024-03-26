@@ -214,7 +214,7 @@ public class StudyProgressionController : MonoBehaviour
         if (IsMasterClient) globalScript.spawnStandingGoalObject();
         Debug.Log("Position the Players on their Standing Position. Press Space to Teleport the virtual Players to their Position");
         //nextAction = ActionAwaiting.TaskPreparation;
-        nextAction = ActionAwaiting.TaskExecution;
+        nextAction = ActionAwaiting.TaskPreparation;
     }
 
     private void PrepareTask()
@@ -231,14 +231,7 @@ public class StudyProgressionController : MonoBehaviour
     }
 
     private void ExecuteTask()
-    {
-        if (firstTaskDone)
-        {
-            globalScript.ActivatePlayerPositionController();
-        }
-
-        globalScript.activateAttachRedirectionTargetsScript();
-        questionaireScript.MoveQuestionnaireBehind(GameObject.Find("Standing Position(virtual)").transform);
+    {        
         globalScript.activateAttachRedirectionTargetsScript();
         SaveInitialValues();
         if (firstTaskDone)
