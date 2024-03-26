@@ -51,7 +51,7 @@ public class RandomVariablesManager : MonoBehaviour
         UnityEngine.Random.InitState(seed);
 
         T0Combinations = new List<VariablesCombination>();
-        T1Combinations = new List<VariablesCombination>();
+        //T1Combinations = new List<VariablesCombination>();
         T2Combinations = new List<VariablesCombination>();
         T3Combinations = new List<VariablesCombination>();
         T45Combinations = new List<VariablesCombination>();
@@ -82,7 +82,7 @@ public class RandomVariablesManager : MonoBehaviour
         T0Combinations.Add(new VariablesCombination
         {
             taskCategory = TaskCategory.T0_Practice,
-            offsetValue = 0.2f,
+            offsetValue = 0.1f,
             liveRedirection = false,
             redirectedWalkingIntensity = 0,
             redirectionSliderValue = 0.3f
@@ -294,7 +294,7 @@ public class RandomVariablesManager : MonoBehaviour
     public void GenerateAllCombinations()
     {
         GenerateHardcodedCombinations();
-        Shuffle(T1Combinations);
+        //Shuffle(T1Combinations);
         Shuffle(T2Combinations);
         Shuffle(T3Combinations);
         Shuffle(T45Combinations);
@@ -307,10 +307,10 @@ public class RandomVariablesManager : MonoBehaviour
     studyOrderCombination = new List<List<VariablesCombination>>();
 
     // Add T0 combinations to the order
-    studyOrderCombination.Add(T0Combinations);
+    //studyOrderCombination.Add(T0Combinations);
 
     // Shuffle the order of T1, T2, and T3 lists
-    List<List<VariablesCombination>> t123Lists = new List<List<VariablesCombination>> { T1Combinations, T2Combinations, T3Combinations };
+    List<List<VariablesCombination>> t123Lists = new List<List<VariablesCombination>> { T2Combinations, T3Combinations };
     Shuffle(t123Lists);
 
     // Add shuffled T1, T2, and T3 lists to the order
