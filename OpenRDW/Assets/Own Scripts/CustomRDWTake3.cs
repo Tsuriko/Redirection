@@ -8,10 +8,10 @@ public class CustomRDWTake3 : MonoBehaviour
     public Transform virtualObject;
     public Transform realObject;
 
-    public float alignmentThresholdDistance = 0.2f;
+    public float alignmentThresholdDistance = 0.1f;
     public bool redirectTurnsOffAfterAlignment = true;
     public bool adjustPlayerMovement;
-    public float redirectIntensity = 1.0f; // Intensity of the redirection, range [0, 1]
+    public float redirectIntensity = 1.0f;
 
     private Quaternion previousCameraRotation;
     private Vector3 previousPosition;
