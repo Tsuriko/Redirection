@@ -6,7 +6,9 @@ namespace HR_Toolkit
     public class RedirectionControl : MonoBehaviourPun 
     {
         public Transform user;
-        public Transform target;
+        public Transform realTarget;
+        public Transform virtualTarget;
+
 
         [Range(0f, 1f)]
         public float sliderValue = 0.5f;
@@ -50,7 +52,7 @@ namespace HR_Toolkit
 
             if (isRedirectionEnabled)
             {
-                currentDistanceToTarget = CalculateHorizontalDistance(user.position, target.position);
+                currentDistanceToTarget = CalculateHorizontalDistance(user.position, virtualTarget.position);
                 switchDistance = initialDistanceToTarget * sliderValue;
 
 
@@ -73,8 +75,8 @@ namespace HR_Toolkit
 
             if (!isRedirectionEnabled)
             {
-                rdwManager.realObject = target;
-                initialDistanceToTarget = CalculateHorizontalDistance(user.position, target.position);
+                rdwManager.realObject = realTarget;
+                initialDistanceToTarget = CalculateHorizontalDistance(user.position, virtualTarget.position);
                 ActivateRDW();
                 isRedirectionEnabled = true;
             }
@@ -138,7 +140,7 @@ namespace HR_Toolkit
             if (rdwManager != null)
             {
                 rdwManager.enabled = false;
-                rdwManager.realObject = target;
+                rdwManager.realObject = realTarget;
                 rdwManager.InitializeRedirection();
             }
             if (handRedirectionManager != null)

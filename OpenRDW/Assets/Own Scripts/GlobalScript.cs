@@ -193,7 +193,7 @@ public class GlobalScript : MonoBehaviour
             {
                 redirectionRealTarget = GameObject.Find("Redirected Real Target").transform;
             }
-            redirectionControlScriptComponent.target = redirectionRealTarget;
+            redirectionControlScriptComponent.realTarget = redirectionRealTarget;
             redirectionControlScriptComponent.sliderValue = redirectionSliderValue;
             redirectionControlScriptComponent.redirectIntensity = redirectIntensity;
             redirectionControlScriptComponent.liveRedirection = liveRedirection;
