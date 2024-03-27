@@ -226,6 +226,7 @@ public class StudyProgressionController : MonoBehaviour
         
         globalScript.activateAttachRedirectionTargetsScript();
         questionaireScript.MoveQuestionnaireBehind(GameObject.Find("Standing Position(virtual)").transform);
+        globalScript.deleteStandingGoalObject();
         nextAction = ActionAwaiting.TaskExecution;
 
     }
@@ -336,7 +337,8 @@ public class StudyProgressionController : MonoBehaviour
     {
         StudyID = newStudyID;
         randomVariablesManager.SetSeedWithStudyId(StudyID);
-        randomVariablesManager.GenerateStudyListOrder();
+        //randomVariablesManager.GenerateStudyListOrder();
+        randomVariablesManager.GenerateT6Study();
         studyCategoryOrderList = randomVariablesManager.studyOrderCombination;
         currenCategoryList = studyCategoryOrderList[currentStudyCategoryIndex];
     }

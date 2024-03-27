@@ -23,6 +23,7 @@ public class RandomVariablesManager : MonoBehaviour
     public List<VariablesCombination> T2Combinations { get; private set; }
     public List<VariablesCombination> T3Combinations { get; private set; }
     public List<VariablesCombination> T45Combinations { get; private set; }
+    public List<VariablesCombination> T6Combinations { get; private set; }
 
     public enum TaskCategory
 {
@@ -32,8 +33,9 @@ public class RandomVariablesManager : MonoBehaviour
     T2_RDW,
     T3_HR,
     T4_CombinedNearThreshold,
-    T5_CombinedBeyondThreshold
-}
+    T5_CombinedBeyondThreshold,
+    T6_Random
+    }
 
     private void Awake()
     {
@@ -42,7 +44,7 @@ public class RandomVariablesManager : MonoBehaviour
 
     public void SetSeedWithStudyId(int studyId)
     {
-        seed += studyId; // Adds the study ID to the existing seed
+        seed = studyId + 1234;
     }
 
     public void GenerateHardcodedCombinations()
@@ -56,6 +58,7 @@ public class RandomVariablesManager : MonoBehaviour
         T3Combinations = new List<VariablesCombination>();
         T45Combinations = new List<VariablesCombination>();
         //T5Combinations = new List<VariablesCombination>();
+        T6Combinations = new List<VariablesCombination>();
 
         // T0 no rdw
         /*
@@ -273,7 +276,134 @@ public class RandomVariablesManager : MonoBehaviour
             redirectedWalkingIntensity = 1.1f,
             redirectionSliderValue = 0.3f
         });
-
+        T6Combinations.Add(new VariablesCombination
+        {
+            taskCategory = TaskCategory.T6_Random,
+            offsetValue = 0.3f,
+            liveRedirection = false,
+            redirectedWalkingIntensity = 1.4f,
+            redirectionSliderValue = 0.3f
+        });
+        T6Combinations.Add(new VariablesCombination
+        {
+            taskCategory = TaskCategory.T6_Random,
+            offsetValue = 0.3f,
+            liveRedirection = false,
+            redirectedWalkingIntensity = 1.0f,
+            redirectionSliderValue = 0.3f
+        });
+        T6Combinations.Add(new VariablesCombination
+        {
+            taskCategory = TaskCategory.T6_Random,
+            offsetValue = 0.3f,
+            liveRedirection = false,
+            redirectedWalkingIntensity = 0.8f,
+            redirectionSliderValue = 0.3f
+        });
+        T6Combinations.Add(new VariablesCombination
+        {
+            taskCategory = TaskCategory.T6_Random,
+            offsetValue = 0.3f,
+            liveRedirection = false,
+            redirectedWalkingIntensity = 0.6f,
+            redirectionSliderValue = 0.3f
+        });
+        T6Combinations.Add(new VariablesCombination
+        {
+            taskCategory = TaskCategory.T6_Random,
+            offsetValue = 0.5f,
+            liveRedirection = false,
+            redirectedWalkingIntensity = 1.4f,
+            redirectionSliderValue = 0.3f
+        });
+        T6Combinations.Add(new VariablesCombination
+        {
+            taskCategory = TaskCategory.T6_Random,
+            offsetValue = 0.5f,
+            liveRedirection = false,
+            redirectedWalkingIntensity = 1.0f,
+            redirectionSliderValue = 0.3f
+        });
+        T6Combinations.Add(new VariablesCombination
+        {
+            taskCategory = TaskCategory.T6_Random,
+            offsetValue = 0.5f,
+            liveRedirection = false,
+            redirectedWalkingIntensity = 0.8f,
+            redirectionSliderValue = 0.3f
+        });
+        T6Combinations.Add(new VariablesCombination
+        {
+            taskCategory = TaskCategory.T6_Random,
+            offsetValue = 0.5f,
+            liveRedirection = false,
+            redirectedWalkingIntensity = 0.6f,
+            redirectionSliderValue = 0.3f
+        });
+        T6Combinations.Add(new VariablesCombination
+        {
+            taskCategory = TaskCategory.T6_Random,
+            offsetValue = 0.7f,
+            liveRedirection = false,
+            redirectedWalkingIntensity = 1.4f,
+            redirectionSliderValue = 0.3f
+        });
+        T6Combinations.Add(new VariablesCombination
+        {
+            taskCategory = TaskCategory.T6_Random,
+            offsetValue = 0.7f,
+            liveRedirection = false,
+            redirectedWalkingIntensity = 1.0f,
+            redirectionSliderValue = 0.3f
+        });
+        T6Combinations.Add(new VariablesCombination
+        {
+            taskCategory = TaskCategory.T6_Random,
+            offsetValue = 0.7f,
+            liveRedirection = false,
+            redirectedWalkingIntensity = 0.8f,
+            redirectionSliderValue = 0.3f
+        });
+        T6Combinations.Add(new VariablesCombination
+        {
+            taskCategory = TaskCategory.T6_Random,
+            offsetValue = 0.7f,
+            liveRedirection = false,
+            redirectedWalkingIntensity = 0.6f,
+            redirectionSliderValue = 0.3f
+        });
+        T6Combinations.Add(new VariablesCombination
+        {
+            taskCategory = TaskCategory.T6_Random,
+            offsetValue = 1f,
+            liveRedirection = false,
+            redirectedWalkingIntensity = 1.4f,
+            redirectionSliderValue = 0.3f
+        });
+        T6Combinations.Add(new VariablesCombination
+        {
+            taskCategory = TaskCategory.T6_Random,
+            offsetValue = 1f,
+            liveRedirection = false,
+            redirectedWalkingIntensity = 1.0f,
+            redirectionSliderValue = 0.3f
+        });
+        T6Combinations.Add(new VariablesCombination
+        {
+            taskCategory = TaskCategory.T6_Random,
+            offsetValue = 1f,
+            liveRedirection = false,
+            redirectedWalkingIntensity = 0.8f,
+            redirectionSliderValue = 0.3f
+        });
+        T6Combinations.Add(new VariablesCombination
+        {
+            taskCategory = TaskCategory.T6_Random,
+            offsetValue = 1f,
+            liveRedirection = false,
+            redirectedWalkingIntensity = 0.6f,
+            redirectionSliderValue = 0.3f
+        });
 
 
 
@@ -319,4 +449,17 @@ public class RandomVariablesManager : MonoBehaviour
     // Add T45 combinations to the order
     studyOrderCombination.Add(T45Combinations);
 }
+    public void GenerateT6Study()
+    {
+        GenerateHardcodedCombinations();
+        // Step 1: Duplicate the T6Combinations list.
+        List<VariablesCombination> secondT6List = new List<VariablesCombination>(T6Combinations);
+
+        // Step 2: Shuffle both lists.
+        Shuffle(T6Combinations);
+        Shuffle(secondT6List);
+
+        studyOrderCombination = new List<List<VariablesCombination>> { T6Combinations, secondT6List };
+    }
+      
 }
