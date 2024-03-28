@@ -265,6 +265,7 @@ public class StudyProgressionController : MonoBehaviour
         SaveFinalValues();
         //globalScript.deleteStandingGoalObject();
         questionaireScript.EnableQuestionnaire(false);
+        questionaireScript.checkTLX();
         studyLogger.WriteAllStudyData(TaskNumber);
         TaskNumber++;
         Debug.Log("Break Time. Press Space to continue");

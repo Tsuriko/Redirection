@@ -12,6 +12,8 @@ public class QuestionnaireScript : MonoBehaviour
     private GenerateQuestionnaire _generateQuestionnaire;
     private ExportToCSV _exportToCsvScript; // Assuming this script handles the submit event
     private GameObject vivePointers;
+    public int questionnaireIndex = 0;
+    public bool tlxactive = false;
 
     void Start()
     {
@@ -27,7 +29,10 @@ public class QuestionnaireScript : MonoBehaviour
 
     void SwitchQuestionnaire()
     {
-        int currentStudyCategoryIndex = StudyProgressionController.instance.currentStudyCategoryIndex;
+
+        questionnaireIndex++;
+        tlxactive = false;
+        EnableQuestionnaire(false);
 
         // Deactivate all questionnaires
         for (int i = 0; i < _generateQuestionnaire.Questionnaires.Count; i++)
@@ -36,16 +41,20 @@ public class QuestionnaireScript : MonoBehaviour
         }
 
         // Validate index and activate the corresponding questionnaire
-        if (currentStudyCategoryIndex >= 0 && currentStudyCategoryIndex < _generateQuestionnaire.Questionnaires.Count)
+        if (questionnaireIndex >= 0 && questionnaireIndex < _generateQuestionnaire.Questionnaires.Count)
         {
-            _generateQuestionnaire.Questionnaires[currentStudyCategoryIndex].SetActive(true);
+            if (questionnaireIndex == 1 || questionnaireIndex == 3 || questionnaireIndex == 5 || questionnaireIndex == 7) tlxactive = true;
+            _generateQuestionnaire.Questionnaires[questionnaireIndex].SetActive(true);
         }
         else
         {
             Debug.Log("Invalid category index");
         }
     }
-
+    public void checkTLX()
+    {
+        if (tlxactive) EnableQuestionnaire(true);
+    }
     void Update()
     {
         // Update logic here (if needed)
@@ -76,10 +85,7 @@ public class QuestionnaireScript : MonoBehaviour
 
     public void OnQuestionnaireSubmit()
     {
-        // Handle the questionnaire submit event here
-        Debug.Log("Questionnaire submitted!");
-
-        // Example action: Disable questionnaire after submission
+        if (tlxactive) return;
         EnableQuestionnaire(false);
         StudyProgressionController.instance.QuestionSubmitted();
 

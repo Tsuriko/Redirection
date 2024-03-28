@@ -134,6 +134,7 @@ namespace HR_Toolkit
         {
             EndHandRedirection();
             EndRedirectedWalking();
+            isRedirectionEnabled = false;
         }
         public void resetRedirection()
         {
