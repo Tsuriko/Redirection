@@ -25,6 +25,7 @@ public class StudyLogger : MonoBehaviour
     private int TaskNumber;
     private Vector3 initialRealTargetPostion;
     private Vector3 initialVirtualTargetPostion;
+    private float initialTargetDistance;
     private Vector3 initialHostVirtualPosition;
     private Vector3 initialOtherVirtualPosition;
     private Vector3 initialHostVirtualRotation;
@@ -45,6 +46,7 @@ public class StudyLogger : MonoBehaviour
 
     private Vector3 midRealTargetPosition;
     private Vector3 midVirtualTargetPosition;
+    private float midTargetDistance;
     private Vector3 midHostVirtualPosition;
     private Vector3 midOtherVirtualPosition;
     private Vector3 midHostVirtualRotation;
@@ -65,6 +67,7 @@ public class StudyLogger : MonoBehaviour
 
     private Vector3 finalRealTargetPosition;
     private Vector3 finalVirtualTargetPosition;
+    private float finalTargetDistance;
     private Vector3 finalHostVirtualPosition;
     private Vector3 finalOtherVirtualPosition;
     private Vector3 finalHostVirtualRotation;
@@ -113,17 +116,19 @@ public class StudyLogger : MonoBehaviour
                     "TaskCategory" + csvCellSeparator +
                     "OffsetValue" + csvCellSeparator +
                     "RedirectedWalkingIntensity" + csvCellSeparator +
-                    "RedirectionSliderValue" + csvCellSeparator +
+                    "InitialTargetDistance" + csvCellSeparator +
                     "InitialRealHeadDistance" + csvCellSeparator +
                     "InitialVirtualHeadDistance" + csvCellSeparator +
                     "InitialRealHandDistance" + csvCellSeparator +
                     "InitialVirtualHandDistance" + csvCellSeparator +
                     "InitialTime" + csvCellSeparator +
+                    "MidTargetDistance" + csvCellSeparator +
                     "MidRealHeadDistance" + csvCellSeparator +
                     "MidVirtualHeadDistance" + csvCellSeparator +
                     "MidRealHandDistance" + csvCellSeparator +
                     "MidVirtualHandDistance" + csvCellSeparator +
                     "MidTime" + csvCellSeparator +
+                    "FinalTargetDistance" + csvCellSeparator +
                     "FinalRealHeadDistance" + csvCellSeparator +
                     "FinalVirtualHeadDistance" + csvCellSeparator +
                     "FinalRealHandDistance" + csvCellSeparator +
@@ -145,17 +150,19 @@ public class StudyLogger : MonoBehaviour
             $"{taskCategory}{csvCellSeparator}" +
             $"{offsetValue}{csvCellSeparator}" +
             $"{currentRedirectedWalkingIntensity}{csvCellSeparator}" +
-            $"{currentRedirectionSliderValue}{csvCellSeparator}" +
+            $"{initialTargetDistance}{csvCellSeparator}" +
             $"{initialRealHeadDistance}{csvCellSeparator}" +
             $"{initialVirtualHeadDistance}{csvCellSeparator}" +
             $"{initialRealHandDistance}{csvCellSeparator}" +
             $"{initialVirtualHandDistance}{csvCellSeparator}" +
             $"{initialTime}{csvCellSeparator}" +
+            $"{midTargetDistance}{csvCellSeparator}" +
             $"{midRealHeadDistance}{csvCellSeparator}" +
             $"{midVirtualHeadDistance}{csvCellSeparator}" +
             $"{midRealHandDistance}{csvCellSeparator}" +
             $"{midVirtualHandDistance}{csvCellSeparator}" +
             $"{midTime}{csvCellSeparator}" +
+            $"{finalTargetDistance}{csvCellSeparator}" +
             $"{finalRealHeadDistance}{csvCellSeparator}" +
             $"{finalVirtualHeadDistance}{csvCellSeparator}" +
             $"{finalRealHandDistance}{csvCellSeparator}" +
@@ -175,6 +182,10 @@ public class StudyLogger : MonoBehaviour
 
         initialRealTargetPostion = ConfigurationScript.Instance.redirectedRealTarget.transform.position;
         initialVirtualTargetPostion = ConfigurationScript.Instance.redirectedVirtualObject.transform.position;
+
+        initialTargetDistance = new Vector3(initialRealTargetPostion.x - initialVirtualTargetPostion.x, 0f, initialRealTargetPostion.z - initialVirtualTargetPostion.z).magnitude;
+
+
         initialHostVirtualPosition = ConfigurationScript.Instance.vrPlayerHost.transform.Find("Virtual/Head").position;
 
         initialHostVirtualRotation = ConfigurationScript.Instance.vrPlayerHost.transform.Find("Virtual/Head").rotation.eulerAngles;
@@ -200,20 +211,19 @@ public class StudyLogger : MonoBehaviour
         initialOtherRealPosition = ConfigurationScript.Instance.vrPlayerGuest.transform.Find("Real/Head").position;
         initialOtherRealRotation = ConfigurationScript.Instance.vrPlayerGuest.transform.Find("Real/Head").rotation.eulerAngles;
         initialRealHeadDistance = new Vector3(initialHostRealPosition.x - initialOtherRealPosition.x, 0f, initialHostRealPosition.z - initialOtherRealPosition.z).magnitude;
-        Debug.Log("Real Horizontal Distance: " + initialRealHeadDistance);
         // Calculate horizontal distance in virtual world
         initialVirtualHeadDistance = new Vector3(initialHostVirtualPosition.x - initialOtherVirtualPosition.x, 0f, initialHostVirtualPosition.z - initialOtherVirtualPosition.z).magnitude;
-        Debug.Log("Virtual Horizontal Distance: " + initialVirtualHeadDistance);
         initialRealHandDistance = new Vector3(initialHostRealHandPosition.x - initialOtherRealHandPosition.x, 0f, initialHostRealHandPosition.z - initialOtherRealHandPosition.z).magnitude;
-        Debug.Log("Real Hand Horizontal Distance: " + initialRealHandDistance);
         initialVirtualHandDistance = new Vector3(initialHostVirtualHandPosition.x - initialOtherVirtualHandPosition.x, 0f, initialHostVirtualHandPosition.z - initialOtherVirtualHandPosition.z).magnitude;
-        Debug.Log("Virtual Hand Horizontal Distance: " + initialVirtualHandDistance);
 
     }
     public void SaveMidValues()
     {
         midRealTargetPosition = ConfigurationScript.Instance.redirectedRealTarget.transform.position;
         midVirtualTargetPosition = ConfigurationScript.Instance.redirectedVirtualObject.transform.position;
+        midTargetDistance = new Vector3(midRealTargetPosition.x - midVirtualTargetPosition.x, 0f, midRealTargetPosition.z - midVirtualTargetPosition.z).magnitude;
+
+
         midHostVirtualPosition = ConfigurationScript.Instance.vrPlayerHost.transform.Find("Virtual/Head").position;
 
         midHostVirtualRotation = ConfigurationScript.Instance.vrPlayerHost.transform.Find("Virtual/Head").rotation.eulerAngles;
@@ -247,6 +257,8 @@ public class StudyLogger : MonoBehaviour
         finalRealTargetPosition = ConfigurationScript.Instance.redirectedRealTarget.transform.position;
         finalVirtualTargetPosition = ConfigurationScript.Instance.redirectedVirtualObject.transform.position;
         finalHostVirtualPosition = ConfigurationScript.Instance.vrPlayerHost.transform.Find("Virtual/Head").position;
+
+        finalTargetDistance = new Vector3(finalRealTargetPosition.x - finalVirtualTargetPosition.x, 0f, finalRealTargetPosition.z - finalVirtualTargetPosition.z).magnitude;
 
         finalHostVirtualRotation = ConfigurationScript.Instance.vrPlayerHost.transform.Find("Virtual/Head").rotation.eulerAngles;
 

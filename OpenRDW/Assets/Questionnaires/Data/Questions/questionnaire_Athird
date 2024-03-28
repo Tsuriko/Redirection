@@ -1,0 +1,401 @@
+{
+   "qTitle":"Questionnaire",
+   "qInstructions":"Please answer all questions....",
+   "qId":"Ard",
+   "questions":[
+      {
+         "pId":"page1",
+         "qType":"radio",
+         "qInstructions":"Choose the option that best reflects your experience",
+         "qData":[
+            {
+               "qId":"q1t17",
+               "qText":"The interactions with the other participant felt natural.",
+               "qMandatory":"true",
+               "qOptions":[
+                  "",
+                  "Strongly Disagree",
+                  "Disagree",
+                  "Neutral",
+                  "Agree",
+                  "Strongly Agree",
+                  ""
+               ]
+            },
+            {
+               "qId":"q2t17",
+               "qText":"I felt that my walking path in the virtual environment accurately matched my physical movements.",
+               "qMandatory":"true",
+               "qOptions":[
+                  "",
+                  "Strongly Disagree",
+                  "Disagree",
+                  "Neutral",
+                  "Agree",
+                  "Strongly Agree",
+                  ""
+               ]
+            },
+            {
+               "qId":"q3t17",
+               "qText":"I felt that my hand movements in the virtual environment accurately matched my physical movements.",
+               "qMandatory":"true",
+               "qOptions":[
+                  "",
+                  "Strongly Disagree",
+                  "Disagree",
+                  "Neutral",
+                  "Agree",
+                  "Strongly Agree",
+                  ""
+               ]
+            }
+         ]
+      },
+      {
+         "pId":"page2",
+         "qType":"radio",
+         "qInstructions":"Choose the option that best reflects your experience",
+         "qData":[
+            {
+               "qId":"q1t18",
+               "qText":"The interactions with the other participant felt natural.",
+               "qMandatory":"true",
+               "qOptions":[
+                  "",
+                  "Strongly Disagree",
+                  "Disagree",
+                  "Neutral",
+                  "Agree",
+                  "Strongly Agree",
+                  ""
+               ]
+            },
+            {
+               "qId":"q2t18",
+               "qText":"I felt that my walking path in the virtual environment accurately matched my physical movements.",
+               "qMandatory":"true",
+               "qOptions":[
+                  "",
+                  "Strongly Disagree",
+                  "Disagree",
+                  "Neutral",
+                  "Agree",
+                  "Strongly Agree",
+                  ""
+               ]
+            },
+            {
+               "qId":"q3t18",
+               "qText":"I felt that my hand movements in the virtual environment accurately matched my physical movements.",
+               "qMandatory":"true",
+               "qOptions":[
+                  "",
+                  "Strongly Disagree",
+                  "Disagree",
+                  "Neutral",
+                  "Agree",
+                  "Strongly Agree",
+                  ""
+               ]
+            }
+         ]
+      },
+      {
+         "pId":"page3",
+         "qType":"radio",
+         "qInstructions":"Choose the option that best reflects your experience",
+         "qData":[
+            {
+               "qId":"q1t19",
+               "qText":"The interactions with the other participant felt natural.",
+               "qMandatory":"true",
+               "qOptions":[
+                  "",
+                  "Strongly Disagree",
+                  "Disagree",
+                  "Neutral",
+                  "Agree",
+                  "Strongly Agree",
+                  ""
+               ]
+            },
+            {
+               "qId":"q2t19",
+               "qText":"I felt that my walking path in the virtual environment accurately matched my physical movements.",
+               "qMandatory":"true",
+               "qOptions":[
+                  "",
+                  "Strongly Disagree",
+                  "Disagree",
+                  "Neutral",
+                  "Agree",
+                  "Strongly Agree",
+                  ""
+               ]
+            },
+            {
+               "qId":"q3t19",
+               "qText":"I felt that my hand movements in the virtual environment accurately matched my physical movements.",
+               "qMandatory":"true",
+               "qOptions":[
+                  "",
+                  "Strongly Disagree",
+                  "Disagree",
+                  "Neutral",
+                  "Agree",
+                  "Strongly Agree",
+                  ""
+               ]
+            }
+         ]
+      },
+      {
+         "pId":"page4",
+         "qType":"radio",
+         "qInstructions":"Choose the option that best reflects your experience",
+         "qData":[
+            {
+               "qId":"q1t20",
+               "qText":"The interactions with the other participant felt natural.",
+               "qMandatory":"true",
+               "qOptions":[
+                  "",
+                  "Strongly Disagree",
+                  "Disagree",
+                  "Neutral",
+                  "Agree",
+                  "Strongly Agree",
+                  ""
+               ]
+            },
+            {
+               "qId":"q2t20",
+               "qText":"I felt that my walking path in the virtual environment accurately matched my physical movements.",
+               "qMandatory":"true",
+               "qOptions":[
+                  "",
+                  "Strongly Disagree",
+                  "Disagree",
+                  "Neutral",
+                  "Agree",
+                  "Strongly Agree",
+                  ""
+               ]
+            },
+            {
+               "qId":"q3t20",
+               "qText":"I felt that my hand movements in the virtual environment accurately matched my physical movements.",
+               "qMandatory":"true",
+               "qOptions":[
+                  "",
+                  "Strongly Disagree",
+                  "Disagree",
+                  "Neutral",
+                  "Agree",
+                  "Strongly Agree",
+                  ""
+               ]
+            }
+         ]
+      },
+      {
+         "pId":"page5",
+         "qType":"radio",
+         "qInstructions":"Choose the option that best reflects your experience",
+         "qData":[
+            {
+               "qId":"q1t21",
+               "qText":"The interactions with the other participant felt natural.",
+               "qMandatory":"true",
+               "qOptions":[
+                  "",
+                  "Strongly Disagree",
+                  "Disagree",
+                  "Neutral",
+                  "Agree",
+                  "Strongly Agree",
+                  ""
+               ]
+            },
+            {
+               "qId":"q2t21",
+               "qText":"I felt that my walking path in the virtual environment accurately matched my physical movements.",
+               "qMandatory":"true",
+               "qOptions":[
+                  "",
+                  "Strongly Disagree",
+                  "Disagree",
+                  "Neutral",
+                  "Agree",
+                  "Strongly Agree",
+                  ""
+               ]
+            },
+            {
+               "qId":"q3t21",
+               "qText":"I felt that my hand movements in the virtual environment accurately matched my physical movements.",
+               "qMandatory":"true",
+               "qOptions":[
+                  "",
+                  "Strongly Disagree",
+                  "Disagree",
+                  "Neutral",
+                  "Agree",
+                  "Strongly Agree",
+                  ""
+               ]
+            }
+         ]
+      },
+      {
+         "pId":"page6",
+         "qType":"radio",
+         "qInstructions":"Choose the option that best reflects your experience",
+         "qData":[
+            {
+               "qId":"q1t22",
+               "qText":"The interactions with the other participant felt natural.",
+               "qMandatory":"true",
+               "qOptions":[
+                  "",
+                  "Strongly Disagree",
+                  "Disagree",
+                  "Neutral",
+                  "Agree",
+                  "Strongly Agree",
+                  ""
+               ]
+            },
+            {
+               "qId":"q2t22",
+               "qText":"I felt that my walking path in the virtual environment accurately matched my physical movements.",
+               "qMandatory":"true",
+               "qOptions":[
+                  "",
+                  "Strongly Disagree",
+                  "Disagree",
+                  "Neutral",
+                  "Agree",
+                  "Strongly Agree",
+                  ""
+               ]
+            },
+            {
+               "qId":"q3t22",
+               "qText":"I felt that my hand movements in the virtual environment accurately matched my physical movements.",
+               "qMandatory":"true",
+               "qOptions":[
+                  "",
+                  "Strongly Disagree",
+                  "Disagree",
+                  "Neutral",
+                  "Agree",
+                  "Strongly Agree",
+                  ""
+               ]
+            }
+         ]
+      },
+      {
+         "pId":"page7",
+         "qType":"radio",
+         "qInstructions":"Choose the option that best reflects your experience",
+         "qData":[
+            {
+               "qId":"q1t23",
+               "qText":"The interactions with the other participant felt natural.",
+               "qMandatory":"true",
+               "qOptions":[
+                  "",
+                  "Strongly Disagree",
+                  "Disagree",
+                  "Neutral",
+                  "Agree",
+                  "Strongly Agree",
+                  ""
+               ]
+            },
+            {
+               "qId":"q2t23",
+               "qText":"I felt that my walking path in the virtual environment accurately matched my physical movements.",
+               "qMandatory":"true",
+               "qOptions":[
+                  "",
+                  "Strongly Disagree",
+                  "Disagree",
+                  "Neutral",
+                  "Agree",
+                  "Strongly Agree",
+                  ""
+               ]
+            },
+            {
+               "qId":"q3t23",
+               "qText":"I felt that my hand movements in the virtual environment accurately matched my physical movements.",
+               "qMandatory":"true",
+               "qOptions":[
+                  "",
+                  "Strongly Disagree",
+                  "Disagree",
+                  "Neutral",
+                  "Agree",
+                  "Strongly Agree",
+                  ""
+               ]
+            }
+         ]
+      },
+      {
+         "pId":"page8",
+         "qType":"radio",
+         "qInstructions":"Choose the option that best reflects your experience",
+         "qData":[
+            {
+               "qId":"q1t24",
+               "qText":"The interactions with the other participant felt natural.",
+               "qMandatory":"true",
+               "qOptions":[
+                  "",
+                  "Strongly Disagree",
+                  "Disagree",
+                  "Neutral",
+                  "Agree",
+                  "Strongly Agree",
+                  ""
+               ]
+            },
+            {
+               "qId":"q2t24",
+               "qText":"I felt that my walking path in the virtual environment accurately matched my physical movements.",
+               "qMandatory":"true",
+               "qOptions":[
+                  "",
+                  "Strongly Disagree",
+                  "Disagree",
+                  "Neutral",
+                  "Agree",
+                  "Strongly Agree",
+                  ""
+               ]
+            },
+            {
+               "qId":"q3t24",
+               "qText":"I felt that my hand movements in the virtual environment accurately matched my physical movements.",
+               "qMandatory":"true",
+               "qOptions":[
+                  "",
+                  "Strongly Disagree",
+                  "Disagree",
+                  "Neutral",
+                  "Agree",
+                  "Strongly Agree",
+                  ""
+               ]
+            }
+         ]
+      },
+   ],
+   "qMessage":"",
+   "qAcknowledgments":""
+}

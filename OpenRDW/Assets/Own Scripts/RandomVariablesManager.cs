@@ -24,17 +24,27 @@ public class RandomVariablesManager : MonoBehaviour
     public List<VariablesCombination> T3Combinations { get; private set; }
     public List<VariablesCombination> T45Combinations { get; private set; }
     public List<VariablesCombination> T6Combinations { get; private set; }
+    public List<VariablesCombination> A1Combinations { get; private set; }
+    public List<VariablesCombination> A2Combinations { get; private set; }
+    public List<VariablesCombination> A3Combinations { get; private set; }
+    public List<VariablesCombination> A4Combinations { get; private set; }
+
 
     public enum TaskCategory
-{
-    FirstTask,
-    T0_Practice,
-    T1_NoRedirection,
-    T2_RDW,
-    T3_HR,
-    T4_CombinedNearThreshold,
-    T5_CombinedBeyondThreshold,
-    T6_Random
+    {
+        FirstTask,
+        T0_Practice,
+        T1_NoRedirection,
+        T2_RDW,
+        T3_HR,
+        T4_CombinedNearThreshold,
+        T5_CombinedBeyondThreshold,
+        T6_Random,
+
+        A1,
+        A2,
+        A3,
+        A4
     }
 
     private void Awake()
@@ -59,6 +69,10 @@ public class RandomVariablesManager : MonoBehaviour
         T45Combinations = new List<VariablesCombination>();
         //T5Combinations = new List<VariablesCombination>();
         T6Combinations = new List<VariablesCombination>();
+        A1Combinations = new List<VariablesCombination>();
+        A2Combinations = new List<VariablesCombination>();
+        A3Combinations = new List<VariablesCombination>();
+        A4Combinations = new List<VariablesCombination>();
 
         // T0 no rdw
         /*
@@ -276,130 +290,130 @@ public class RandomVariablesManager : MonoBehaviour
             redirectedWalkingIntensity = 1.1f,
             redirectionSliderValue = 0.3f
         });
-        T6Combinations.Add(new VariablesCombination
+        A4Combinations.Add(new VariablesCombination
         {
-            taskCategory = TaskCategory.T6_Random,
+            taskCategory = TaskCategory.A4,
             offsetValue = 0.3f,
             liveRedirection = false,
             redirectedWalkingIntensity = 1.4f,
             redirectionSliderValue = 0.3f
         });
-        T6Combinations.Add(new VariablesCombination
+        A3Combinations.Add(new VariablesCombination
         {
-            taskCategory = TaskCategory.T6_Random,
+            taskCategory = TaskCategory.A3,
             offsetValue = 0.3f,
             liveRedirection = false,
             redirectedWalkingIntensity = 1.0f,
             redirectionSliderValue = 0.3f
         });
-        T6Combinations.Add(new VariablesCombination
+        A2Combinations.Add(new VariablesCombination
         {
-            taskCategory = TaskCategory.T6_Random,
+            taskCategory = TaskCategory.A2,
             offsetValue = 0.3f,
             liveRedirection = false,
             redirectedWalkingIntensity = 0.8f,
             redirectionSliderValue = 0.3f
         });
-        T6Combinations.Add(new VariablesCombination
+        A1Combinations.Add(new VariablesCombination
         {
-            taskCategory = TaskCategory.T6_Random,
+            taskCategory = TaskCategory.A1,
             offsetValue = 0.3f,
             liveRedirection = false,
             redirectedWalkingIntensity = 0.6f,
             redirectionSliderValue = 0.3f
         });
-        T6Combinations.Add(new VariablesCombination
+        A4Combinations.Add(new VariablesCombination
         {
-            taskCategory = TaskCategory.T6_Random,
+            taskCategory = TaskCategory.A4,
             offsetValue = 0.5f,
             liveRedirection = false,
             redirectedWalkingIntensity = 1.4f,
             redirectionSliderValue = 0.3f
         });
-        T6Combinations.Add(new VariablesCombination
+        A3Combinations.Add(new VariablesCombination
         {
-            taskCategory = TaskCategory.T6_Random,
+            taskCategory = TaskCategory.A3,
             offsetValue = 0.5f,
             liveRedirection = false,
             redirectedWalkingIntensity = 1.0f,
             redirectionSliderValue = 0.3f
         });
-        T6Combinations.Add(new VariablesCombination
+        A2Combinations.Add(new VariablesCombination
         {
-            taskCategory = TaskCategory.T6_Random,
+            taskCategory = TaskCategory.A2,
             offsetValue = 0.5f,
             liveRedirection = false,
             redirectedWalkingIntensity = 0.8f,
             redirectionSliderValue = 0.3f
         });
-        T6Combinations.Add(new VariablesCombination
+        A1Combinations.Add(new VariablesCombination
         {
-            taskCategory = TaskCategory.T6_Random,
+            taskCategory = TaskCategory.A1,
             offsetValue = 0.5f,
             liveRedirection = false,
             redirectedWalkingIntensity = 0.6f,
             redirectionSliderValue = 0.3f
         });
-        T6Combinations.Add(new VariablesCombination
+        A4Combinations.Add(new VariablesCombination
         {
-            taskCategory = TaskCategory.T6_Random,
+            taskCategory = TaskCategory.A4,
             offsetValue = 0.7f,
             liveRedirection = false,
             redirectedWalkingIntensity = 1.4f,
             redirectionSliderValue = 0.3f
         });
-        T6Combinations.Add(new VariablesCombination
+        A3Combinations.Add(new VariablesCombination
         {
-            taskCategory = TaskCategory.T6_Random,
+            taskCategory = TaskCategory.A3,
             offsetValue = 0.7f,
             liveRedirection = false,
             redirectedWalkingIntensity = 1.0f,
             redirectionSliderValue = 0.3f
         });
-        T6Combinations.Add(new VariablesCombination
+        A2Combinations.Add(new VariablesCombination
         {
-            taskCategory = TaskCategory.T6_Random,
+            taskCategory = TaskCategory.A2,
             offsetValue = 0.7f,
             liveRedirection = false,
             redirectedWalkingIntensity = 0.8f,
             redirectionSliderValue = 0.3f
         });
-        T6Combinations.Add(new VariablesCombination
+        A1Combinations.Add(new VariablesCombination
         {
-            taskCategory = TaskCategory.T6_Random,
+            taskCategory = TaskCategory.A1,
             offsetValue = 0.7f,
             liveRedirection = false,
             redirectedWalkingIntensity = 0.6f,
             redirectionSliderValue = 0.3f
         });
-        T6Combinations.Add(new VariablesCombination
+        A4Combinations.Add(new VariablesCombination
         {
-            taskCategory = TaskCategory.T6_Random,
-            offsetValue = 1f,
+            taskCategory = TaskCategory.A4,
+            offsetValue = 0.1f,
             liveRedirection = false,
             redirectedWalkingIntensity = 1.4f,
             redirectionSliderValue = 0.3f
         });
-        T6Combinations.Add(new VariablesCombination
+        A3Combinations.Add(new VariablesCombination
         {
-            taskCategory = TaskCategory.T6_Random,
-            offsetValue = 1f,
+            taskCategory = TaskCategory.A3,
+            offsetValue = 0.1f,
             liveRedirection = false,
             redirectedWalkingIntensity = 1.0f,
             redirectionSliderValue = 0.3f
         });
-        T6Combinations.Add(new VariablesCombination
+        A2Combinations.Add(new VariablesCombination
         {
-            taskCategory = TaskCategory.T6_Random,
-            offsetValue = 1f,
+            taskCategory = TaskCategory.A2,
+            offsetValue = 0.1f,
             liveRedirection = false,
             redirectedWalkingIntensity = 0.8f,
             redirectionSliderValue = 0.3f
         });
-        T6Combinations.Add(new VariablesCombination
+        A1Combinations.Add(new VariablesCombination
         {
-            taskCategory = TaskCategory.T6_Random,
-            offsetValue = 1f,
+            taskCategory = TaskCategory.A1,
+            offsetValue = 0.1f,
             liveRedirection = false,
             redirectedWalkingIntensity = 0.6f,
             redirectionSliderValue = 0.3f
@@ -430,25 +444,25 @@ public class RandomVariablesManager : MonoBehaviour
         Shuffle(T45Combinations);
     }
     public void GenerateStudyListOrder()
-{
-    GenerateAllCombinations();
+    {
+        GenerateAllCombinations();
 
-    // Create a list to store the order of the lists
-    studyOrderCombination = new List<List<VariablesCombination>>();
+        // Create a list to store the order of the lists
+        studyOrderCombination = new List<List<VariablesCombination>>();
 
-    // Add T0 combinations to the order
-    //studyOrderCombination.Add(T0Combinations);
+        // Add T0 combinations to the order
+        //studyOrderCombination.Add(T0Combinations);
 
-    // Shuffle the order of T1, T2, and T3 lists
-    List<List<VariablesCombination>> t123Lists = new List<List<VariablesCombination>> { T2Combinations, T3Combinations };
-    Shuffle(t123Lists);
+        // Shuffle the order of T1, T2, and T3 lists
+        List<List<VariablesCombination>> t123Lists = new List<List<VariablesCombination>> { T2Combinations, T3Combinations };
+        Shuffle(t123Lists);
 
-    // Add shuffled T1, T2, and T3 lists to the order
-    studyOrderCombination.AddRange(t123Lists);
+        // Add shuffled T1, T2, and T3 lists to the order
+        studyOrderCombination.AddRange(t123Lists);
 
-    // Add T45 combinations to the order
-    studyOrderCombination.Add(T45Combinations);
-}
+        // Add T45 combinations to the order
+        studyOrderCombination.Add(T45Combinations);
+    }
     public void GenerateT6Study()
     {
         GenerateHardcodedCombinations();
@@ -461,5 +475,76 @@ public class RandomVariablesManager : MonoBehaviour
 
         studyOrderCombination = new List<List<VariablesCombination>> { T6Combinations, secondT6List };
     }
-      
+    public void ExpandAndShuffleALists()
+    {
+        // Expanding each list
+        A1Combinations = ExpandList(A1Combinations);
+        A2Combinations = ExpandList(A2Combinations);
+        A3Combinations = ExpandList(A3Combinations);
+        A4Combinations = ExpandList(A4Combinations);
+
+        // Shuffling each expanded list
+        Shuffle(A1Combinations);
+        Shuffle(A2Combinations);
+        Shuffle(A3Combinations);
+        Shuffle(A4Combinations);
+    }
+    private List<VariablesCombination> ExpandList(List<VariablesCombination> originalList)
+    {
+        List<VariablesCombination> expandedList = new List<VariablesCombination>();
+        foreach (var item in originalList)
+        {
+            for (int i = 0; i < 2; i++) // Repeat each entry 3 times
+            {
+                expandedList.Add(item);
+            }
+        }
+        return expandedList;
+    }
+    public void GenerateStudyOrderCombination(int studyId)
+{
+    // Ensure A lists are expanded, shuffled, and ready to use
+    ExpandAndShuffleALists();
+
+    // Calculate the shift amount based on the study ID
+    // This will determine how the lists A1-A4 are rearranged
+    int shiftAmount = (studyId - 1) % 4; // Subtract 1 to make it zero-based, modulo 4 because there are 4 lists
+
+    // Create a new list to hold the ordered combinations
+    List<List<VariablesCombination>> orderedCombinations = new List<List<VariablesCombination>>();
+
+    // Depending on the shiftAmount, reorder the lists
+    switch (shiftAmount)
+    {
+        case 0:
+            orderedCombinations.Add(A1Combinations);
+            orderedCombinations.Add(A2Combinations);
+            orderedCombinations.Add(A3Combinations);
+            orderedCombinations.Add(A4Combinations);
+            break;
+        case 1:
+            orderedCombinations.Add(A2Combinations);
+            orderedCombinations.Add(A3Combinations);
+            orderedCombinations.Add(A4Combinations);
+            orderedCombinations.Add(A1Combinations);
+            break;
+        case 2:
+            orderedCombinations.Add(A3Combinations);
+            orderedCombinations.Add(A4Combinations);
+            orderedCombinations.Add(A1Combinations);
+            orderedCombinations.Add(A2Combinations);
+            break;
+        case 3:
+            orderedCombinations.Add(A4Combinations);
+            orderedCombinations.Add(A1Combinations);
+            orderedCombinations.Add(A2Combinations);
+            orderedCombinations.Add(A3Combinations);
+            break;
+    }
+
+    // Now, orderedCombinations holds the lists in the correct order for this study ID
+    // Assign it to studyOrderCombination to use elsewhere in your code
+    studyOrderCombination = orderedCombinations;
+}
+
 }
