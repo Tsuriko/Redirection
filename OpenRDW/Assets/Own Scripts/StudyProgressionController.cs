@@ -74,7 +74,7 @@ public class StudyProgressionController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (nextAction == ActionAwaiting.TaskPreparation || nextAction == ActionAwaiting.TaskExecution || nextAction == ActionAwaiting.TaskReview || nextAction == ActionAwaiting.FirstTask || nextAction == ActionAwaiting.RandomTask || nextAction == ActionAwaiting.SaveMarkerPosition)
+            if (nextAction == ActionAwaiting.TaskPreparation || nextAction == ActionAwaiting.TaskExecution || nextAction == ActionAwaiting.TaskReview || nextAction == ActionAwaiting.TaskReset || nextAction == ActionAwaiting.FirstTask || nextAction == ActionAwaiting.RandomTask || nextAction == ActionAwaiting.SaveMarkerPosition)
             {
                 CallTriggerNextAction();
             }
